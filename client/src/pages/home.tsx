@@ -11,12 +11,8 @@ import {
   Activity
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Sheet,
-  SheetContent,
-  SheetTrigger,
-} from "@/components/ui/sheet";
 import { motion } from "framer-motion";
+import { Nav } from "@/components/site-header";
 
 // --- Asset Imports ---
 import heroData from "@assets/generated_images/abstract_connecting_bridge_data_visualization.png";
@@ -24,60 +20,10 @@ import logoImage from "@assets/BBP LOGO PRESENTATION_1763746252877.png";
 
 // --- Components ---
 
-const Logo = () => (
-  <div className="flex items-center gap-3">
-    <img src={logoImage} alt="BenefitsBridge Partners Logo" className="h-12 md:h-16 object-contain" />
-  </div>
-);
-
-const Nav = () => {
-  return (
-    <nav className="absolute top-0 left-0 right-0 z-50 py-6 px-6">
-      <div className="container mx-auto flex items-center justify-between">
-        <Logo />
-        
-        <div className="hidden md:flex items-center gap-8">
-          <a href="#" className="text-white/80 hover:text-[#D4AF37] text-sm font-medium transition-colors tracking-wide">Solutions</a>
-          <a href="#" className="text-white/80 hover:text-[#D4AF37] text-sm font-medium transition-colors tracking-wide">Services</a>
-          <a href="#" className="text-white/80 hover:text-[#D4AF37] text-sm font-medium transition-colors tracking-wide">About Us</a>
-          <a href="#" className="text-white/80 hover:text-[#D4AF37] text-sm font-medium transition-colors tracking-wide">Insights</a>
-        </div>
-
-        <div className="hidden md:flex items-center gap-4">
-          <Button variant="ghost" className="text-white hover:text-[#D4AF37] hover:bg-white/5">
-            Client Login
-          </Button>
-          <Button className="bg-[#D4AF37] text-[#0B1F40] hover:bg-[#B59328] font-semibold">
-            Contact Us
-          </Button>
-        </div>
-
-        <Sheet>
-          <SheetTrigger asChild>
-            <Button variant="ghost" size="icon" className="md:hidden text-white">
-              <Menu />
-            </Button>
-          </SheetTrigger>
-          <SheetContent className="bg-[#0B1F40] border-white/10 text-white">
-            <div className="flex flex-col gap-6 mt-6">
-              <a href="#" className="text-lg font-medium hover:text-[#D4AF37]">Solutions</a>
-              <a href="#" className="text-lg font-medium hover:text-[#D4AF37]">Services</a>
-              <a href="#" className="text-lg font-medium hover:text-[#D4AF37]">About Us</a>
-              <a href="#" className="text-lg font-medium hover:text-[#D4AF37]">Insights</a>
-              <hr className="border-white/10" />
-              <Button className="bg-[#D4AF37] text-[#0B1F40] hover:bg-[#B59328]">Contact Us</Button>
-            </div>
-          </SheetContent>
-        </Sheet>
-      </div>
-    </nav>
-  );
-};
-
 export default function Home() {
   return (
     <div className="font-sans bg-[#0B1F40] min-h-screen text-white selection:bg-[#D4AF37] selection:text-[#0B1F40]">
-      <Nav />
+      <Nav variant="transparent" />
       
       {/* Hero */}
       <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
