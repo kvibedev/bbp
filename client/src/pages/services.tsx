@@ -10,127 +10,117 @@ import {
   DollarSign,
   FileBarChart,
   Activity,
-  Target
+  Target,
+  Clock,
+  Search
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 
-const enhancedReports = [
+const mainServices = [
   {
-    icon: TrendingUp,
-    title: "Stewardship Report",
-    subtitle: "Executive-Level Performance Overview",
-    description: "Provides a comprehensive, year-over-year view of pharmacy plan performance, utilization, and cost trends. This offers executive-level insights to support strategic planning, budgeting, and vendor performance review.",
-    features: [
-      "Financial and utilization trend analysis",
-      "Year-over-year comparisons",
-      "Total Plan Cost and PMPM metrics",
-      "High-level executive overview"
-    ],
-    formats: "Single comprehensive format"
-  },
-  {
+    title: "Contract Management & Setup",
     icon: FileBarChart,
-    title: "Top Drugs Report",
-    subtitle: "High-Cost Medication Analysis",
-    description: "Identifies the top 50 drugs by ingredient cost and usage. This report pinpoints high-cost medications driving plan spend and targeted intervention opportunities.",
+    description: "We capture all bid requirements and contract terms upfront, reserving them as a warranty for verification to ensure Day One readiness.",
     features: [
-      "Top 50 drugs by ingredient cost",
-      "Change in ingredient cost tracking",
-      "Script count analysis",
-      "Change in script count trends"
+      "Capture all bid requirements and contract terms",
+      "Reserve terms as a warranty for verification",
+      "Ensure Day One readiness",
+      "Comprehensive RFP management and negotiation"
     ],
-    formats: "4 Formats Available"
+    outcome: "Contracts that work from the moment you sign them"
   },
   {
-    icon: Users,
-    title: "Large Claimant Report",
-    subtitle: "High-Risk Member Identification",
-    description: "Highlights high-cost individual claimants and their prescription spend. This report helps assess risk concentration and potential stop-loss impact.",
+    title: "Continuous Claims Monitoring",
+    icon: Activity,
+    description: "Real-time verification of every prescription claim with 100% adjudication coverage—not sampling, not estimates, not 'close enough.'",
     features: [
-      "High-cost claimant identification",
-      "Top utilized drugs per member",
-      "Current vs. previous plan cost comparison",
-      "Share of total spend analysis"
+      "Real-time verification of every prescription claim",
+      "100% adjudication coverage (no sampling)",
+      "Immediate discrepancy alerts",
+      "Automated compliance tracking"
     ],
-    formats: "2 Formats Available"
+    outcome: "Stop overcharges before they leave your budget"
   },
   {
-    icon: AlertTriangle,
-    title: "Multi-Source Brand Report",
-    subtitle: "Generic Savings Opportunities",
-    description: "Lists brand drugs with available generic equivalents. This report identifies cost-saving opportunities by switching to generics.",
-    features: [
-      "Brand drugs with generic alternatives",
-      "Ingredient cost comparisons",
-      "Script count analysis",
-      "Potential savings identification"
-    ],
-    formats: "2 Formats Available"
-  },
-  {
-    icon: DollarSign,
-    title: "NADAC Differential Report",
-    subtitle: "Pricing Transparency Benchmark",
-    description: "Compares actual drug costs to NADAC (National Average Drug Acquisition Cost) benchmarks. This report flags inflated drug pricing and evaluates PBM contract performance for transparency and pricing fairness.",
-    features: [
-      "NADAC differential analysis",
-      "Percentage markup calculation",
-      "Dollar difference tracking",
-      "Average NADAC differential"
-    ],
-    formats: "3 Formats Available"
-  },
-  {
-    icon: Target,
-    title: "Repricing Report",
-    subtitle: "Multi-Vendor Cost Comparison",
-    description: "Models cost across multiple PBM vendors based on historical claims data. This supports PBM selection and renewal decisions by quantifying potential savings under alternative pricing arrangements.",
-    features: [
-      "Multi-vendor cost comparison",
-      "Total net spend analysis",
-      "Total savings calculation",
-      "Alternative pricing scenarios"
-    ],
-    formats: "Comparative analysis format"
-  },
-  {
+    title: "Proactive Reconciliation",
     icon: Shield,
-    title: "Reconciliation Report",
-    subtitle: "Contract Guarantee Validation",
-    description: "Compares actual performance against contract guarantees on discounts, dispensing fees, and rebates. Identifies contract shortfalls or overperformance and validates PBM compliance.",
+    description: "Monthly contract term verification combined with annual market checks ensure your contracts remain competitive and compliant year after year.",
     features: [
-      "Actual vs. guaranteed performance",
-      "Discount compliance tracking",
-      "Rebate verification",
-      "Percentage and dollar variances"
+      "Monthly contract term verification",
+      "Annual market checks for competitiveness",
+      "Guarantee compliance monitoring",
+      "Performance trend analysis"
     ],
-    formats: "Contract compliance format"
+    outcome: "Recover millions in mistakenly paid dollars"
+  },
+  {
+    title: "Strategic Consulting & Navigation",
+    icon: Target,
+    description: "Expert guidance on pharmacy benefit strategy, technology sourcing, and implementation through best-in-class solution partnerships.",
+    features: [
+      "Expert guidance on pharmacy benefit strategy",
+      "Technology sourcing and implementation",
+      "Best-in-class solution partnerships",
+      "Industry thought leadership"
+    ],
+    outcome: "Navigate to greater affordability with confidence"
   }
 ];
 
-const coreServices = [
+const successStories = [
   {
-    title: "PBM Contract Management",
-    description: "Complete RFP management, competitive bidding, and contract negotiation services grounded in nationally benchmarked best practices.",
+    icon: DollarSign,
+    metric: "$12M",
+    description: "Recovered in reduced costs for a single client through complete contract accuracy",
+    category: "Cost Recovery"
+  },
+  {
+    icon: TrendingUp,
+    metric: "100%",
+    description: "Claim adjudication coverage from Day One—every prescription verified against contract terms",
+    category: "Coverage"
+  },
+  {
+    icon: Clock,
+    metric: "3-9 Months",
+    description: "Gap eliminated between contract signing and verification—protection starts immediately",
+    category: "Time Saved"
+  },
+  {
+    icon: Target,
+    metric: "Millions",
+    description: "Identified in overcharges through real-time monitoring across client portfolios",
+    category: "Savings Identified"
+  }
+];
+
+const implementationProcess = [
+  {
+    step: "01",
+    title: "Discovery & Assessment",
+    description: "Comprehensive analysis of your current pharmacy benefits, contracts, and claims data to identify opportunities",
+    icon: Search
+  },
+  {
+    step: "02",
+    title: "Contract Configuration",
+    description: "Capture all bid requirements and contract terms, establishing verification benchmarks for ongoing monitoring",
     icon: FileBarChart
   },
   {
-    title: "Ongoing Claims Monitoring",
-    description: "Continuous performance monitoring to ensure compliance with negotiated discounts, rebates, and financial guarantees.",
+    step: "03",
+    title: "Day One Verification Launch",
+    description: "Immediate claims verification begins—100% coverage from the first prescription processed",
     icon: Activity
   },
   {
-    title: "Cost Containment Analytics",
-    description: "Both retrospective and predictive analytics to identify opportunities for cost containment while minimizing member disruption.",
+    step: "04",
+    title: "Ongoing Monitoring & Recovery",
+    description: "Continuous performance tracking, monthly reconciliation, and proactive recovery of mistakenly paid dollars",
     icon: TrendingUp
-  },
-  {
-    title: "Annual Market Checks",
-    description: "Year-over-year market competitiveness reviews to ensure long-term accountability and optimal pricing.",
-    icon: Target
   }
 ];
 
@@ -146,45 +136,59 @@ export default function Services() {
           <div className="max-w-4xl">
             <div className="flex items-center gap-3 text-[#D4AF37] font-medium text-sm mb-6 tracking-widest uppercase">
               <span className="w-12 h-[1px] bg-[#D4AF37]"></span>
-              Enhanced Analytics & Reporting
+              Our Services
             </div>
-            <h1 className="text-4xl md:text-6xl font-bold mb-8 font-serif text-white">
-              Industry-Leading <span className="text-[#D4AF37]">PBM Services</span>
+            <h1 className="text-4xl md:text-6xl font-bold mb-8 font-serif text-white" data-testid="hero-headline">
+              Services That Put Dollars Back in <span className="text-[#D4AF37]">Your Budget</span>
             </h1>
-            <p className="text-xl text-blue-100/80 leading-relaxed">
-              Comprehensive pharmacy benefit management services powered by advanced analytics, deep industry expertise, and proprietary technology platforms.
+            <p className="text-xl text-blue-100/80 leading-relaxed" data-testid="hero-subhead">
+              From contract negotiation to ongoing monitoring, we ensure every pharmacy dollar is spent according to your terms.
             </p>
           </div>
         </div>
       </section>
 
-      {/* Core Services */}
+      {/* Main Services */}
       <section className="py-20 border-b border-white/5">
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-5xl font-serif font-bold mb-6 text-white">
-              What We Do for <span className="text-[#4A90E2]">You</span>
+              Outcome-Focused <span className="text-[#4A90E2]">Services</span>
             </h2>
             <p className="text-blue-100/70 text-xl max-w-3xl mx-auto">
-              BenefitsBridge Partners, supported by Ringmaster Technologies, delivers a best-in-class integrated service model
+              Comprehensive pharmacy benefit management services designed to protect your budget from Day One
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 gap-8">
-            {coreServices.map((service, i) => (
+            {mainServices.map((service, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
                 className="bg-white/5 border border-white/10 rounded-xl p-8 hover:bg-white/[0.07] hover:border-[#D4AF37]/30 transition-all group"
-                data-testid={`core-service-${i}`}
+                data-testid={`service-${i}`}
               >
                 <div className="w-14 h-14 rounded-xl bg-[#4A90E2]/10 flex items-center justify-center mb-6 border border-[#4A90E2]/20 group-hover:bg-[#4A90E2]/20 transition-colors">
                   <service.icon className="w-7 h-7 text-[#4A90E2]" />
                 </div>
                 <h3 className="text-2xl font-bold mb-4 text-white">{service.title}</h3>
-                <p className="text-blue-100/70 leading-relaxed">{service.description}</p>
+                <p className="text-blue-100/70 leading-relaxed mb-6">{service.description}</p>
+                
+                <div className="space-y-3 mb-6">
+                  {service.features.map((feature, idx) => (
+                    <div key={idx} className="flex items-start gap-2 text-sm text-blue-100/60">
+                      <CheckCircle className="w-4 h-4 text-[#4A90E2] mt-0.5 flex-shrink-0" />
+                      <span>{feature}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="pt-6 border-t border-white/10">
+                  <div className="text-sm text-[#D4AF37] font-medium mb-1">OUTCOME</div>
+                  <div className="text-white font-semibold">{service.outcome}</div>
+                </div>
               </motion.div>
             ))}
           </div>
@@ -197,10 +201,10 @@ export default function Services() {
                 </h3>
                 <div className="space-y-4">
                   {[
-                    "PBM contracts are legal contracts requiring deep knowledge of possible 'gotchas'",
-                    "Pharmacy comparisons require expensive 3rd party data sources (Medi-Span, First Data Bank, NCPDP)",
-                    "Incredibly time-consuming merging of contract terms, data sources, and client pharmacy data",
-                    "Cannot rely on PBM's own projections—they use the most favorable assumptions for themselves"
+                    "You sign multi-million dollar pharmacy contracts today. Claims start processing tomorrow. But you won't see your actual contract performance for 3-9 months.",
+                    "During that gap, terms and conditions are being applied without verification. Discounts missed. Rebates miscalculated. Every time.",
+                    "Traditional approach samples claims after the fact—damage already done, money already gone.",
+                    "Every audit, every sampling reveals mistakes. They're always in favor of the carrier. Always."
                   ].map((item, i) => (
                     <div key={i} className="flex items-start gap-3">
                       <AlertTriangle className="w-5 h-5 text-[#D4AF37] mt-0.5 flex-shrink-0" />
@@ -215,10 +219,10 @@ export default function Services() {
                 </h3>
                 <div className="space-y-4">
                   {[
-                    "Confident that your PBM decision is the best fit for you and your beneficiaries",
-                    "Constant monitoring of your claims to protect against abusive pricing practices",
-                    "Never fall behind the market with efficient annual market checks",
-                    "Access to thought leadership at the forefront of the PBM industry"
+                    "Day One protection—claims are processed as negotiated from the first prescription",
+                    "100% verification of every adjudication—no sampling, no gaps, no guessing",
+                    "Immediate alerts when discrepancies occur, allowing real-time correction",
+                    "Millions in mistakenly paid dollars recovered and returned to your budget"
                   ].map((item, i) => (
                     <div key={i} className="flex items-start gap-3">
                       <CheckCircle className="w-5 h-5 text-[#4A90E2] mt-0.5 flex-shrink-0" />
@@ -232,125 +236,89 @@ export default function Services() {
         </div>
       </section>
 
-      {/* Enhanced Reports */}
-      <section className="py-32">
+      {/* Results Section */}
+      <section className="py-32 bg-[#050e1f] border-b border-white/5">
         <div className="container mx-auto px-6">
           <div className="text-center mb-20">
             <div className="flex items-center justify-center gap-3 text-[#D4AF37] font-medium text-sm mb-6 tracking-widest uppercase">
               <span className="w-12 h-[1px] bg-[#D4AF37]"></span>
-              Enhanced Reporting Offerings
+              Proven Results
               <span className="w-12 h-[1px] bg-[#D4AF37]"></span>
             </div>
             <h2 className="text-4xl md:text-6xl font-serif font-bold mb-6 text-white">
-              Seven Powerful <span className="text-[#D4AF37]">Analytics Reports</span>
+              Real Outcomes for <span className="text-[#D4AF37]">Real Clients</span>
             </h2>
             <p className="text-blue-100/70 text-xl max-w-3xl mx-auto">
-              Comprehensive insights to drive strategic decisions, identify savings opportunities, and ensure contract compliance
+              Our approach delivers measurable results—dollars saved, percentages recovered, and time improved
             </p>
           </div>
 
-          <div className="space-y-6">
-            {enhancedReports.map((report, i) => (
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {successStories.map((story, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.05 }}
-                data-testid={`report-${report.title.toLowerCase().replace(/\s+/g, '-')}`}
+                transition={{ delay: i * 0.1 }}
+                data-testid={`result-${i}`}
               >
-                <Card className="bg-[#0F264A] border-white/10 hover:border-[#D4AF37]/30 transition-all group overflow-hidden">
-                  <CardContent className="p-0">
-                    <div className="grid md:grid-cols-12 gap-0">
-                      {/* Icon & Title Section */}
-                      <div className="md:col-span-4 bg-gradient-to-br from-[#0B1F40] to-[#050e1f] p-8 flex flex-col justify-between border-r border-white/5">
-                        <div>
-                          <div className="w-16 h-16 rounded-xl bg-[#D4AF37]/10 flex items-center justify-center mb-6 border border-[#D4AF37]/20 group-hover:bg-[#D4AF37]/20 transition-colors">
-                            <report.icon className="w-8 h-8 text-[#D4AF37]" />
-                          </div>
-                          <h3 className="text-2xl font-bold mb-2 text-white">{report.title}</h3>
-                          <p className="text-[#4A90E2] text-sm font-medium mb-4">{report.subtitle}</p>
-                        </div>
-                        <div className="text-sm text-blue-100/50 font-medium border-t border-white/5 pt-4">
-                          {report.formats}
-                        </div>
-                      </div>
-
-                      {/* Content Section */}
-                      <div className="md:col-span-8 p-8">
-                        <p className="text-blue-100/80 mb-6 leading-relaxed text-lg">
-                          {report.description}
-                        </p>
-                        <div className="grid grid-cols-2 gap-3">
-                          {report.features.map((feature, idx) => (
-                            <div key={idx} className="flex items-start gap-2 text-sm text-blue-100/60">
-                              <CheckCircle className="w-4 h-4 text-[#4A90E2] mt-0.5 flex-shrink-0" />
-                              <span>{feature}</span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
+                <Card className="bg-[#0B1F40] border-white/10 hover:border-[#D4AF37]/30 transition-all h-full">
+                  <CardContent className="p-8">
+                    <div className="w-12 h-12 rounded-xl bg-[#D4AF37]/10 flex items-center justify-center mb-6 border border-[#D4AF37]/20">
+                      <story.icon className="w-6 h-6 text-[#D4AF37]" />
                     </div>
+                    <div className="text-sm text-[#4A90E2] font-medium mb-2">{story.category}</div>
+                    <div className="text-4xl font-bold text-white mb-4">{story.metric}</div>
+                    <p className="text-blue-100/60 text-sm leading-relaxed">{story.description}</p>
                   </CardContent>
                 </Card>
               </motion.div>
             ))}
           </div>
 
-          {/* Report Disclaimer */}
-          <div className="mt-12 bg-white/5 border border-white/10 rounded-xl p-6">
-            <h4 className="text-sm font-bold text-white mb-3 uppercase tracking-wider">Reporting Disclaimer</h4>
-            <div className="text-sm text-blue-100/60 space-y-2 leading-relaxed">
-              <p>• Financial results are based on analysis of provided claims data. Claims with missing or incomplete pricing information may have been excluded.</p>
-              <p>• Analysis assumes consistent utilization patterns and does not reflect potential changes in drug mix, script volumes, or future market conditions.</p>
-              <p>• Financial estimates are intended for illustrative purposes only; actual results may vary due to changes in utilization, pricing policies, or external factors.</p>
-              <p>• Pricing terms or guarantees are provided for internal evaluation purposes only and should not be disclosed to external parties.</p>
+          <div className="mt-16 bg-white/5 border border-white/10 rounded-xl p-8 max-w-4xl mx-auto">
+            <div className="flex items-start gap-4">
+              <Shield className="w-6 h-6 text-[#D4AF37] mt-1 flex-shrink-0" />
+              <div>
+                <h4 className="text-lg font-bold text-white mb-2">The Scale of the Problem</h4>
+                <p className="text-blue-100/70 leading-relaxed">
+                  Millions of prescription claim adjudications happen daily across our client portfolios. Even small percentage errors compound into massive losses. Our approach eliminates the gap between contract signing and verification, protecting every dollar from Day One.
+                </p>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Process Section */}
-      <section className="py-32 bg-[#050e1f] border-y border-white/5">
+      {/* Implementation Process */}
+      <section className="py-32">
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-serif font-bold mb-6 text-white">
-              Next Steps for <span className="text-[#D4AF37]">Engagement</span>
+              Implementation <span className="text-[#D4AF37]">Process</span>
             </h2>
             <p className="text-xl text-blue-100/70 max-w-2xl mx-auto">
-              A straightforward process to get you started with comprehensive PBM oversight
+              A straightforward path from assessment to ongoing protection and recovery
             </p>
           </div>
           
-          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            {[
-              { 
-                step: "01", 
-                title: "Prescription Intake", 
-                desc: "Complete prescription intake analysis with requested documentation and reporting" 
-              },
-              { 
-                step: "02", 
-                title: "Review & Sign", 
-                desc: "Letter of Authority, SOW (Statement of Work), and Business Associate Agreement" 
-              },
-              { 
-                step: "03", 
-                title: "Implementation", 
-                desc: "Begin comprehensive analytics, monitoring, and optimization services" 
-              }
-            ].map((phase, i) => (
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
+            {implementationProcess.map((phase, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.15 }}
+                transition={{ delay: i * 0.1 }}
                 className="text-center relative"
-                data-testid={`step-${phase.step}`}
+                data-testid={`process-step-${phase.step}`}
               >
                 <div className="text-7xl font-serif font-bold text-white/5 mb-4">{phase.step}</div>
-                <div className="bg-[#0B1F40] border border-white/10 rounded-xl p-8 hover:border-[#D4AF37]/30 transition-all">
-                  <h3 className="text-2xl font-bold mb-3 text-white">{phase.title}</h3>
-                  <p className="text-blue-100/60">{phase.desc}</p>
+                <div className="bg-white/5 border border-white/10 rounded-xl p-6 hover:border-[#D4AF37]/30 transition-all">
+                  <div className="w-12 h-12 rounded-xl bg-[#4A90E2]/10 flex items-center justify-center mb-4 border border-[#4A90E2]/20 mx-auto">
+                    <phase.icon className="w-6 h-6 text-[#4A90E2]" />
+                  </div>
+                  <h3 className="text-xl font-bold mb-3 text-white">{phase.title}</h3>
+                  <p className="text-blue-100/60 text-sm leading-relaxed">{phase.description}</p>
                 </div>
               </motion.div>
             ))}
@@ -359,13 +327,13 @@ export default function Services() {
       </section>
 
       {/* CTA */}
-      <section className="py-32">
+      <section className="py-32 bg-[#050e1f] border-t border-white/5">
         <div className="container mx-auto px-6 text-center">
-          <h2 className="text-4xl md:text-5xl font-serif font-bold mb-6">
-            Let's Start Your <span className="text-[#D4AF37]">PBM Transformation</span>
+          <h2 className="text-4xl md:text-5xl font-serif font-bold mb-6" data-testid="cta-headline">
+            Let's Start Recovering Your <span className="text-[#D4AF37]">Pharmacy Dollars</span>
           </h2>
-          <p className="text-xl text-blue-100/70 mb-10 max-w-2xl mx-auto">
-            Contact us today to learn how our enhanced analytics and reporting can optimize your pharmacy benefit program.
+          <p className="text-xl text-blue-100/70 mb-10 max-w-2xl mx-auto" data-testid="cta-description">
+            Contact us today to learn how we can protect your pharmacy budget from Day One and recover millions in mistakenly paid dollars.
           </p>
           <Button asChild size="lg" className="bg-[#D4AF37] hover:bg-[#B59328] text-[#0B1F40] font-bold px-10 h-14 text-lg" data-testid="button-get-started">
             <Link href="/contact">

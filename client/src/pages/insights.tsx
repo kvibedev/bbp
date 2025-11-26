@@ -6,52 +6,52 @@ import { Button } from "@/components/ui/button";
 
 const insights = [
   {
-    category: "PBM Oversight",
-    icon: Shield,
-    title: "The Rising Tide of PBM Litigation: What Employers Need to Know",
-    excerpt: "Recent lawsuits targeting employers for inadequate PBM monitoring are changing the landscape. Learn how to protect your organization with proper oversight and transparency.",
+    category: "Contract Gaps",
+    icon: AlertTriangle,
+    title: "The Hidden Cost of Pharmacy Contract Delays",
+    excerpt: "Your contract is signed, but actual terms won't be visible for 3-9 months. During this gap, millions in overcharges accumulate. Discover how Day One verification stops the bleeding before it starts.",
     date: "March 2025",
     readTime: "8 min read"
   },
   {
-    category: "Cost Savings",
-    icon: DollarSign,
-    title: "Annual Market Checks: The 8% Solution",
-    excerpt: "Companies that consistently market their pharmacy contracts every year spend, on average, 8% less on prescriptions. Discover the power of competitive benchmarking.",
+    category: "Audit Failures",
+    icon: Shield,
+    title: "Why Sampling Claims Audits Fail Employers",
+    excerpt: "Traditional post-facto audits sample a fraction of claims after the damage is done. Learn why 100% real-time verification is the only way to stop PBM overcharges and recover what's rightfully yours.",
     date: "February 2025",
-    readTime: "6 min read"
-  },
-  {
-    category: "Contract Analysis",
-    icon: AlertTriangle,
-    title: "The 10% Problem: How Single Exclusions Impact Your Bottom Line",
-    excerpt: "A single exclusion in a pharmacy contract can have a 10% impact on costs. Learn how to identify and address these hidden cost drivers.",
-    date: "January 2025",
     readTime: "7 min read"
   },
   {
-    category: "Performance",
+    category: "PBM Oversight",
     icon: Activity,
-    title: "PBM Guarantee Misses: The 3-5% Problem",
-    excerpt: "PBMs very often miss on their contract guarantees by 3-5%. Discover how ongoing reconciliation can recover these lost savings.",
-    date: "December 2024",
-    readTime: "5 min read"
-  },
-  {
-    category: "Analytics",
-    icon: FileBarChart,
-    title: "NADAC Benchmarking: Uncovering Inflated Drug Pricing",
-    excerpt: "How comparing actual drug costs to NADAC benchmarks can flag pricing issues and improve PBM contract performance.",
-    date: "November 2024",
+    title: "Day One Verification: The New Standard in PBM Oversight",
+    excerpt: "Stop waiting months to see if your PBM honored your contract. Day One verification captures bid requirements upfront and validates every claim from the first prescription—protecting millions from the start.",
+    date: "January 2025",
     readTime: "6 min read"
   },
   {
-    category: "Technology",
-    icon: TrendingUp,
-    title: "From 8 Weeks to 1-2: Automating the Pharmacy Renewal Process",
-    excerpt: "How integrated data warehouses and automated workflows are transforming PBM contract renewals and saving valuable time.",
-    date: "October 2024",
+    category: "Recovery Wins",
+    icon: DollarSign,
+    title: "How One Employer Recovered $12 Million in Overcharges",
+    excerpt: "A real-world case study of complete contract accuracy verification. By checking every single adjudication instead of sampling, one employer put $12 million back into their budget where it belongs.",
+    date: "December 2024",
     readTime: "8 min read"
+  },
+  {
+    category: "Compliance Risk",
+    icon: Shield,
+    title: "The Rising Tide of PBM Litigation: What Employers Need to Know",
+    excerpt: "Recent lawsuits targeting employers for inadequate PBM monitoring are changing the landscape. Learn how proactive oversight and comprehensive verification protect your organization legally and financially.",
+    date: "November 2024",
+    readTime: "7 min read"
+  },
+  {
+    category: "Contract Traps",
+    icon: FileBarChart,
+    title: "The 10% Problem: How Single Exclusions Drain Your Budget",
+    excerpt: "A single overlooked exclusion in your pharmacy contract can have a 10% impact on costs. Discover how contract gap analysis identifies these hidden cost drivers before they hurt your bottom line.",
+    date: "October 2024",
+    readTime: "6 min read"
   }
 ];
 
@@ -70,10 +70,10 @@ export default function Insights() {
               Industry Insights
             </div>
             <h1 className="text-4xl md:text-6xl font-bold mb-8 font-serif text-white">
-              PBM Industry <span className="text-[#D4AF37]">Thought Leadership</span>
+              BenefitsBridge Partners <span className="text-[#D4AF37]">Insights</span>
             </h1>
             <p className="text-xl text-blue-100/80 leading-relaxed">
-              Stay ahead of the curve with analysis, trends, and actionable insights from the forefront of pharmacy benefit management.
+              Expert guidance on pharmacy overspending, contract gaps, and the strategies that stop PBM overcharges before they drain your budget.
             </p>
           </div>
         </div>
@@ -88,10 +88,10 @@ export default function Insights() {
               Featured Analysis
             </div>
             <h2 className="text-3xl md:text-5xl font-serif font-bold mb-6">
-              The New Era of PBM Transparency and Accountability
+              The Contract Gap Crisis: Millions Lost While You Wait
             </h2>
             <p className="text-xl text-blue-100/70 mb-8 leading-relaxed max-w-3xl">
-              With increasing national scrutiny on prescription drug programs and recent litigation targeting employers for inadequate PBM monitoring, the landscape is fundamentally changing. Organizations that adopt proactive oversight, transparent evaluation frameworks, and comprehensive analytics are not only protecting themselves legally—they're achieving measurable savings of 8% or more annually.
+              You sign your pharmacy contract today. Claims processing begins tomorrow. But you won't see your actual contract terms for 3-9 months. During this gap, discounts are missed, rebates miscalculated, and contract terms applied without verification—every error favoring the PBM. The traditional approach of sampling claims after the fact means the damage is already done. Day One verification changes everything: capture bid requirements upfront, verify every single claim from the first prescription, and recover mistakenly paid dollars immediately. One employer recovered $12 million through complete contract accuracy.
             </p>
             <Button className="bg-[#D4AF37] hover:bg-[#B59328] text-[#0B1F40] font-bold" data-testid="button-read-report">
               Read Full Report <ArrowRight className="ml-2 w-4 h-4" />
@@ -108,7 +108,7 @@ export default function Insights() {
               { value: "8%", label: "Average Savings", sublabel: "With Annual Market Checks" },
               { value: "10%", label: "Cost Impact", sublabel: "From Single Exclusion" },
               { value: "3-5%", label: "Guarantee Variance", sublabel: "Typical PBM Miss Rate" },
-              { value: "1-2 wks", label: "Process Time", sublabel: "Down from 8 Weeks" }
+              { value: "$12M", label: "Single Recovery", sublabel: "One Employer's Results" }
             ].map((stat, i) => (
               <div key={i} className="text-center group">
                 <div className="text-4xl md:text-5xl font-serif font-bold text-[#D4AF37] mb-2 group-hover:text-white transition-colors">
