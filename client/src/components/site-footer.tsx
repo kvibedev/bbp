@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { Mail, Phone, MapPin, Linkedin, Twitter } from "lucide-react";
+import { Mail, Phone, MapPin, Linkedin, Twitter, Clock } from "lucide-react";
 import logoImage from "@assets/BBP LOGO PRESENTATION_1763746252877.png";
 
 export const Footer = () => {
