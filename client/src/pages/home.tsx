@@ -13,6 +13,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { Nav } from "@/components/site-header";
+import { Footer } from "@/components/site-footer";
 
 // --- Asset Imports ---
 import heroData from "@assets/generated_images/abstract_connecting_bridge_data_visualization.png";
@@ -166,6 +167,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <Footer />
     </div>
   );
 }

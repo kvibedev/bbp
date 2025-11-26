@@ -1,4 +1,5 @@
 import { Nav } from "@/components/site-header";
+import { Footer } from "@/components/site-footer";
 import { Card, CardContent } from "@/components/ui/card";
 import { Shield, Users, TrendingUp, Heart, FileText, Target, Briefcase, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -110,6 +111,8 @@ export default function Solutions() {
           </Link>
         </div>
       </section>
+
+      <Footer />
     </div>
   );
 }

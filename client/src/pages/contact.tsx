@@ -1,4 +1,5 @@
 import { Nav } from "@/components/site-header";
+import { Footer } from "@/components/site-footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -29,6 +30,8 @@ export default function Contact() {
           </div>
         </div>
       </div>
+
+      <Footer />
     </div>
   );
 }

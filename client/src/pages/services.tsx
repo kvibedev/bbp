@@ -1,4 +1,5 @@
 import { Nav } from "@/components/site-header";
+import { Footer } from "@/components/site-footer";
 import { CheckCircle, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
@@ -138,6 +139,8 @@ export default function Services() {
           </Link>
         </div>
       </section>
+
+      <Footer />
     </div>
   );
 }

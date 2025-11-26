@@ -1,4 +1,5 @@
 import { Nav } from "@/components/site-header";
+import { Footer } from "@/components/site-footer";
 import { Card, CardContent } from "@/components/ui/card";
 import { Calendar, ArrowRight, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -144,6 +145,8 @@ export default function Insights() {
           </div>
         </div>
       </section>
+
+      <Footer />
     </div>
   );
 }

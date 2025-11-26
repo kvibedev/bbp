@@ -1,4 +1,5 @@
 import { Nav } from "@/components/site-header";
+import { Footer } from "@/components/site-footer";
 import { Award, Target, Compass, Users } from "lucide-react";
 
 const values = [
@@ -126,6 +127,8 @@ export default function About() {
           </div>
         </div>
       </section>
+
+      <Footer />
     </div>
   );
 }
