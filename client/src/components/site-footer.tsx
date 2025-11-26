@@ -13,7 +13,7 @@ export const Footer = () => {
           <div>
             <img src={logoImage} alt="BenefitsBridge Partners" className="h-16 mb-6" />
             <p className="text-blue-100/60 text-sm leading-relaxed mb-6">
-              Strategic employee benefits consulting powered by proprietary analytics and deep industry expertise.
+              Pharmacy Benefit Management consulting powered by Ringmaster Technologies. Delivering transparency, cost savings, and contract compliance for large public employers.
             </p>
             <div className="flex gap-4">
               <a href="#" className="w-10 h-10 rounded-full bg-white/5 hover:bg-[#D4AF37]/20 border border-white/10 hover:border-[#D4AF37]/30 flex items-center justify-center transition-colors" aria-label="LinkedIn">
@@ -59,14 +59,14 @@ export const Footer = () => {
 
           {/* Services */}
           <div>
-            <h3 className="text-white font-bold mb-6 text-lg">Our Services</h3>
+            <h3 className="text-white font-bold mb-6 text-lg">PBM Services</h3>
             <ul className="space-y-3 text-sm text-blue-100/60">
-              <li>Strategic Consulting</li>
-              <li>Compliance & Administration</li>
-              <li>Data & Analytics</li>
-              <li>Employee Support</li>
-              <li>Wellness Programs</li>
-              <li>Executive Benefits</li>
+              <li>PBM Contract Management</li>
+              <li>Claims Monitoring</li>
+              <li>Cost Containment Analytics</li>
+              <li>Annual Market Checks</li>
+              <li>Contract Reconciliation</li>
+              <li>Enhanced Reporting</li>
             </ul>
           </div>
 
