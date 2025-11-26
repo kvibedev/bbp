@@ -396,12 +396,12 @@ export default function Solutions() {
           <p className="text-xl text-blue-100/70 mb-10 max-w-2xl mx-auto">
             Experience the power of RingmasterRx and see how we deliver transparency, accuracy, and savings.
           </p>
-          <Link href="/contact">
-            <Button size="lg" className="bg-[#D4AF37] hover:bg-[#B59328] text-[#0B1F40] font-bold px-10 h-14 text-lg" data-testid="button-schedule-demo">
+          <Button asChild size="lg" className="bg-[#D4AF37] hover:bg-[#B59328] text-[#0B1F40] font-bold px-10 h-14 text-lg" data-testid="button-schedule-demo">
+            <Link href="/contact">
               Schedule a Demo
               <ArrowRight className="ml-2 w-5 h-5" />
-            </Button>
-          </Link>
+            </Link>
+          </Button>
         </div>
       </section>
 

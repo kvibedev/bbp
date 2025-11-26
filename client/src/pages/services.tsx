@@ -367,11 +367,11 @@ export default function Services() {
           <p className="text-xl text-blue-100/70 mb-10 max-w-2xl mx-auto">
             Contact us today to learn how our enhanced analytics and reporting can optimize your pharmacy benefit program.
           </p>
-          <Link href="/contact">
-            <Button size="lg" className="bg-[#D4AF37] hover:bg-[#B59328] text-[#0B1F40] font-bold px-10 h-14 text-lg" data-testid="button-get-started">
+          <Button asChild size="lg" className="bg-[#D4AF37] hover:bg-[#B59328] text-[#0B1F40] font-bold px-10 h-14 text-lg" data-testid="button-get-started">
+            <Link href="/contact">
               Get Started <ArrowRight className="ml-2 w-5 h-5" />
-            </Button>
-          </Link>
+            </Link>
+          </Button>
         </div>
       </section>
 

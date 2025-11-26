@@ -35,10 +35,8 @@ export const Nav = ({ variant = "solid" }: NavProps) => {
         
         <div className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
-            <Link key={link.name} href={link.href}>
-              <a className={`text-white/80 hover:text-[#D4AF37] text-sm font-medium transition-colors tracking-wide ${location === link.href ? "text-[#D4AF37]" : ""}`}>
-                {link.name}
-              </a>
+            <Link key={link.name} href={link.href} className={`text-white/80 hover:text-[#D4AF37] text-sm font-medium transition-colors tracking-wide ${location === link.href ? "text-[#D4AF37]" : ""}`}>
+              {link.name}
             </Link>
           ))}
         </div>
@@ -47,11 +45,11 @@ export const Nav = ({ variant = "solid" }: NavProps) => {
           <Button variant="ghost" className="text-white hover:text-[#D4AF37] hover:bg-white/5">
             Client Login
           </Button>
-          <Link href="/contact">
-            <Button className="bg-[#D4AF37] text-[#0B1F40] hover:bg-[#B59328] font-semibold">
+          <Button asChild className="bg-[#D4AF37] text-[#0B1F40] hover:bg-[#B59328] font-semibold">
+            <Link href="/contact">
               Contact Us
-            </Button>
-          </Link>
+            </Link>
+          </Button>
         </div>
 
         <Sheet>
@@ -63,14 +61,14 @@ export const Nav = ({ variant = "solid" }: NavProps) => {
           <SheetContent className="bg-[#0B1F40] border-white/10 text-white">
             <div className="flex flex-col gap-6 mt-6">
               {navLinks.map((link) => (
-                <Link key={link.name} href={link.href}>
-                  <a className="text-lg font-medium hover:text-[#D4AF37]">{link.name}</a>
+                <Link key={link.name} href={link.href} className="text-lg font-medium hover:text-[#D4AF37]">
+                  {link.name}
                 </Link>
               ))}
               <hr className="border-white/10" />
-              <Link href="/contact">
-                <Button className="bg-[#D4AF37] text-[#0B1F40] hover:bg-[#B59328] w-full">Contact Us</Button>
-              </Link>
+              <Button asChild className="bg-[#D4AF37] text-[#0B1F40] hover:bg-[#B59328] w-full">
+                <Link href="/contact">Contact Us</Link>
+              </Button>
             </div>
           </SheetContent>
         </Sheet>

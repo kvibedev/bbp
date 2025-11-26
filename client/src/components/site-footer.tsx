@@ -30,28 +30,28 @@ export const Footer = () => {
             <h3 className="text-white font-bold mb-6 text-lg">Quick Links</h3>
             <ul className="space-y-3">
               <li>
-                <Link href="/solutions">
-                  <a className="text-blue-100/60 hover:text-[#D4AF37] transition-colors text-sm">Solutions</a>
+                <Link href="/solutions" className="text-blue-100/60 hover:text-[#D4AF37] transition-colors text-sm">
+                  Solutions
                 </Link>
               </li>
               <li>
-                <Link href="/services">
-                  <a className="text-blue-100/60 hover:text-[#D4AF37] transition-colors text-sm">Services</a>
+                <Link href="/services" className="text-blue-100/60 hover:text-[#D4AF37] transition-colors text-sm">
+                  Services
                 </Link>
               </li>
               <li>
-                <Link href="/about">
-                  <a className="text-blue-100/60 hover:text-[#D4AF37] transition-colors text-sm">About Us</a>
+                <Link href="/about" className="text-blue-100/60 hover:text-[#D4AF37] transition-colors text-sm">
+                  About Us
                 </Link>
               </li>
               <li>
-                <Link href="/insights">
-                  <a className="text-blue-100/60 hover:text-[#D4AF37] transition-colors text-sm">Insights</a>
+                <Link href="/insights" className="text-blue-100/60 hover:text-[#D4AF37] transition-colors text-sm">
+                  Insights
                 </Link>
               </li>
               <li>
-                <Link href="/contact">
-                  <a className="text-blue-100/60 hover:text-[#D4AF37] transition-colors text-sm">Contact</a>
+                <Link href="/contact" className="text-blue-100/60 hover:text-[#D4AF37] transition-colors text-sm">
+                  Contact
                 </Link>
               </li>
             </ul>

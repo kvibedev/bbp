@@ -62,16 +62,16 @@ export default function Home() {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 mb-12">
-              <Link href="/contact">
-                <Button size="lg" className="bg-[#D4AF37] hover:bg-[#B59328] text-[#0B1F40] font-bold px-8 h-14 text-lg" data-testid="button-analyze-plan">
+              <Button asChild size="lg" className="bg-[#D4AF37] hover:bg-[#B59328] text-[#0B1F40] font-bold px-8 h-14 text-lg" data-testid="button-analyze-plan">
+                <Link href="/contact">
                   Analyze Your PBM Contract
-                </Button>
-              </Link>
-              <Link href="/solutions">
-                <Button size="lg" variant="outline" className="border-white/20 text-white hover:bg-white/10 h-14 text-lg px-8" data-testid="button-view-solutions">
+                </Link>
+              </Button>
+              <Button asChild size="lg" variant="outline" className="border-white/20 text-white hover:bg-white/10 h-14 text-lg px-8" data-testid="button-view-solutions">
+                <Link href="/solutions">
                   View Solutions
-                </Button>
-              </Link>
+                </Link>
+              </Button>
             </div>
 
             <div className="flex items-center gap-2 text-blue-100/60 text-sm">
@@ -292,17 +292,17 @@ export default function Home() {
             Let's discuss how BenefitsBridge Partners can help you ensure contract compliance, maximize savings, and protect your fiduciary interests.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/contact">
-              <Button size="lg" className="bg-[#D4AF37] hover:bg-[#B59328] text-[#0B1F40] font-bold px-10 h-14 text-lg" data-testid="button-schedule-consultation">
+            <Button asChild size="lg" className="bg-[#D4AF37] hover:bg-[#B59328] text-[#0B1F40] font-bold px-10 h-14 text-lg" data-testid="button-schedule-consultation">
+              <Link href="/contact">
                 Schedule Consultation
                 <ArrowRight className="ml-2 w-5 h-5" />
-              </Button>
-            </Link>
-            <Link href="/services">
-              <Button size="lg" variant="outline" className="border-white/20 text-white hover:bg-white/10 h-14 text-lg px-10" data-testid="button-view-services">
+              </Link>
+            </Button>
+            <Button asChild size="lg" variant="outline" className="border-white/20 text-white hover:bg-white/10 h-14 text-lg px-10" data-testid="button-view-services">
+              <Link href="/services">
                 View Our Services
-              </Button>
-            </Link>
+              </Link>
+            </Button>
           </div>
         </div>
       </section>
