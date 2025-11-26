@@ -2,7 +2,7 @@ import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
-import logoImage from "@assets/BBP LOGO PRESENTATION_1763746252877.png";
+import logoImage from "@assets/BBP LOGO PRESENTATION 2_1764198767309.png";
 
 const Logo = () => (
   <Link href="/">
