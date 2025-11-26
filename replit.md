@@ -6,6 +6,14 @@ BenefitsBridge Partners is a pharmacy benefit management (PBM) consulting platfo
 
 The platform is built as a full-stack TypeScript application using a monorepo structure with shared code between client and server, emphasizing PBM evaluation, claims monitoring, and cost containment strategies.
 
+## Recent Changes
+
+### November 26, 2025
+- **Website Content Alignment**: Completed comprehensive update to align all website content with BenefitsBridge Partners PowerPoint pitch deck
+- **Footer Enhancement**: Updated site footer with PBM-specific description ("Pharmacy Benefit Management consulting powered by Ringmaster Technologies") and replaced generic services with PBM services (Contract Management, Claims Monitoring, Cost Containment Analytics, Market Checks, Reconciliation, Enhanced Reporting)
+- **Technical Improvements**: Fixed nested HTML tag issues across all components (footer, navigation, page CTAs) by properly using Button component's `asChild` prop with Link components, following React best practices
+- **Testing**: Completed end-to-end verification of all pages confirming PowerPoint alignment, navigation functionality, and content accuracy across 17 test steps
+
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
