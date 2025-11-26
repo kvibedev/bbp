@@ -12,8 +12,11 @@ export const Footer = () => {
           {/* Company Info */}
           <div>
             <img src={logoImage} alt="BenefitsBridge Partners" className="h-16 mb-6" />
-            <p className="text-blue-100/60 text-sm leading-relaxed mb-6">
-              Pharmacy Benefit Management consulting powered by Ringmaster Technologies. Delivering transparency, cost savings, and contract compliance for large public employers.
+            <p className="text-blue-100/60 text-sm leading-relaxed mb-4">
+              BenefitsBridge Partners delivers expert pharmacy benefit consulting and cutting-edge technology solutions. We stop the bleeding from Day One—verifying every prescription claim to recover millions in overcharges.
+            </p>
+            <p className="text-blue-100/40 text-xs">
+              Technology partners include leading industry platforms.
             </p>
             <div className="flex gap-4">
               <a href="#" className="w-10 h-10 rounded-full bg-white/5 hover:bg-[#D4AF37]/20 border border-white/10 hover:border-[#D4AF37]/30 flex items-center justify-center transition-colors" aria-label="LinkedIn">
@@ -75,16 +78,26 @@ export const Footer = () => {
             <h3 className="text-white font-bold mb-6 text-lg">Get In Touch</h3>
             <ul className="space-y-4">
               <li className="flex items-start gap-3 text-sm text-blue-100/60">
+                <MapPin className="w-5 h-5 text-[#4A90E2] mt-0.5 flex-shrink-0" />
+                <span>55 Flanagan Way<br />Secaucus, NJ 07094</span>
+              </li>
+              <li className="flex items-start gap-3 text-sm text-blue-100/60">
                 <Phone className="w-5 h-5 text-[#4A90E2] mt-0.5 flex-shrink-0" />
-                <span>(555) 123-4567</span>
+                <div>
+                  <a href="tel:+12012959044" className="hover:text-[#D4AF37] transition-colors block">(201) 295-9044</a>
+                  <a href="tel:+18775525266" className="hover:text-[#D4AF37] transition-colors block">(877) 55-ALAMO</a>
+                </div>
               </li>
               <li className="flex items-start gap-3 text-sm text-blue-100/60">
                 <Mail className="w-5 h-5 text-[#4A90E2] mt-0.5 flex-shrink-0" />
-                <span>info@benefitsbridge.com</span>
+                <a href="mailto:info@alamoinsurance.net" className="hover:text-[#D4AF37] transition-colors">info@alamoinsurance.net</a>
               </li>
               <li className="flex items-start gap-3 text-sm text-blue-100/60">
-                <MapPin className="w-5 h-5 text-[#4A90E2] mt-0.5 flex-shrink-0" />
-                <span>123 Benefits Way<br />Suite 100<br />Chicago, IL 60601</span>
+                <Clock className="w-5 h-5 text-[#4A90E2] mt-0.5 flex-shrink-0" />
+                <div>
+                  <span className="block">Monday - Friday</span>
+                  <span className="block">8:00 AM - 6:00 PM EST</span>
+                </div>
               </li>
             </ul>
           </div>
