@@ -1,6 +1,6 @@
 import { Link } from "wouter";
 import { Mail, Phone, MapPin, Linkedin, Twitter, Clock } from "lucide-react";
-import logoImage from "@assets/BBP LOGO PRESENTATION 2_1764198767309.png";
+import logoImage from "@assets/BBP LOGO PRESENTATION 2_1764204475650.png";
 
 export const Footer = () => {
   const currentYear = new Date().getFullYear();

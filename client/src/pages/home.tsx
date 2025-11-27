@@ -25,7 +25,7 @@ import { Footer } from "@/components/site-footer";
 import { Link } from "wouter";
 
 import heroData from "@assets/generated_images/abstract_connecting_bridge_data_visualization.png";
-import logoImage from "@assets/BBP LOGO PRESENTATION 2_1764198767309.png";
+import logoImage from "@assets/BBP LOGO PRESENTATION 2_1764204475650.png";
 
 export default function Home() {
   return (
