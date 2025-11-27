@@ -11,7 +11,7 @@ export const Footer = () => {
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
           {/* Company Info */}
           <div>
-            <img src={logoImage} alt="BenefitsBridge Partners" className="h-48 mb-6" />
+            <img src={logoImage} alt="BenefitsBridge Partners" className="h-48 w-auto object-contain mb-6" />
             <p className="text-blue-100/60 text-sm leading-relaxed mb-4">
               BenefitsBridge Partners delivers expert pharmacy benefit consulting and cutting-edge technology solutions. We stop the bleeding from Day One—verifying every prescription claim to recover millions in overcharges.
             </p>
