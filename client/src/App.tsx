@@ -11,6 +11,12 @@ import Services from "@/pages/services";
 import About from "@/pages/about";
 import Insights from "@/pages/insights";
 import Contact from "@/pages/contact";
+import ContractManagement from "@/pages/services/contract-management";
+import ClaimsMonitoring from "@/pages/services/claims-monitoring";
+import CostContainmentAnalytics from "@/pages/services/cost-containment-analytics";
+import MarketChecks from "@/pages/services/market-checks";
+import Reconciliation from "@/pages/services/reconciliation";
+import EnhancedReporting from "@/pages/services/enhanced-reporting";
 
 function Router() {
   const [location] = useLocation();
@@ -24,6 +30,12 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/solutions" component={Solutions} />
       <Route path="/services" component={Services} />
+      <Route path="/services/contract-management" component={ContractManagement} />
+      <Route path="/services/claims-monitoring" component={ClaimsMonitoring} />
+      <Route path="/services/cost-containment-analytics" component={CostContainmentAnalytics} />
+      <Route path="/services/market-checks" component={MarketChecks} />
+      <Route path="/services/reconciliation" component={Reconciliation} />
+      <Route path="/services/enhanced-reporting" component={EnhancedReporting} />
       <Route path="/about" component={About} />
       <Route path="/insights" component={Insights} />
       <Route path="/contact" component={Contact} />
