@@ -7,7 +7,7 @@ import logoImage from "@assets/BBP LOGO PRESENTATION 2_1764204475650.png";
 const Logo = () => (
   <Link href="/">
     <div className="flex items-center gap-3 cursor-pointer">
-      <img src={logoImage} alt="BenefitsBridge Partners Logo" className="h-36 md:h-48 object-contain" />
+      <img src={logoImage} alt="BenefitsBridge Partners Logo" className="h-10 md:h-12 object-contain" />
     </div>
   </Link>
 );
