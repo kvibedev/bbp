@@ -31,7 +31,6 @@ export default function Home() {
   return (
     <div className="font-sans bg-[#0B1F40] min-h-screen text-white selection:bg-[#D4AF37] selection:text-[#0B1F40]">
       <Nav variant="transparent" />
-      
       {/* Hero Section - Updated with Track 1 Messaging */}
       <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-[#1a3b6e] via-[#0B1F40] to-[#050e1f]"></div>
@@ -54,7 +53,7 @@ export default function Home() {
               Your Pharmacy Benefits Navigator
             </div>
             
-            <h1 className="text-5xl md:text-7xl font-bold mb-8 leading-tight tracking-tight font-serif">
+            <h1 className="md:text-7xl font-bold mb-8 tracking-tight font-serif text-[58px]">
               Stop Losing Millions on <br/>
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D4AF37] via-[#F2D57E] to-[#D4AF37]">
                 Pharmacy Contract Mistakes
@@ -86,7 +85,6 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
-
       {/* The Problem Section */}
       <section className="py-32 relative overflow-hidden border-t border-white/5">
         <div className="container mx-auto px-6 relative z-10">
@@ -212,7 +210,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
       {/* Day One Solution Section */}
       <section className="py-32 bg-[#050e1f] border-y border-white/5">
         <div className="container mx-auto px-6">
@@ -290,7 +287,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
       {/* Proven Results Section */}
       <section className="py-32 relative overflow-hidden">
         <div className="container mx-auto px-6 relative z-10">
@@ -370,7 +366,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
       {/* Stats Grid - Moved from top */}
       <section className="py-24 border-y border-white/5 bg-[#0B1F40]/50 backdrop-blur-sm relative">
         <div className="container mx-auto px-6">
@@ -399,7 +394,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
       {/* Who We Help Section - Replacing Marketplace */}
       <section className="py-32 bg-[#050e1f] border-y border-white/5">
         <div className="container mx-auto px-6">
@@ -473,7 +467,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
       {/* How We Differentiate - BBP Focused */}
       <section className="py-32 relative overflow-hidden">
         <div className="container mx-auto px-6">
@@ -556,7 +549,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
       {/* CTA Section */}
       <section className="py-32 border-t border-white/5 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-[#1a3b6e]/50 via-[#0B1F40] to-[#050e1f]">
         <div className="container mx-auto px-6 text-center">
@@ -581,7 +573,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
       <Footer />
     </div>
   );
