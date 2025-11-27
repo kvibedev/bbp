@@ -65,32 +65,32 @@ export const Footer = () => {
             <h3 className="text-white font-bold mb-6 text-lg">PBM Services</h3>
             <ul className="space-y-3">
               <li>
-                <Link href="/services/contract-management" className="text-blue-100/60 hover:text-[#D4AF37] transition-colors text-sm">
+                <Link href="/services/contract-management" className="text-blue-100/60 hover:text-[#D4AF37] transition-colors text-sm" data-testid="link-service-contract-management">
                   PBM Contract Management
                 </Link>
               </li>
               <li>
-                <Link href="/services/claims-monitoring" className="text-blue-100/60 hover:text-[#D4AF37] transition-colors text-sm">
+                <Link href="/services/claims-monitoring" className="text-blue-100/60 hover:text-[#D4AF37] transition-colors text-sm" data-testid="link-service-claims-monitoring">
                   Claims Monitoring
                 </Link>
               </li>
               <li>
-                <Link href="/services/cost-containment-analytics" className="text-blue-100/60 hover:text-[#D4AF37] transition-colors text-sm">
+                <Link href="/services/cost-containment-analytics" className="text-blue-100/60 hover:text-[#D4AF37] transition-colors text-sm" data-testid="link-service-cost-containment">
                   Cost Containment Analytics
                 </Link>
               </li>
               <li>
-                <Link href="/services/market-checks" className="text-blue-100/60 hover:text-[#D4AF37] transition-colors text-sm">
+                <Link href="/services/market-checks" className="text-blue-100/60 hover:text-[#D4AF37] transition-colors text-sm" data-testid="link-service-market-checks">
                   Annual Market Checks
                 </Link>
               </li>
               <li>
-                <Link href="/services/reconciliation" className="text-blue-100/60 hover:text-[#D4AF37] transition-colors text-sm">
+                <Link href="/services/reconciliation" className="text-blue-100/60 hover:text-[#D4AF37] transition-colors text-sm" data-testid="link-service-reconciliation">
                   Contract Reconciliation
                 </Link>
               </li>
               <li>
-                <Link href="/services/enhanced-reporting" className="text-blue-100/60 hover:text-[#D4AF37] transition-colors text-sm">
+                <Link href="/services/enhanced-reporting" className="text-blue-100/60 hover:text-[#D4AF37] transition-colors text-sm" data-testid="link-service-enhanced-reporting">
                   Enhanced Reporting
                 </Link>
               </li>

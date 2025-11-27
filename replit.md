@@ -8,6 +8,19 @@ The platform is built as a full-stack TypeScript application using a monorepo st
 
 ## Recent Changes
 
+### November 27, 2025 - Service Detail Pages & Navigation Enhancements (COMPLETED)
+- **Logo Update**: Replaced logo with cropped version (BBP LOGO PRESENTATION 2_1764204475650.png) for better sizing in header (h-14/h-16) and footer (h-16)
+- **Scroll-to-Top**: Added automatic scroll-to-top on all navigation using useEffect in App.tsx Router component
+- **6 New Service Detail Pages**: Created individual pages for each PBM service with Track 1 compliant content:
+  - **/services/contract-management**: Day One configuration, contract setup, $2.3M recovery case study
+  - **/services/claims-monitoring**: 100% adjudication coverage, real-time verification, $4.7M annual savings case study
+  - **/services/cost-containment-analytics**: Pricing analysis, waste elimination, $3.2M+ savings examples
+  - **/services/market-checks**: Annual benchmarking, competitive analysis, $5.1M renewal savings
+  - **/services/reconciliation**: Monthly/quarterly/annual verification, $6.8M recovery case study
+  - **/services/enhanced-reporting**: Executive dashboards, custom analytics, $2.4M waste identified
+- **Footer Enhancement**: Converted PBM Services list to clickable links with data-testid attributes for all 6 service pages
+- **E2E Testing**: All 20 test steps passed verifying navigation, scroll-to-top, Track 1 compliance, footer links, and case study content
+
 ### November 26, 2025 - Track 1 Content Strategy Redesign (COMPLETED)
 - **Strategic Pivot**: Completed full website redesign following Track 1 content strategy (pre-tag engagement positioning)
 - **Brand Repositioning**: BenefitsBridge Partners now positioned as the hero/navigator/solutions architect; technology partners minimized to generic footer mention only
@@ -50,6 +63,13 @@ Preferred communication style: Simple, everyday language.
 - **Home**: Pain-focused hero ("Stop Losing Millions on Pharmacy Contract Mistakes"), The Gap Tax problem section explaining contract delays, Day One Solution featuring 100% adjudication coverage, $12M case study, Who We Help section targeting large employers/brokers
 - **Solutions**: Advanced pharmacy claim verification approach without platform names, outcome-focused methodology (Day One Configuration, Continuous Verification, Proactive Reconciliation), results that matter
 - **Services**: Four outcome-focused services (Contract Management & Setup, Continuous Claims Monitoring, Proactive Reconciliation, Strategic Consulting & Navigation) with measurable results, client success stories
+- **Service Detail Pages**: Six individual pages for each PBM service with pain-focused messaging, BBP expertise positioning, case studies, and outcome metrics:
+  - Contract Management (/services/contract-management)
+  - Claims Monitoring (/services/claims-monitoring)
+  - Cost Containment Analytics (/services/cost-containment-analytics)
+  - Market Checks (/services/market-checks)
+  - Reconciliation (/services/reconciliation)
+  - Enhanced Reporting (/services/enhanced-reporting)
 - **About**: BBP story positioning as navigator/solutions architect, differentiation through expert guidance, How We Work process, Security & Compliance (SOC 2), Who We Serve target market
 - **Insights**: Pain-focused thought leadership articles (Contract Gap Crisis, Hidden Costs, Day One Verification, $12M Recovery case study, PBM Litigation, Contract Exclusions)
 - **Contact**: Contact form for prospective clients
