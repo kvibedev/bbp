@@ -9,7 +9,6 @@ packages = ["unzip"]
 [deployment]
 deploymentTarget = "autoscale"
 build = ["npm", "run", "build"]
-publicDir = "dist/public"
 run = ["npm", "run", "start"]
 
 [[ports]]
@@ -23,10 +22,6 @@ externalPort = 3002
 [[ports]]
 localPort = 37335
 externalPort = 3000
-
-[[ports]]
-localPort = 41193
-externalPort = 3001
 
 [env]
 PORT = "5000"
