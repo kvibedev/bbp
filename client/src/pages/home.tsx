@@ -58,7 +58,6 @@ export default function Home() {
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D4AF37] via-[#F2D57E] to-[#D4AF37]">
                 Pharmacy Contract Mistakes
               </span>
-              <br/>— Starting Today
             </h1>
             
             <p className="text-xl text-blue-100/80 mb-10 max-w-2xl leading-relaxed font-light">
