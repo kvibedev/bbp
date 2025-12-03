@@ -53,7 +53,7 @@ export default function Home() {
               Your Pharmacy Benefits Navigator
             </div>
             
-            <h1 className="md:text-7xl font-bold mb-8 tracking-tight font-serif text-[58px]">
+            <h1 className="md:text-7xl font-bold mb-8 tracking-tight font-serif text-[68px]">
               Stop Losing Millions on <br/>
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D4AF37] via-[#F2D57E] to-[#D4AF37]">
                 Pharmacy Contract Mistakes
