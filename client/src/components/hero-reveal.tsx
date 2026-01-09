@@ -7,10 +7,24 @@ interface HeroRevealProps {
   onComplete: () => void;
 }
 
+// Module-level variable to track if reveal was shown during this app session
+// Resets on page refresh, but persists during SPA navigation
+let hasShownThisSession = false;
+
 export const HeroReveal = ({ onComplete }: HeroRevealProps) => {
-  const [isVisible, setIsVisible] = useState(true);
+  // Skip reveal if already shown this session (e.g., navigating back from another page)
+  const shouldSkip = hasShownThisSession;
+  
+  const [isVisible, setIsVisible] = useState(!shouldSkip);
   const [hasStartedExit, setHasStartedExit] = useState(false);
   const [isReady, setIsReady] = useState(false);
+
+  // If should skip, call onComplete immediately
+  useEffect(() => {
+    if (shouldSkip) {
+      onComplete();
+    }
+  }, [shouldSkip, onComplete]);
 
   const startExit = useCallback(() => {
     if (!hasStartedExit && isReady) {
@@ -19,6 +33,9 @@ export const HeroReveal = ({ onComplete }: HeroRevealProps) => {
   }, [hasStartedExit, isReady]);
 
   useEffect(() => {
+    // Only lock body scroll if we're actually showing the reveal
+    if (shouldSkip) return;
+    
     document.body.style.overflow = 'hidden';
     
     // Small delay before allowing scroll-triggered exit (ensures logo is visible first)
@@ -30,7 +47,7 @@ export const HeroReveal = ({ onComplete }: HeroRevealProps) => {
       clearTimeout(readyTimer);
       document.body.style.overflow = '';
     };
-  }, []);
+  }, [shouldSkip]);
 
   // Listen for scroll/wheel/touch events to trigger exit
   useEffect(() => {
@@ -75,9 +92,16 @@ export const HeroReveal = ({ onComplete }: HeroRevealProps) => {
     if (hasStartedExit) {
       setIsVisible(false);
       document.body.style.overflow = '';
+      // Mark as shown so it won't appear again during this app session
+      hasShownThisSession = true;
       onComplete();
     }
   };
+
+  // If should skip, don't render anything
+  if (shouldSkip) {
+    return null;
+  }
 
   return (
     <AnimatePresence>
