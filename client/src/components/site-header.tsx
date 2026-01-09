@@ -1,5 +1,5 @@
 import { Link, useLocation } from "wouter";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
@@ -13,6 +13,7 @@ export const Nav = ({ variant = "solid" }: NavProps) => {
   const [location] = useLocation();
   const [scrolled, setScrolled] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [animationComplete, setAnimationComplete] = useState(false);
   
   const navLinks = [
     { name: "Solutions", href: "/solutions" },
@@ -31,10 +32,15 @@ export const Nav = ({ variant = "solid" }: NavProps) => {
       const scrollY = window.scrollY;
       const threshold = 300;
       
-      if (scrollY > 50) {
+      if (animationComplete) {
+        return;
+      }
+      
+      if (scrollY > 20) {
         setScrolled(true);
-      } else {
-        setScrolled(false);
+        setAnimationComplete(true);
+        setScrollProgress(1);
+        return;
       }
       
       const progress = Math.min(scrollY / threshold, 1);
@@ -45,35 +51,42 @@ export const Nav = ({ variant = "solid" }: NavProps) => {
     handleScroll();
     
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [isHomePage]);
+  }, [isHomePage, animationComplete]);
 
   if (isHomePage) {
+    const showHeroLogo = !animationComplete;
+    
     return (
       <>
-        <div 
-          className="fixed inset-0 z-40 pointer-events-none flex items-center justify-center"
-          style={{
-            opacity: 1 - scrollProgress,
-            transform: `scale(${1 - scrollProgress * 0.3})`,
-            transition: 'opacity 0.1s ease-out, transform 0.1s ease-out',
-          }}
-        >
-          <Link href="/" className="pointer-events-auto">
-            <img 
-              src={logoImage} 
-              alt="BenefitsBridge Partners Logo" 
-              className="object-contain"
-              style={{
-                height: `${Math.max(50 - scrollProgress * 45, 5)}vh`,
-                transition: 'height 0.1s ease-out',
-              }}
-            />
-          </Link>
-        </div>
+        {showHeroLogo && (
+          <div 
+            className="fixed inset-0 z-40 flex items-center justify-center"
+            style={{
+              opacity: 1 - scrollProgress,
+              transform: `scale(${1 - scrollProgress * 0.3})`,
+              transition: 'opacity 0.15s ease-out, transform 0.15s ease-out',
+              pointerEvents: scrollProgress > 0.5 ? 'none' : 'auto',
+            }}
+          >
+            <div className="absolute inset-0 bg-[#0B1F40]/75" />
+            <Link href="/" className="relative z-10">
+              <img 
+                src={logoImage} 
+                alt="BenefitsBridge Partners Logo" 
+                className="object-contain"
+                style={{
+                  width: '75vw',
+                  maxWidth: '800px',
+                  transition: 'transform 0.15s ease-out',
+                }}
+              />
+            </Link>
+          </div>
+        )}
 
         <nav 
           className={`fixed top-0 left-0 right-0 z-50 py-4 px-6 transition-all duration-300 ${
-            scrolled 
+            scrolled || animationComplete
               ? "bg-[#0B1F40]/95 backdrop-blur-md border-b border-white/10" 
               : "bg-transparent"
           }`}
@@ -83,8 +96,8 @@ export const Nav = ({ variant = "solid" }: NavProps) => {
               <div 
                 className="flex items-center gap-3 cursor-pointer transition-all duration-300"
                 style={{
-                  opacity: scrollProgress,
-                  transform: `translateX(${(1 - scrollProgress) * -20}px)`,
+                  opacity: animationComplete ? 1 : scrollProgress,
+                  transform: animationComplete ? 'translateX(0)' : `translateX(${(1 - scrollProgress) * -20}px)`,
                 }}
               >
                 <img 
@@ -98,8 +111,8 @@ export const Nav = ({ variant = "solid" }: NavProps) => {
             <div 
               className="hidden md:flex items-center gap-8 transition-all duration-300"
               style={{
-                opacity: scrollProgress,
-                transform: `translateY(${(1 - scrollProgress) * -10}px)`,
+                opacity: animationComplete ? 1 : scrollProgress,
+                transform: animationComplete ? 'translateY(0)' : `translateY(${(1 - scrollProgress) * -10}px)`,
               }}
             >
               {navLinks.map((link) => (
@@ -118,8 +131,8 @@ export const Nav = ({ variant = "solid" }: NavProps) => {
             <div 
               className="hidden md:flex items-center gap-4 transition-all duration-300"
               style={{
-                opacity: scrollProgress,
-                transform: `translateY(${(1 - scrollProgress) * -10}px)`,
+                opacity: animationComplete ? 1 : scrollProgress,
+                transform: animationComplete ? 'translateY(0)' : `translateY(${(1 - scrollProgress) * -10}px)`,
               }}
             >
               <Button variant="ghost" className="text-white hover:text-[#D4AF37] hover:bg-white/5">
@@ -138,7 +151,7 @@ export const Nav = ({ variant = "solid" }: NavProps) => {
                   variant="ghost" 
                   size="icon" 
                   className="md:hidden text-white transition-opacity duration-300"
-                  style={{ opacity: scrollProgress }}
+                  style={{ opacity: animationComplete ? 1 : scrollProgress }}
                 >
                   <Menu />
                 </Button>
