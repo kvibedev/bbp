@@ -31,7 +31,9 @@ export default function Home() {
   const [revealComplete, setRevealComplete] = useState(false);
 
   return (
-    <div className="font-sans bg-[#0B1F40] min-h-screen text-white selection:bg-[#D4AF37] selection:text-[#0B1F40]">
+    <div className="font-sans min-h-screen text-white selection:bg-[#D4AF37] selection:text-[#0B1F40]" style={{
+      background: 'linear-gradient(135deg, #0B1F40 0%, #132a52 25%, #0B1F40 50%, #0a1a35 75%, #0B1F40 100%)'
+    }}>
       <HeroReveal onComplete={() => setRevealComplete(true)} />
       <Nav variant="transparent" revealComplete={revealComplete} />
       {/* Hero Section - Updated with Track 1 Messaging */}

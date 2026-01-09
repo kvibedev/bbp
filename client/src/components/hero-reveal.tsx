@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import logoImage from "@assets/BBP LOGO PRESENTATION 2_1764204475650.png";
 import { Link } from "wouter";
@@ -7,30 +7,113 @@ interface HeroRevealProps {
   onComplete: () => void;
 }
 
+const SESSION_KEY = 'hero-reveal-completed';
+
+const getSessionValue = (): boolean => {
+  try {
+    return typeof window !== 'undefined' && sessionStorage.getItem(SESSION_KEY) === 'true';
+  } catch {
+    return false;
+  }
+};
+
+const setSessionValue = (): void => {
+  try {
+    sessionStorage.setItem(SESSION_KEY, 'true');
+  } catch {
+    // Ignore storage errors (e.g., private browsing mode)
+  }
+};
+
 export const HeroReveal = ({ onComplete }: HeroRevealProps) => {
-  const [isVisible, setIsVisible] = useState(true);
+  // Check if reveal was already completed this session
+  const alreadyCompleted = getSessionValue();
+  
+  const [isVisible, setIsVisible] = useState(!alreadyCompleted);
   const [hasStartedExit, setHasStartedExit] = useState(false);
+  const [isReady, setIsReady] = useState(false);
+
+  // If already completed, call onComplete immediately
+  useEffect(() => {
+    if (alreadyCompleted) {
+      onComplete();
+    }
+  }, [alreadyCompleted, onComplete]);
+
+  const startExit = useCallback(() => {
+    if (!hasStartedExit && isReady) {
+      setHasStartedExit(true);
+    }
+  }, [hasStartedExit, isReady]);
 
   useEffect(() => {
+    if (alreadyCompleted) return;
+    
     document.body.style.overflow = 'hidden';
     
-    const timer = setTimeout(() => {
-      setHasStartedExit(true);
-    }, 1500);
+    // Small delay before allowing scroll-triggered exit (ensures logo is visible first)
+    const readyTimer = setTimeout(() => {
+      setIsReady(true);
+    }, 800);
 
     return () => {
-      clearTimeout(timer);
+      clearTimeout(readyTimer);
       document.body.style.overflow = '';
     };
-  }, []);
+  }, [alreadyCompleted]);
+
+  // Listen for scroll/wheel/touch events to trigger exit
+  useEffect(() => {
+    if (alreadyCompleted || !isReady) return;
+
+    const handleScroll = (e: Event) => {
+      e.preventDefault();
+      startExit();
+    };
+
+    const handleWheel = (e: WheelEvent) => {
+      e.preventDefault();
+      startExit();
+    };
+
+    const handleTouch = (e: TouchEvent) => {
+      startExit();
+    };
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') {
+        e.preventDefault();
+        startExit();
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: false });
+    window.addEventListener('wheel', handleWheel, { passive: false });
+    window.addEventListener('touchmove', handleTouch, { passive: true });
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('touchmove', handleTouch);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [alreadyCompleted, isReady, startExit]);
 
   const handleAnimationComplete = () => {
     if (hasStartedExit) {
       setIsVisible(false);
       document.body.style.overflow = '';
+      // Save to sessionStorage so it doesn't reappear
+      setSessionValue();
       onComplete();
     }
   };
+
+  // If already completed, don't render anything
+  if (alreadyCompleted) {
+    return null;
+  }
 
   return (
     <AnimatePresence>
@@ -79,26 +162,58 @@ export const HeroReveal = ({ onComplete }: HeroRevealProps) => {
             <div className="absolute bottom-[-20%] left-[-10%] w-[500px] h-[500px] bg-[#D4AF37] opacity-15 blur-[80px] rounded-full" />
           </motion.div>
 
-          <Link href="/" className="relative z-10">
-            <motion.img
-              src={logoImage}
-              alt="BenefitsBridge Partners Logo"
-              className="object-contain"
-              style={{
-                width: '75vw',
-                maxWidth: '800px',
-              }}
-              initial={{ scale: 1, opacity: 1 }}
+          <div className="relative z-10 flex flex-col items-center">
+            <Link href="/">
+              <motion.img
+                src={logoImage}
+                alt="BenefitsBridge Partners Logo"
+                className="object-contain"
+                style={{
+                  width: '75vw',
+                  maxWidth: '800px',
+                }}
+                initial={{ scale: 1, opacity: 1 }}
+                animate={{ 
+                  scale: hasStartedExit ? 0.6 : 1,
+                  opacity: hasStartedExit ? 0 : 1,
+                }}
+                transition={{ 
+                  duration: 0.8, 
+                  ease: [0.4, 0, 0.2, 1]
+                }}
+              />
+            </Link>
+            
+            {/* Scroll hint */}
+            <motion.div
+              className="absolute bottom-[-80px] flex flex-col items-center text-white/60"
+              initial={{ opacity: 0, y: -10 }}
               animate={{ 
-                scale: hasStartedExit ? 0.6 : 1,
-                opacity: hasStartedExit ? 0 : 1,
+                opacity: isReady && !hasStartedExit ? [0.4, 0.8, 0.4] : 0,
+                y: isReady && !hasStartedExit ? [0, 5, 0] : -10
               }}
               transition={{ 
-                duration: 0.8, 
-                ease: [0.4, 0, 0.2, 1]
+                duration: 2, 
+                repeat: Infinity,
+                ease: "easeInOut"
               }}
-            />
-          </Link>
+            >
+              <span className="text-sm mb-2 tracking-wider uppercase">Scroll to enter</span>
+              <svg 
+                className="w-6 h-6" 
+                fill="none" 
+                stroke="currentColor" 
+                viewBox="0 0 24 24"
+              >
+                <path 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round" 
+                  strokeWidth={2} 
+                  d="M19 14l-7 7m0 0l-7-7m7 7V3" 
+                />
+              </svg>
+            </motion.div>
+          </div>
         </motion.div>
       )}
     </AnimatePresence>
