@@ -7,38 +7,10 @@ interface HeroRevealProps {
   onComplete: () => void;
 }
 
-const SESSION_KEY = 'hero-reveal-completed';
-
-const getSessionValue = (): boolean => {
-  try {
-    return typeof window !== 'undefined' && sessionStorage.getItem(SESSION_KEY) === 'true';
-  } catch {
-    return false;
-  }
-};
-
-const setSessionValue = (): void => {
-  try {
-    sessionStorage.setItem(SESSION_KEY, 'true');
-  } catch {
-    // Ignore storage errors (e.g., private browsing mode)
-  }
-};
-
 export const HeroReveal = ({ onComplete }: HeroRevealProps) => {
-  // Check if reveal was already completed this session
-  const alreadyCompleted = getSessionValue();
-  
-  const [isVisible, setIsVisible] = useState(!alreadyCompleted);
+  const [isVisible, setIsVisible] = useState(true);
   const [hasStartedExit, setHasStartedExit] = useState(false);
   const [isReady, setIsReady] = useState(false);
-
-  // If already completed, call onComplete immediately
-  useEffect(() => {
-    if (alreadyCompleted) {
-      onComplete();
-    }
-  }, [alreadyCompleted, onComplete]);
 
   const startExit = useCallback(() => {
     if (!hasStartedExit && isReady) {
@@ -47,8 +19,6 @@ export const HeroReveal = ({ onComplete }: HeroRevealProps) => {
   }, [hasStartedExit, isReady]);
 
   useEffect(() => {
-    if (alreadyCompleted) return;
-    
     document.body.style.overflow = 'hidden';
     
     // Small delay before allowing scroll-triggered exit (ensures logo is visible first)
@@ -60,11 +30,11 @@ export const HeroReveal = ({ onComplete }: HeroRevealProps) => {
       clearTimeout(readyTimer);
       document.body.style.overflow = '';
     };
-  }, [alreadyCompleted]);
+  }, []);
 
   // Listen for scroll/wheel/touch events to trigger exit
   useEffect(() => {
-    if (alreadyCompleted || !isReady) return;
+    if (!isReady) return;
 
     const handleScroll = (e: Event) => {
       e.preventDefault();
@@ -98,22 +68,15 @@ export const HeroReveal = ({ onComplete }: HeroRevealProps) => {
       window.removeEventListener('touchmove', handleTouch);
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [alreadyCompleted, isReady, startExit]);
+  }, [isReady, startExit]);
 
   const handleAnimationComplete = () => {
     if (hasStartedExit) {
       setIsVisible(false);
       document.body.style.overflow = '';
-      // Save to sessionStorage so it doesn't reappear
-      setSessionValue();
       onComplete();
     }
   };
-
-  // If already completed, don't render anything
-  if (alreadyCompleted) {
-    return null;
-  }
 
   return (
     <AnimatePresence>
