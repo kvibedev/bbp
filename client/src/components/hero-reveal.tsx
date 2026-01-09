@@ -34,7 +34,8 @@ export const HeroReveal = ({ onComplete }: HeroRevealProps) => {
 
   // Listen for scroll/wheel/touch events to trigger exit
   useEffect(() => {
-    if (!isReady) return;
+    // Only attach listeners when ready AND before exit has started
+    if (!isReady || hasStartedExit) return;
 
     const handleScroll = (e: Event) => {
       e.preventDefault();
@@ -46,7 +47,7 @@ export const HeroReveal = ({ onComplete }: HeroRevealProps) => {
       startExit();
     };
 
-    const handleTouch = (e: TouchEvent) => {
+    const handleTouch = () => {
       startExit();
     };
 
@@ -68,7 +69,7 @@ export const HeroReveal = ({ onComplete }: HeroRevealProps) => {
       window.removeEventListener('touchmove', handleTouch);
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [isReady, startExit]);
+  }, [isReady, hasStartedExit, startExit]);
 
   const handleAnimationComplete = () => {
     if (hasStartedExit) {
