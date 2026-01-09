@@ -22,15 +22,18 @@ import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { Nav } from "@/components/site-header";
 import { Footer } from "@/components/site-footer";
+import { HeroReveal } from "@/components/hero-reveal";
 import { Link } from "wouter";
 
 import heroData from "@assets/generated_images/abstract_connecting_bridge_data_visualization.png";
-import logoImage from "@assets/BBP LOGO PRESENTATION 2_1764204475650.png";
 
 export default function Home() {
+  const [revealComplete, setRevealComplete] = useState(false);
+
   return (
     <div className="font-sans bg-[#0B1F40] min-h-screen text-white selection:bg-[#D4AF37] selection:text-[#0B1F40]">
-      <Nav variant="transparent" />
+      <HeroReveal onComplete={() => setRevealComplete(true)} />
+      <Nav variant="transparent" revealComplete={revealComplete} />
       {/* Hero Section - Updated with Track 1 Messaging */}
       <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-[#1a3b6e] via-[#0B1F40] to-[#050e1f]"></div>
