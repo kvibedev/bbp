@@ -233,7 +233,7 @@ export default function Home() {
               <h3 className="text-3xl font-serif font-bold text-white mb-4">The Scale of the Problem</h3>
               <p className="text-xl text-blue-100/80 leading-relaxed mb-6">
                 Even sampling claims after the fact reveals that every audit, every reconciliation uncovers mistakes. 
-                <span className="block mt-2 text-red-300 font-bold">And they're always in favor of the carrier. Always.</span>
+                <span className="block mt-2 text-red-300 font-bold">And they're always in favor of the carrier.</span>
               </p>
               <p className="text-lg text-blue-100/60">
                 Millions of adjudications daily. Even small percentage errors equal massive losses.
