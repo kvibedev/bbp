@@ -127,7 +127,7 @@ export default function Home() {
               <span className="w-12 h-[1px] bg-[#D4AF37]"></span>
             </div>
             <h2 className="text-4xl md:text-6xl font-serif font-bold mb-6 text-white">
-              The <span className="text-[#4A90E2]">Gap Tax</span> You're Paying
+              <span className="text-[#4A90E2]">High Scrutiny</span>, Low Transparency
             </h2>
             <p className="text-blue-100/70 text-xl max-w-3xl mx-auto leading-relaxed">
               Every day, you're losing money you don't even know about. Here's why.
