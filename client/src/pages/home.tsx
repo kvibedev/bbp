@@ -25,10 +25,9 @@ import { Footer } from "@/components/site-footer";
 import { HeroReveal } from "@/components/hero-reveal";
 import { Link } from "wouter";
 
-import heroData from "@assets/generated_images/abstract_connecting_bridge_data_visualization.png";
-import pharmaTech1 from "@assets/stock_images/pharma_tech_hero_1.jpg";
-import pharmaTech2 from "@assets/stock_images/pharma_tech_hero_2.jpg";
-import pharmaTech3 from "@assets/stock_images/pharma_tech_hero_3.jpg";
+import pharmaTech1 from "@assets/generated_images/pharma_tech_hero_bg_1.png";
+import pharmaTech2 from "@assets/generated_images/pharma_tech_hero_bg_2.png";
+import pharmaTech3 from "@assets/generated_images/pharma_tech_hero_bg_3.png";
 
 const heroImages = [pharmaTech1, pharmaTech2, pharmaTech3];
 
@@ -57,7 +56,7 @@ export default function Home() {
           <motion.div
             key={currentImageIndex}
             initial={{ opacity: 0 }}
-            animate={{ opacity: 0.25 }}
+            animate={{ opacity: 0.45 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 1.5, ease: "easeInOut" }}
             className="absolute inset-0 pointer-events-none"
@@ -70,8 +69,8 @@ export default function Home() {
           </motion.div>
         </AnimatePresence>
 
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0B1F40] via-[#0B1F40]/80 to-[#0B1F40]/40 pointer-events-none"></div>
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F40] via-transparent to-[#0B1F40]/60 pointer-events-none"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0B1F40]/95 via-[#0B1F40]/70 to-transparent pointer-events-none"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F40] via-transparent to-[#0B1F40]/40 pointer-events-none"></div>
         
         <div className="absolute top-[-20%] right-[-10%] w-[800px] h-[800px] bg-[#4A90E2] opacity-10 blur-[120px] rounded-full pointer-events-none"></div>
         <div className="absolute bottom-[-20%] left-[-10%] w-[600px] h-[600px] bg-[#D4AF37] opacity-5 blur-[100px] rounded-full pointer-events-none"></div>
