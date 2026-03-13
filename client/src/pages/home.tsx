@@ -220,7 +220,7 @@ export default function Home() {
                     <div>
                       <h3 className="text-2xl font-bold mb-2 text-white">Hidden Costs Add Up</h3>
                       <p className="text-blue-100/70 leading-relaxed">
-                        During that gap, pricing errors, missed discounts, and rebate shortfalls can quietly drain the health plan.
+                        During that gap, claim processing errors, missed discounts, and rebate miscalculations can cost health plans millions.
                       </p>
                     </div>
                   </div>
