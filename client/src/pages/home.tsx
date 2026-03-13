@@ -135,7 +135,7 @@ export default function Home() {
           </div>
 
           <div className="max-w-5xl mx-auto">
-            <div className="grid md:grid-cols-2 gap-8 mb-12">
+            <div className="grid grid-cols-1 gap-6 mb-12 max-w-3xl mx-auto">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -144,14 +144,14 @@ export default function Home() {
               >
                 <div className="absolute -inset-0.5 bg-gradient-to-br from-red-500/20 to-orange-500/20 rounded-2xl opacity-0 group-hover:opacity-100 blur transition-opacity"></div>
                 <div className="relative h-full bg-[#0F264A] border border-red-500/20 rounded-xl p-8">
-                  <div className="flex items-start gap-4 mb-4">
+                  <div className="flex items-start gap-4">
                     <div className="w-12 h-12 rounded-full bg-red-500/10 flex items-center justify-center border border-red-500/20 flex-shrink-0">
                       <span className="text-2xl font-bold text-red-400">1</span>
                     </div>
                     <div>
                       <h3 className="text-2xl font-bold mb-2 text-white">Today: You Sign</h3>
                       <p className="text-blue-100/70 leading-relaxed">
-                        You sign a multi-million dollar pharmacy contract with carefully negotiated terms, discounts, and rebates.
+                        You sign a multi-million dollar pharmacy contract with negotiated pricing, discounts, and rebate terms.
                       </p>
                     </div>
                   </div>
@@ -167,14 +167,14 @@ export default function Home() {
               >
                 <div className="absolute -inset-0.5 bg-gradient-to-br from-orange-500/20 to-yellow-500/20 rounded-2xl opacity-0 group-hover:opacity-100 blur transition-opacity"></div>
                 <div className="relative h-full bg-[#0F264A] border border-orange-500/20 rounded-xl p-8">
-                  <div className="flex items-start gap-4 mb-4">
+                  <div className="flex items-start gap-4">
                     <div className="w-12 h-12 rounded-full bg-orange-500/10 flex items-center justify-center border border-orange-500/20 flex-shrink-0">
                       <span className="text-2xl font-bold text-orange-400">2</span>
                     </div>
                     <div>
                       <h3 className="text-2xl font-bold mb-2 text-white">Tomorrow: Claims Start</h3>
                       <p className="text-blue-100/70 leading-relaxed">
-                        Claims processing begins immediately. Thousands, sometimes millions, of prescription adjudications start flowing.
+                        Claims begin processing immediately, and pharmacy dollars start moving before full validation is in place.
                       </p>
                     </div>
                   </div>
@@ -190,14 +190,14 @@ export default function Home() {
               >
                 <div className="absolute -inset-0.5 bg-gradient-to-br from-yellow-500/20 to-red-500/20 rounded-2xl opacity-0 group-hover:opacity-100 blur transition-opacity"></div>
                 <div className="relative h-full bg-[#0F264A] border border-yellow-500/20 rounded-xl p-8">
-                  <div className="flex items-start gap-4 mb-4">
+                  <div className="flex items-start gap-4">
                     <div className="w-12 h-12 rounded-full bg-yellow-500/10 flex items-center justify-center border border-yellow-500/20 flex-shrink-0">
                       <span className="text-2xl font-bold text-yellow-400">3</span>
                     </div>
                     <div>
-                      <h3 className="text-2xl font-bold mb-2 text-white">3-9 Months Later: The Contract Arrives</h3>
+                      <h3 className="text-2xl font-bold mb-2 text-white">Months Later: Full Contract Arrives</h3>
                       <p className="text-blue-100/70 leading-relaxed">
-                        You finally receive your actual contract document. But by then, millions of claims have already been processed.
+                        The full contract may not be finalized or fully reviewed until months later, after large volumes of claims have already been processed.
                       </p>
                     </div>
                   </div>
@@ -213,14 +213,14 @@ export default function Home() {
               >
                 <div className="absolute -inset-0.5 bg-gradient-to-br from-red-600/30 to-red-800/30 rounded-2xl opacity-0 group-hover:opacity-100 blur transition-opacity"></div>
                 <div className="relative h-full bg-[#0F264A] border border-red-600/30 rounded-xl p-8">
-                  <div className="flex items-start gap-4 mb-4">
+                  <div className="flex items-start gap-4">
                     <div className="w-12 h-12 rounded-full bg-red-600/10 flex items-center justify-center border border-red-600/20 flex-shrink-0">
-                      <AlertTriangle className="w-6 h-6 text-red-400" />
+                      <span className="text-2xl font-bold text-red-400">4</span>
                     </div>
                     <div>
-                      <h3 className="text-2xl font-bold mb-2 text-white">The Gap Tax</h3>
+                      <h3 className="text-2xl font-bold mb-2 text-white">Hidden Costs Add Up</h3>
                       <p className="text-blue-100/70 leading-relaxed">
-                        During that gap, terms were applied without verification. Discounts missed. Rebates miscalculated. <span className="text-red-400 font-bold">Always in favor of the carrier.</span>
+                        During that gap, pricing errors, missed discounts, and rebate shortfalls can quietly drain the health plan.
                       </p>
                     </div>
                   </div>
