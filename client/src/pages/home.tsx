@@ -56,7 +56,7 @@ export default function Home() {
           <motion.div
             key={currentImageIndex}
             initial={{ opacity: 0 }}
-            animate={{ opacity: 0.18 }}
+            animate={{ opacity: 0.4 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 1.5, ease: "easeInOut" }}
             className="absolute inset-0 pointer-events-none"
