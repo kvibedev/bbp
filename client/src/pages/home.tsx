@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { 
   Check, 
   Building2, 
@@ -19,16 +19,29 @@ import {
   Compass
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Nav } from "@/components/site-header";
 import { Footer } from "@/components/site-footer";
 import { HeroReveal } from "@/components/hero-reveal";
 import { Link } from "wouter";
 
 import heroData from "@assets/generated_images/abstract_connecting_bridge_data_visualization.png";
+import pharmaTech1 from "@assets/stock_images/pharma_tech_hero_1.jpg";
+import pharmaTech2 from "@assets/stock_images/pharma_tech_hero_2.jpg";
+import pharmaTech3 from "@assets/stock_images/pharma_tech_hero_3.jpg";
+
+const heroImages = [pharmaTech1, pharmaTech2, pharmaTech3];
 
 export default function Home() {
   const [revealComplete, setRevealComplete] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % heroImages.length);
+    }, 6000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div className="font-sans min-h-screen text-white selection:bg-[#D4AF37] selection:text-[#0B1F40]" style={{
@@ -38,14 +51,30 @@ export default function Home() {
       <Nav variant="transparent" revealComplete={revealComplete} />
       {/* Hero Section - Updated with Track 1 Messaging */}
       <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-[#1a3b6e] via-[#0B1F40] to-[#050e1f]"></div>
+        <div className="absolute inset-0 bg-[#0B1F40]"></div>
+        
+        <AnimatePresence mode="sync">
+          <motion.div
+            key={currentImageIndex}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.25 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1.5, ease: "easeInOut" }}
+            className="absolute inset-0 pointer-events-none"
+          >
+            <img 
+              src={heroImages[currentImageIndex]} 
+              alt="" 
+              className="w-full h-full object-cover"
+            />
+          </motion.div>
+        </AnimatePresence>
+
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0B1F40] via-[#0B1F40]/80 to-[#0B1F40]/40 pointer-events-none"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F40] via-transparent to-[#0B1F40]/60 pointer-events-none"></div>
         
         <div className="absolute top-[-20%] right-[-10%] w-[800px] h-[800px] bg-[#4A90E2] opacity-10 blur-[120px] rounded-full pointer-events-none"></div>
         <div className="absolute bottom-[-20%] left-[-10%] w-[600px] h-[600px] bg-[#D4AF37] opacity-5 blur-[100px] rounded-full pointer-events-none"></div>
-
-        <div className="absolute top-0 right-0 w-1/2 h-full opacity-40 pointer-events-none mix-blend-overlay">
-           <img src={heroData} alt="Data Visualization" className="w-full h-full object-cover mask-image-gradient" style={{ maskImage: 'linear-gradient(to left, black, transparent)' }} />
-        </div>
 
         <div className="container mx-auto px-6 relative z-10">
           <motion.div 
