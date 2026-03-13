@@ -252,38 +252,31 @@ export default function Home() {
               <span className="w-12 h-[1px] bg-[#D4AF37]"></span>
             </div>
             <h2 className="text-4xl md:text-6xl font-serif font-bold mb-6 text-white">
-              <span className="text-[#D4AF37]">Day One</span> Protection
+              What We Do for <span className="text-[#D4AF37]">YOU</span>
             </h2>
-            <p className="text-blue-100/70 text-xl max-w-3xl mx-auto leading-relaxed">
-              We don't wait for the damage to be done. We start protecting your investment from the moment the ink dries.
-            </p>
           </div>
 
           <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-16">
             {[
               {
                 icon: Shield,
-                title: "Capture Bid Requirements Upfront",
-                description: "We reserve your contract terms as a warranty before the first claim processes.",
-                detail: "Your negotiated discounts, rebates, and exclusions are locked in from Day One."
+                title: "Best-Fit PBM Selection",
+                description: "You can be confident that your decision on PBM is the best fit for you and your beneficiaries."
               },
               {
                 icon: Target,
-                title: "Every Single Claim Verified",
-                description: "100% adjudication coverage — not samples, not estimates, not 'close enough.'",
-                detail: "We check every prescription claim as it's processed against your actual contract terms."
+                title: "Continuous Claims Monitoring",
+                description: "You can rest assured that there is constant monitoring of your claims to protect against abusive pricing practices."
               },
               {
-                icon: Zap,
-                title: "Real-Time Contract Compliance",
-                description: "Claims are verified as negotiated from the first prescription forward.",
-                detail: "Immediate detection of discrepancies means immediate correction, not months-later discoveries."
+                icon: TrendingUp,
+                title: "Annual Market Checks",
+                description: "You will never fall behind the market on pricing as we can efficiently perform annual market checks."
               },
               {
-                icon: DollarSign,
-                title: "Recover What's Rightfully Yours",
-                description: "Put mistakenly paid dollars back into your budget where they belong.",
-                detail: "We don't just identify errors — we help you recover the money that should have stayed in your budget."
+                icon: Compass,
+                title: "Industry Thought Leadership",
+                description: "You will have access to thought leadership at the forefront of the PBM industry."
               }
             ].map((feature, i) => (
               <motion.div
@@ -301,21 +294,10 @@ export default function Home() {
                   </div>
                   
                   <h3 className="text-2xl font-bold mb-3 text-white">{feature.title}</h3>
-                  <p className="text-blue-100/70 mb-4 font-medium leading-relaxed">{feature.description}</p>
-                  <p className="text-blue-100/50 text-sm leading-relaxed">{feature.detail}</p>
+                  <p className="text-blue-100/70 font-medium leading-relaxed">{feature.description}</p>
                 </div>
               </motion.div>
             ))}
-          </div>
-
-          <div className="text-center">
-            <div className="inline-flex items-center gap-4 bg-[#0F264A] border border-[#D4AF37]/30 rounded-full px-8 py-4">
-              <Check className="w-6 h-6 text-[#D4AF37]" />
-              <div className="text-left">
-                <div className="text-white font-bold">Complete Coverage from Day One</div>
-                <div className="text-blue-100/60 text-sm">Not samples. Not estimates. Every single adjudication.</div>
-              </div>
-            </div>
           </div>
         </div>
       </section>
