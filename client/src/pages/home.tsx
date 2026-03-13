@@ -56,21 +56,21 @@ export default function Home() {
           <motion.div
             key={currentImageIndex}
             initial={{ opacity: 0 }}
-            animate={{ opacity: 0.45 }}
+            animate={{ opacity: 0.15 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 1.5, ease: "easeInOut" }}
+            transition={{ duration: 2, ease: "easeInOut" }}
             className="absolute inset-0 pointer-events-none"
           >
             <img 
               src={heroImages[currentImageIndex]} 
               alt="" 
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover blur-[2px]"
             />
           </motion.div>
         </AnimatePresence>
 
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0B1F40]/95 via-[#0B1F40]/70 to-transparent pointer-events-none"></div>
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F40] via-transparent to-[#0B1F40]/40 pointer-events-none"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0B1F40] via-[#0B1F40]/85 to-[#0B1F40]/50 pointer-events-none"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F40] via-[#0B1F40]/30 to-[#0B1F40]/60 pointer-events-none"></div>
         
         <div className="absolute top-[-20%] right-[-10%] w-[800px] h-[800px] bg-[#4A90E2] opacity-10 blur-[120px] rounded-full pointer-events-none"></div>
         <div className="absolute bottom-[-20%] left-[-10%] w-[600px] h-[600px] bg-[#D4AF37] opacity-5 blur-[100px] rounded-full pointer-events-none"></div>
