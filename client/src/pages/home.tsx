@@ -264,7 +264,7 @@ export default function Home() {
                 description: "You can be confident that your decision on PBM is the best fit for you and your beneficiaries."
               },
               {
-                icon: Target,
+                icon: Check,
                 title: "Continuous Claims Monitoring",
                 description: "You can rest assured that there is constant monitoring of your claims to protect against abusive pricing practices."
               },
@@ -289,11 +289,12 @@ export default function Home() {
               >
                 <div className="absolute -inset-0.5 bg-gradient-to-br from-[#D4AF37] to-[#4A90E2] rounded-2xl opacity-0 group-hover:opacity-20 blur transition-opacity"></div>
                 <div className="relative h-full bg-[#0B1F40] border border-white/10 rounded-xl p-8 hover:border-[#D4AF37]/30 transition-colors">
-                  <div className="w-14 h-14 rounded-xl bg-[#D4AF37]/10 flex items-center justify-center mb-6 border border-[#D4AF37]/20">
-                    <feature.icon className="w-7 h-7 text-[#D4AF37]" />
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="w-12 h-12 rounded-xl bg-[#D4AF37]/10 flex items-center justify-center border border-[#D4AF37]/20 flex-shrink-0">
+                      <feature.icon className="w-6 h-6 text-[#D4AF37]" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-white">{feature.title}</h3>
                   </div>
-                  
-                  <h3 className="text-2xl font-bold mb-3 text-white">{feature.title}</h3>
                   <p className="text-blue-100/70 font-medium leading-relaxed">{feature.description}</p>
                 </div>
               </motion.div>
