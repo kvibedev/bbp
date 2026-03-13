@@ -149,9 +149,9 @@ export default function Home() {
                       <span className="text-2xl font-bold text-red-400">1</span>
                     </div>
                     <div>
-                      <h3 className="text-2xl font-bold mb-2 text-white">Today: You Sign</h3>
+                      <h3 className="text-2xl font-bold mb-2 text-white">Complex Legal Contracts</h3>
                       <p className="text-blue-100/70 leading-relaxed">
-                        You sign a multi-million dollar pharmacy contract with negotiated pricing, discounts, and rebate terms.
+                        PBM contracts are legal contracts that requires deep knowledge of possible "gotchas".
                       </p>
                     </div>
                   </div>
@@ -172,9 +172,9 @@ export default function Home() {
                       <span className="text-2xl font-bold text-orange-400">2</span>
                     </div>
                     <div>
-                      <h3 className="text-2xl font-bold mb-2 text-white">Tomorrow: Claims Start</h3>
+                      <h3 className="text-2xl font-bold mb-2 text-white">Expensive Data Sources</h3>
                       <p className="text-blue-100/70 leading-relaxed">
-                        Claims begin processing immediately, and pharmacy dollars start moving before full validation is in place.
+                        Pharmacy comparisons require expensive 3rd party data sources.
                       </p>
                     </div>
                   </div>
@@ -195,9 +195,9 @@ export default function Home() {
                       <span className="text-2xl font-bold text-yellow-400">3</span>
                     </div>
                     <div>
-                      <h3 className="text-2xl font-bold mb-2 text-white">Months Later: Full Contract Arrives</h3>
+                      <h3 className="text-2xl font-bold mb-2 text-white">Time-Consuming Comparisons</h3>
                       <p className="text-blue-100/70 leading-relaxed">
-                        The full contract may not be finalized or fully reviewed until months later, after large volumes of claims have already been processed.
+                        Pharmacy comparisons are incredibly time consuming because they require merging bidders contract terms, 3rd party data sources and client pharmacy data to compare contracts using an apples-to-apples methodology.
                       </p>
                     </div>
                   </div>
@@ -218,9 +218,9 @@ export default function Home() {
                       <span className="text-2xl font-bold text-red-400">4</span>
                     </div>
                     <div>
-                      <h3 className="text-2xl font-bold mb-2 text-white">Hidden Costs Add Up</h3>
+                      <h3 className="text-2xl font-bold mb-2 text-white">Biased PBM Projections</h3>
                       <p className="text-blue-100/70 leading-relaxed">
-                        During that gap, claim processing errors, missed discounts, and rebate miscalculations can cost health plans millions.
+                        Plan sponsors and consultants cannot rely on the PBM's own projections as they always use the most favorable assumptions for themselves. PBM comparisons require certain assumptions — so a single methodology needs to be used.
                       </p>
                     </div>
                   </div>
