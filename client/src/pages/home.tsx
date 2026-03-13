@@ -248,7 +248,7 @@ export default function Home() {
           <div className="text-center mb-20">
             <div className="flex items-center justify-center gap-3 text-[#D4AF37] font-medium text-sm mb-6 tracking-widest uppercase">
               <span className="w-12 h-[1px] bg-[#D4AF37]"></span>
-              The BenefitsBridge Difference
+              The BenefitsBridge Solutions
               <span className="w-12 h-[1px] bg-[#D4AF37]"></span>
             </div>
             <h2 className="text-4xl md:text-6xl font-serif font-bold mb-6 text-white">
