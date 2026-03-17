@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { 
   Check, 
   Building2, 
@@ -417,10 +417,9 @@ export default function Home() {
       <section className="py-32 bg-[#071328] border-y border-white/5">
         <div className="container mx-auto px-6">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.7 }}
+            transition={{ duration: 0.6 }}
             className="text-center mb-20"
           >
             <div className="flex items-center justify-center gap-3 text-[#D4AF37] font-medium text-sm mb-6 tracking-widest uppercase">
@@ -438,11 +437,11 @@ export default function Home() {
 
           <div className="max-w-7xl mx-auto">
             <div className="grid lg:grid-cols-2 gap-8 mb-12">
+              {/* Executive Summary - Left Panel */}
               <motion.div
-                initial={{ opacity: 0, x: -50 }}
+                initial={{ opacity: 0, x: -30 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.7 }}
+                transition={{ duration: 0.6 }}
               >
                 <div className="bg-[#0B1F40] border border-white/10 rounded-2xl p-8">
                   <div className="flex items-center gap-3 mb-8">
@@ -460,10 +459,9 @@ export default function Home() {
                     ].map((item, i) => (
                       <motion.div
                         key={i}
-                        initial={{ opacity: 0, y: 20 }}
+                        initial={{ opacity: 0, y: 15 }}
                         whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true, amount: 0.5 }}
-                        transition={{ delay: 0.1 + i * 0.1, duration: 0.5 }}
+                        transition={{ delay: i * 0.1, duration: 0.4 }}
                         className="bg-[#0F264A] border border-white/5 rounded-xl p-4"
                       >
                         <div className="text-xs text-blue-100/50 uppercase tracking-wider mb-2">{item.label}</div>
@@ -483,8 +481,7 @@ export default function Home() {
                           key={i}
                           initial={{ opacity: 0 }}
                           whileInView={{ opacity: 1 }}
-                          viewport={{ once: true, amount: 0.5 }}
-                          transition={{ delay: 0.3 + i * 0.15, duration: 0.5 }}
+                          transition={{ delay: i * 0.15, duration: 0.4 }}
                           className="bg-[#0F264A] border border-white/5 rounded-xl p-4"
                         >
                           <div className="text-xs text-blue-100/50 mb-2">{trend.label}</div>
@@ -494,8 +491,7 @@ export default function Home() {
                                 key={idx}
                                 initial={{ scaleY: 0 }}
                                 whileInView={{ scaleY: 1 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: 0.4 + idx * 0.04, duration: 0.4 }}
+                                transition={{ delay: idx * 0.04, duration: 0.4 }}
                                 style={{ height: `${h * 0.3}px`, transformOrigin: "bottom" }}
                                 className="w-2 bg-[#4A90E2] rounded-t-sm"
                               />
@@ -521,8 +517,7 @@ export default function Home() {
                       key={i}
                       initial={{ opacity: 0, y: 15 }}
                       whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true, amount: 0.5 }}
-                      transition={{ delay: 0.2 + i * 0.1, duration: 0.5 }}
+                      transition={{ delay: i * 0.1, duration: 0.4 }}
                       className="bg-[#0B1F40] border border-white/10 rounded-xl p-4"
                     >
                       <div className="text-xs text-blue-100/50 uppercase tracking-wider mb-2">{item.label}</div>
@@ -532,11 +527,11 @@ export default function Home() {
                 </div>
               </motion.div>
 
+              {/* Performance Dashboards - Right Panel */}
               <motion.div
-                initial={{ opacity: 0, x: 50 }}
+                initial={{ opacity: 0, x: 30 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.7, delay: 0.2 }}
+                transition={{ duration: 0.6, delay: 0.15 }}
               >
                 <div className="bg-[#0B1F40] border border-white/10 rounded-2xl p-8 h-full">
                   <div className="flex items-center gap-3 mb-8">
@@ -547,13 +542,7 @@ export default function Home() {
                   <div className="mb-8">
                     <div className="text-sm text-blue-100/60 mb-4">Financial and Utilization Trend</div>
                     <div className="grid grid-cols-2 gap-6">
-                      <motion.div
-                        initial={{ opacity: 0, y: 15 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true, amount: 0.3 }}
-                        transition={{ delay: 0.3, duration: 0.5 }}
-                        className="bg-[#0F264A] border border-white/5 rounded-xl p-4"
-                      >
+                      <div className="bg-[#0F264A] border border-white/5 rounded-xl p-4">
                         <div className="text-xs text-blue-100/40 mb-3">Key Performance Metrics</div>
                         <div className="space-y-2">
                           {[
@@ -567,8 +556,7 @@ export default function Home() {
                               key={i}
                               initial={{ opacity: 0, x: 10 }}
                               whileInView={{ opacity: 1, x: 0 }}
-                              viewport={{ once: true }}
-                              transition={{ delay: 0.4 + i * 0.06, duration: 0.4 }}
+                              transition={{ delay: i * 0.06, duration: 0.3 }}
                               className="flex items-center justify-between text-xs"
                             >
                               <span className="text-blue-100/50 truncate mr-2">{row.label}</span>
@@ -579,15 +567,9 @@ export default function Home() {
                             </motion.div>
                           ))}
                         </div>
-                      </motion.div>
+                      </div>
 
-                      <motion.div
-                        initial={{ opacity: 0, y: 15 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true, amount: 0.3 }}
-                        transition={{ delay: 0.4, duration: 0.5 }}
-                        className="bg-[#0F264A] border border-white/5 rounded-xl p-4"
-                      >
+                      <div className="bg-[#0F264A] border border-white/5 rounded-xl p-4">
                         <div className="text-xs text-blue-100/40 mb-3">Utilization Trends</div>
                         <div className="space-y-2">
                           {[
@@ -601,8 +583,7 @@ export default function Home() {
                               key={i}
                               initial={{ opacity: 0, x: 10 }}
                               whileInView={{ opacity: 1, x: 0 }}
-                              viewport={{ once: true }}
-                              transition={{ delay: 0.5 + i * 0.06, duration: 0.4 }}
+                              transition={{ delay: i * 0.06, duration: 0.3 }}
                               className="flex items-center justify-between text-xs"
                             >
                               <span className="text-blue-100/50 truncate mr-2">{row.label}</span>
@@ -613,7 +594,7 @@ export default function Home() {
                             </motion.div>
                           ))}
                         </div>
-                      </motion.div>
+                      </div>
                     </div>
                   </div>
 
@@ -627,8 +608,7 @@ export default function Home() {
                         key={i}
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true, amount: 0.3 }}
-                        transition={{ delay: 0.3 + i * 0.15, duration: 0.5 }}
+                        transition={{ delay: i * 0.1, duration: 0.4 }}
                         className="bg-[#0F264A] border border-white/5 rounded-xl p-4"
                       >
                         <div className="text-xs text-blue-100/40 mb-3">{chart.label}</div>
@@ -638,8 +618,7 @@ export default function Home() {
                               key={idx}
                               initial={{ scaleY: 0 }}
                               whileInView={{ scaleY: 1 }}
-                              viewport={{ once: true }}
-                              transition={{ delay: 0.5 + idx * 0.08, duration: 0.5 }}
+                              transition={{ delay: idx * 0.08, duration: 0.4 }}
                               style={{ height: `${h * 0.6}px`, transformOrigin: "bottom" }}
                               className={`flex-1 rounded-t-sm ${idx % 2 === 0 ? 'bg-[#4A90E2]' : 'bg-[#D4AF37]'}`}
                             />
@@ -655,10 +634,9 @@ export default function Home() {
 
                   <div className="grid grid-cols-2 gap-4">
                     <motion.div
-                      initial={{ opacity: 0, scale: 0.8 }}
+                      initial={{ opacity: 0, scale: 0.9 }}
                       whileInView={{ opacity: 1, scale: 1 }}
-                      viewport={{ once: true, amount: 0.5 }}
-                      transition={{ delay: 0.4, duration: 0.6 }}
+                      transition={{ duration: 0.5 }}
                       className="bg-[#0F264A] border border-white/5 rounded-xl p-4 flex flex-col items-center"
                     >
                       <div className="text-xs text-blue-100/40 mb-3">Generic Dispensing Rate</div>
@@ -680,10 +658,9 @@ export default function Home() {
                     </motion.div>
 
                     <motion.div
-                      initial={{ opacity: 0, scale: 0.8 }}
+                      initial={{ opacity: 0, scale: 0.9 }}
                       whileInView={{ opacity: 1, scale: 1 }}
-                      viewport={{ once: true, amount: 0.5 }}
-                      transition={{ delay: 0.5, duration: 0.6 }}
+                      transition={{ delay: 0.1, duration: 0.5 }}
                       className="bg-[#0F264A] border border-white/5 rounded-xl p-4 flex flex-col items-center"
                     >
                       <div className="text-xs text-blue-100/40 mb-3">Share of Specialty</div>
@@ -708,6 +685,7 @@ export default function Home() {
               </motion.div>
             </div>
 
+            {/* Bottom Highlight Cards */}
             <div className="grid md:grid-cols-4 gap-4">
               {[
                 { icon: DollarSign, label: "Top Claimant", value: "$94,333.03", sub: "Crysvita", detail: "12.03% of Total Plan Cost", color: "text-red-400" },
@@ -717,10 +695,9 @@ export default function Home() {
               ].map((item, i) => (
                 <motion.div
                   key={i}
-                  initial={{ opacity: 0, y: 25 }}
+                  initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.3 }}
-                  transition={{ delay: 0.1 + i * 0.12, duration: 0.5 }}
+                  transition={{ delay: i * 0.1, duration: 0.4 }}
                   className="bg-[#0B1F40] border border-white/10 rounded-xl p-5 group hover:border-[#D4AF37]/30 transition-colors"
                   data-testid={`stewardship-highlight-${i}`}
                 >
