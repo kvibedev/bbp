@@ -414,14 +414,9 @@ export default function Home() {
         </div>
       </section>
       {/* Enhanced Reporting - Stewardship Report Section */}
-      <section className="py-32 bg-[#050e1f] border-y border-white/5 overflow-hidden">
+      <section className="py-32 bg-[#071328] border-y border-white/5">
         <div className="container mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-20"
-          >
+          <div className="text-center mb-20">
             <div className="flex items-center justify-center gap-3 text-[#D4AF37] font-medium text-sm mb-6 tracking-widest uppercase">
               <span className="w-12 h-[1px] bg-[#D4AF37]"></span>
               Enhanced Reporting Offerings
@@ -433,7 +428,7 @@ export default function Home() {
             <p className="text-blue-100/70 text-xl max-w-4xl mx-auto leading-relaxed">
               Provides a comprehensive, year-over-year view of pharmacy plan performance, utilization, and cost trends. This offers executive-level insights to support strategic planning, budgeting, and vendor performance review.
             </p>
-          </motion.div>
+          </div>
 
           <div className="max-w-7xl mx-auto">
             <div className="grid lg:grid-cols-2 gap-8 mb-12">
