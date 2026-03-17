@@ -52,7 +52,7 @@ function useScrollReveal(threshold = 0.15): [RefObject<HTMLDivElement | null>, b
 }
 
 function StewardshipSection() {
-  const [sectionRef, isVisible] = useScrollReveal(0.05);
+  const [sectionRef, isVisible] = useScrollReveal(0.01);
   const base = "transition-all duration-700 ease-out";
   const hidden = "opacity-0 translate-y-8";
   const shown = "opacity-100 translate-y-0";
@@ -63,7 +63,7 @@ function StewardshipSection() {
   return (
     <section ref={sectionRef} className="py-32 bg-[#071328] border-y border-white/5">
       <div className="container mx-auto px-6">
-        <div className={`text-center mb-20 ${base} ${isVisible ? shown : hidden}`}>
+        <div className="text-center mb-20">
           <div className="flex items-center justify-center gap-3 text-[#D4AF37] font-medium text-sm mb-6 tracking-widest uppercase">
             <span className="w-12 h-[1px] bg-[#D4AF37]"></span>
             Enhanced Reporting Offerings
