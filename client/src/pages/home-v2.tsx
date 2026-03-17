@@ -656,7 +656,7 @@ export default function Home() {
         <div className="container mx-auto px-6">
           <div className="text-center mb-12">
             <h3 className="text-2xl md:text-3xl font-serif font-bold text-white mb-3">
-              Industry <span className="text-[#D4AF37]">Findings - TESTING123</span>
+              Industry <span className="text-[#D4AF37]">Findings</span>
             </h3>
             <p className="text-blue-100/60">Key insights from our research and experience</p>
           </div>
@@ -680,12 +680,6 @@ export default function Home() {
         </div>
       </section>
       {/* Enhanced Reporting - Stewardship Report Section */}
-      <section className="py-24 bg-red-600">
-        <div className="container mx-auto px-6">
-          <h2 className="text-5xl font-bold text-white text-center">STEWARDSHIP REPORT TEST</h2>
-          <p className="text-white text-center text-2xl mt-4">If you can see this red section, the component placement works.</p>
-        </div>
-      </section>
       <StewardshipReportSection />
 
       {/* Who We Help Section - Replacing Marketplace */}
