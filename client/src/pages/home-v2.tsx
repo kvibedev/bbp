@@ -680,6 +680,9 @@ export default function Home() {
         </div>
       </section>
       {/* Enhanced Reporting - Stewardship Report Section */}
+      <div style={{ background: 'red', padding: '100px', textAlign: 'center' }}>
+        <h1 style={{ color: 'white', fontSize: '48px' }}>TEST - STEWARDSHIP SECTION HERE</h1>
+      </div>
       <StewardshipReportSection />
 
       {/* Who We Help Section - Replacing Marketplace */}
