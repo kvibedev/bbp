@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { 
   Check, 
   Building2, 
@@ -16,7 +16,11 @@ import {
   DollarSign,
   Users,
   Briefcase,
-  Compass
+  Compass,
+  FileText,
+  Pill,
+  FlaskConical,
+  PieChart
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
@@ -409,6 +413,320 @@ export default function Home() {
           </div>
         </div>
       </section>
+      {/* Enhanced Reporting - Stewardship Report Section */}
+      <section className="py-32 bg-[#050e1f] border-y border-white/5 overflow-hidden">
+        <div className="container mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-20"
+          >
+            <div className="flex items-center justify-center gap-3 text-[#D4AF37] font-medium text-sm mb-6 tracking-widest uppercase">
+              <span className="w-12 h-[1px] bg-[#D4AF37]"></span>
+              Enhanced Reporting Offerings
+              <span className="w-12 h-[1px] bg-[#D4AF37]"></span>
+            </div>
+            <h2 className="text-4xl md:text-6xl font-serif font-bold mb-6 text-white">
+              Stewardship <span className="text-[#D4AF37]">Report</span>
+            </h2>
+            <p className="text-blue-100/70 text-xl max-w-4xl mx-auto leading-relaxed">
+              Provides a comprehensive, year-over-year view of pharmacy plan performance, utilization, and cost trends. This offers executive-level insights to support strategic planning, budgeting, and vendor performance review.
+            </p>
+          </motion.div>
+
+          <div className="max-w-7xl mx-auto">
+            <div className="grid lg:grid-cols-2 gap-8 mb-12">
+              <motion.div
+                initial={{ opacity: 0, x: -40 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+              >
+                <div className="bg-[#0B1F40] border border-white/10 rounded-2xl p-8">
+                  <div className="flex items-center gap-3 mb-8">
+                    <FileText className="w-6 h-6 text-[#D4AF37]" />
+                    <h3 className="text-xl font-bold text-white">Executive Summary</h3>
+                    <span className="ml-auto text-xs text-blue-100/40 uppercase tracking-wider">Plan Summary</span>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4 mb-6">
+                    {[
+                      { label: "Total Gross Cost", value: "$5,143,536", prefix: "$" },
+                      { label: "Average Members", value: "2,358", prefix: "" },
+                      { label: "Plan Cost PMPM", value: "$148.32", prefix: "$" },
+                      { label: "Adjusted Scripts PMPM", value: "1.25", prefix: "" },
+                    ].map((item, i) => (
+                      <motion.div
+                        key={i}
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.2 + i * 0.1 }}
+                        className="bg-[#0F264A] border border-white/5 rounded-xl p-4"
+                      >
+                        <div className="text-xs text-blue-100/50 uppercase tracking-wider mb-2">{item.label}</div>
+                        <div className="text-2xl font-bold text-[#D4AF37]">{item.value}</div>
+                      </motion.div>
+                    ))}
+                  </div>
+
+                  <div className="border-t border-white/5 pt-6">
+                    <div className="text-xs text-blue-100/40 uppercase tracking-wider mb-4">Plan Trends</div>
+                    <div className="grid grid-cols-2 gap-4">
+                      {[
+                        { label: "Plan Cost PMPM", current: 148.32, prior: 142.05, change: 4.4 },
+                        { label: "Adjusted Scripts PMPM", current: 1.25, prior: 1.42, change: -12 },
+                      ].map((trend, i) => (
+                        <motion.div
+                          key={i}
+                          initial={{ opacity: 0 }}
+                          whileInView={{ opacity: 1 }}
+                          viewport={{ once: true }}
+                          transition={{ delay: 0.5 + i * 0.15 }}
+                          className="bg-[#0F264A] border border-white/5 rounded-xl p-4"
+                        >
+                          <div className="text-xs text-blue-100/50 mb-2">{trend.label}</div>
+                          <div className="flex items-end gap-1 mb-1">
+                            {[40, 55, 45, 65, 50, 70, 60, 80, 75, 90, 85, 100].map((h, idx) => (
+                              <motion.div
+                                key={idx}
+                                initial={{ height: 0 }}
+                                whileInView={{ height: `${h * 0.3}px` }}
+                                viewport={{ once: true }}
+                                transition={{ delay: 0.6 + idx * 0.05, duration: 0.4 }}
+                                className="w-2 bg-[#4A90E2] rounded-t-sm"
+                              />
+                            ))}
+                          </div>
+                          <div className={`text-sm font-bold ${trend.change > 0 ? 'text-red-400' : 'text-green-400'}`}>
+                            {trend.change > 0 ? '↑' : '↓'} {Math.abs(trend.change)}%
+                          </div>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4 mt-4">
+                  {[
+                    { label: "Total Plan Cost", value: "$4,225,186" },
+                    { label: "Scripts", value: "24,273" },
+                    { label: "Specialty % of Gross Cost", value: "60.22%", highlight: true },
+                    { label: "Generic Dispensing Rate", value: "89.57%" },
+                  ].map((item, i) => (
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, y: 15 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.3 + i * 0.1 }}
+                      className="bg-[#0B1F40] border border-white/10 rounded-xl p-4"
+                    >
+                      <div className="text-xs text-blue-100/50 uppercase tracking-wider mb-2">{item.label}</div>
+                      <div className={`text-xl font-bold ${item.highlight ? 'text-red-400' : 'text-white'}`}>{item.value}</div>
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, x: 40 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+              >
+                <div className="bg-[#0B1F40] border border-white/10 rounded-2xl p-8 h-full">
+                  <div className="flex items-center gap-3 mb-8">
+                    <BarChart3 className="w-6 h-6 text-[#4A90E2]" />
+                    <h3 className="text-xl font-bold text-white">Performance Dashboards</h3>
+                  </div>
+
+                  <div className="mb-8">
+                    <div className="text-sm text-blue-100/60 mb-4">Financial and Utilization Trend</div>
+                    <div className="grid grid-cols-2 gap-6">
+                      <div className="bg-[#0F264A] border border-white/5 rounded-xl p-4">
+                        <div className="text-xs text-blue-100/40 mb-3">Key Performance Metrics</div>
+                        <div className="space-y-2">
+                          {[
+                            { label: "Total Gross Cost", current: "$4.1M", prior: "$4.2M" },
+                            { label: "Gross Cost PMPM", current: "$181.78", prior: "$182.02" },
+                            { label: "Plan Cost", current: "$4.02M", prior: "$3.69M" },
+                            { label: "Plan Cost PMPM", current: "$145.42", prior: "$142.05" },
+                            { label: "Member Cost Share", current: "17.85%", prior: "19.39%" },
+                          ].map((row, i) => (
+                            <motion.div
+                              key={i}
+                              initial={{ opacity: 0, x: 10 }}
+                              whileInView={{ opacity: 1, x: 0 }}
+                              viewport={{ once: true }}
+                              transition={{ delay: 0.4 + i * 0.08 }}
+                              className="flex items-center justify-between text-xs"
+                            >
+                              <span className="text-blue-100/50 truncate mr-2">{row.label}</span>
+                              <div className="flex gap-3">
+                                <span className="text-white font-medium">{row.current}</span>
+                                <span className="text-blue-100/30">{row.prior}</span>
+                              </div>
+                            </motion.div>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="bg-[#0F264A] border border-white/5 rounded-xl p-4">
+                        <div className="text-xs text-blue-100/40 mb-3">Utilization Trends</div>
+                        <div className="space-y-2">
+                          {[
+                            { label: "Average Members", current: "2,358", trend: "2,358" },
+                            { label: "Unique Utilizing", current: "2,794", trend: "2,887" },
+                            { label: "Scripts PMPM", current: "0.846", trend: "0.846" },
+                            { label: "Days Supply PMPM", current: "21.08", trend: "21.08" },
+                            { label: "Mail Utilization Rate", current: "7.06%", trend: "9.17%" },
+                          ].map((row, i) => (
+                            <motion.div
+                              key={i}
+                              initial={{ opacity: 0, x: 10 }}
+                              whileInView={{ opacity: 1, x: 0 }}
+                              viewport={{ once: true }}
+                              transition={{ delay: 0.5 + i * 0.08 }}
+                              className="flex items-center justify-between text-xs"
+                            >
+                              <span className="text-blue-100/50 truncate mr-2">{row.label}</span>
+                              <div className="flex gap-3">
+                                <span className="text-white font-medium">{row.current}</span>
+                                <span className="text-blue-100/30">{row.trend}</span>
+                              </div>
+                            </motion.div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-3 gap-4 mb-6">
+                    {[
+                      { label: "Gross Cost PMPM", bars: [65, 80, 55, 90], colors: ["#4A90E2", "#D4AF37"] },
+                      { label: "Member Cost PMPM", bars: [40, 55, 35, 50], colors: ["#4A90E2", "#D4AF37"] },
+                      { label: "Plan Cost PMPM", bars: [75, 85, 70, 95], colors: ["#4A90E2", "#D4AF37"] },
+                    ].map((chart, i) => (
+                      <motion.div
+                        key={i}
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.6 + i * 0.15 }}
+                        className="bg-[#0F264A] border border-white/5 rounded-xl p-4"
+                      >
+                        <div className="text-xs text-blue-100/40 mb-3">{chart.label}</div>
+                        <div className="flex items-end gap-1 h-16">
+                          {chart.bars.map((h, idx) => (
+                            <motion.div
+                              key={idx}
+                              initial={{ height: 0 }}
+                              whileInView={{ height: `${h * 0.6}px` }}
+                              viewport={{ once: true }}
+                              transition={{ delay: 0.8 + idx * 0.1, duration: 0.5 }}
+                              className={`flex-1 rounded-t-sm ${idx % 2 === 0 ? 'bg-[#4A90E2]' : 'bg-[#D4AF37]'}`}
+                            />
+                          ))}
+                        </div>
+                        <div className="flex justify-between mt-2">
+                          <span className="text-[8px] text-blue-100/30">Current</span>
+                          <span className="text-[8px] text-blue-100/30">Prior</span>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.8, duration: 0.5 }}
+                      className="bg-[#0F264A] border border-white/5 rounded-xl p-4 flex flex-col items-center"
+                    >
+                      <div className="text-xs text-blue-100/40 mb-3">Generic Dispensing Rate</div>
+                      <div className="relative w-24 h-24">
+                        <svg viewBox="0 0 36 36" className="w-24 h-24 transform -rotate-90">
+                          <circle cx="18" cy="18" r="14" fill="none" stroke="#1a3b6e" strokeWidth="3" />
+                          <motion.circle
+                            cx="18" cy="18" r="14" fill="none" stroke="#4A90E2" strokeWidth="3"
+                            strokeDasharray="87.96"
+                            initial={{ strokeDashoffset: 87.96 }}
+                            whileInView={{ strokeDashoffset: 87.96 * (1 - 0.8957) }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 1, duration: 1.2, ease: "easeOut" }}
+                            strokeLinecap="round"
+                          />
+                        </svg>
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <span className="text-lg font-bold text-white">89.6%</span>
+                        </div>
+                      </div>
+                    </motion.div>
+
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.9, duration: 0.5 }}
+                      className="bg-[#0F264A] border border-white/5 rounded-xl p-4 flex flex-col items-center"
+                    >
+                      <div className="text-xs text-blue-100/40 mb-3">Share of Specialty</div>
+                      <div className="relative w-24 h-24">
+                        <svg viewBox="0 0 36 36" className="w-24 h-24 transform -rotate-90">
+                          <circle cx="18" cy="18" r="14" fill="none" stroke="#1a3b6e" strokeWidth="3" />
+                          <motion.circle
+                            cx="18" cy="18" r="14" fill="none" stroke="#D4AF37" strokeWidth="3"
+                            strokeDasharray="87.96"
+                            initial={{ strokeDashoffset: 87.96 }}
+                            whileInView={{ strokeDashoffset: 87.96 * (1 - 0.6022) }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 1.1, duration: 1.2, ease: "easeOut" }}
+                            strokeLinecap="round"
+                          />
+                        </svg>
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <span className="text-lg font-bold text-white">60.2%</span>
+                        </div>
+                      </div>
+                    </motion.div>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+
+            <div className="grid md:grid-cols-4 gap-4">
+              {[
+                { icon: DollarSign, label: "Top Claimant", value: "$94,333.03", sub: "Crysvita", detail: "12.03% of Total Plan Cost", color: "text-red-400" },
+                { icon: FlaskConical, label: "Top Therapeutic Class", value: "Endocrine & Metabolic", sub: "$604,180.46", detail: "14.19% of Total Plan Cost", color: "text-[#4A90E2]" },
+                { icon: Pill, label: "Largest Plan Cost Increase", value: "Mavencled", sub: "$175,119.46", detail: "10 Tablets", color: "text-orange-400" },
+                { icon: TrendingUp, label: "Top Trend Driver", value: "Psychotherapeutic", sub: "$159,633.64", detail: "6.77% Trend Impact", color: "text-[#D4AF37]" },
+              ].map((item, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.3 + i * 0.1 }}
+                  className="bg-[#0B1F40] border border-white/10 rounded-xl p-5 group hover:border-[#D4AF37]/30 transition-colors"
+                  data-testid={`stewardship-highlight-${i}`}
+                >
+                  <div className="flex items-center gap-2 mb-3">
+                    <item.icon className={`w-5 h-5 ${item.color}`} />
+                    <span className="text-xs text-blue-100/50 uppercase tracking-wider">{item.label}</span>
+                  </div>
+                  <div className={`text-lg font-bold mb-1 ${item.color}`}>{item.value}</div>
+                  <div className="text-sm text-white font-medium mb-1">{item.sub}</div>
+                  <div className="text-xs text-blue-100/40">{item.detail}</div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Who We Help Section - Replacing Marketplace */}
       <section className="py-32 bg-[#050e1f] border-y border-white/5">
         <div className="container mx-auto px-6">
