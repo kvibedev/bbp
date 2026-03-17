@@ -35,41 +35,12 @@ import pharmaTech3 from "@assets/generated_images/pharma_tech_hero_bg_3.png";
 
 const heroImages = [pharmaTech1, pharmaTech2, pharmaTech3];
 
-function useScrollReveal() {
-  const ref = useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { setIsVisible(true); observer.disconnect(); } },
-      { threshold: 0.15 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
-  return { ref, isVisible };
-}
 
 function StewardshipReportSection() {
-  const header = useScrollReveal();
-  const leftPanel = useScrollReveal();
-  const rightPanel = useScrollReveal();
-  const bottomCards = useScrollReveal();
-
-  const Icon = ({ icon: IconComp, className }: { icon: React.ElementType; className: string }) => (
-    <IconComp className={className} />
-  );
-
   return (
-    <section className="py-32 bg-[#071328] border-y border-white/5">
+    <section className="py-24 bg-[#071328] border-y border-white/5" data-testid="stewardship-section">
       <div className="container mx-auto px-6">
-        <div
-          ref={header.ref}
-          className={`text-center mb-20 transition-all duration-700 ${header.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
-        >
+        <div className="text-center mb-16">
           <div className="flex items-center justify-center gap-3 text-[#D4AF37] font-medium text-sm mb-6 tracking-widest uppercase">
             <span className="w-12 h-[1px] bg-[#D4AF37]"></span>
             Enhanced Reporting Offerings
@@ -84,132 +55,134 @@ function StewardshipReportSection() {
         </div>
 
         <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-8 mb-12">
-            <div
-              ref={leftPanel.ref}
-              className={`transition-all duration-700 ${leftPanel.isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-12'}`}
-            >
+          <div className="grid lg:grid-cols-2 gap-8 mb-10">
+
+            {/* LEFT: Executive Summary */}
+            <div>
               <div className="bg-[#0B1F40] border border-white/10 rounded-2xl p-8">
-                <div className="flex items-center gap-3 mb-8">
+                <div className="flex items-center gap-3 mb-6">
                   <FileText className="w-6 h-6 text-[#D4AF37]" />
                   <h3 className="text-xl font-bold text-white">Executive Summary</h3>
-                  <span className="ml-auto text-xs text-blue-100/40 uppercase tracking-wider">Plan Summary</span>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4 mb-6">
+                {/* Plan Summary */}
+                <div className="text-xs text-blue-100/40 uppercase tracking-wider mb-3">Plan Summary</div>
+                <div className="grid grid-cols-2 gap-3 mb-6">
                   {[
-                    { label: "Total Gross Cost", value: "$5,143,536" },
+                    { label: "Total Gross Cost", value: "$5,143,536.19" },
                     { label: "Average Members", value: "2,358" },
                     { label: "Plan Cost PMPM", value: "$148.32" },
                     { label: "Adjusted Scripts PMPM", value: "1.25" },
                   ].map((item, i) => (
-                    <div
-                      key={i}
-                      className={`bg-[#0F264A] border border-white/5 rounded-xl p-4 transition-all duration-500 ${leftPanel.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
-                      style={{ transitionDelay: leftPanel.isVisible ? `${200 + i * 100}ms` : '0ms' }}
-                    >
-                      <div className="text-xs text-blue-100/50 uppercase tracking-wider mb-2">{item.label}</div>
+                    <div key={i} className="bg-[#0F264A] border border-white/5 rounded-xl p-4">
+                      <div className="text-xs text-blue-100/50 uppercase tracking-wider mb-1">{item.label}</div>
                       <div className="text-2xl font-bold text-[#D4AF37]">{item.value}</div>
                     </div>
                   ))}
                 </div>
 
-                <div className="border-t border-white/5 pt-6">
-                  <div className="text-xs text-blue-100/40 uppercase tracking-wider mb-4">Plan Trends</div>
-                  <div className="grid grid-cols-2 gap-4">
-                    {[
-                      { label: "Plan Cost PMPM", change: 4.4 },
-                      { label: "Adjusted Scripts PMPM", change: -12 },
-                    ].map((trend, i) => (
-                      <div
-                        key={i}
-                        className={`bg-[#0F264A] border border-white/5 rounded-xl p-4 transition-all duration-500 ${leftPanel.isVisible ? 'opacity-100' : 'opacity-0'}`}
-                        style={{ transitionDelay: leftPanel.isVisible ? `${500 + i * 150}ms` : '0ms' }}
-                      >
-                        <div className="text-xs text-blue-100/50 mb-2">{trend.label}</div>
-                        <div className="flex items-end gap-1 mb-1">
-                          {[40, 55, 45, 65, 50, 70, 60, 80, 75, 90, 85, 100].map((h, idx) => (
-                            <div
-                              key={idx}
-                              className="w-2 bg-[#4A90E2] rounded-t-sm transition-transform duration-500"
-                              style={{
-                                height: `${h * 0.3}px`,
-                                transformOrigin: "bottom",
-                                transform: leftPanel.isVisible ? 'scaleY(1)' : 'scaleY(0)',
-                                transitionDelay: leftPanel.isVisible ? `${600 + idx * 40}ms` : '0ms'
-                              }}
-                            />
-                          ))}
-                        </div>
-                        <div className={`text-sm font-bold ${trend.change > 0 ? 'text-red-400' : 'text-green-400'}`}>
-                          {trend.change > 0 ? '\u2191' : '\u2193'} {Math.abs(trend.change)}%
-                        </div>
+                {/* Plan Trends */}
+                <div className="text-xs text-blue-100/40 uppercase tracking-wider mb-3">Plan Trends</div>
+                <div className="grid grid-cols-2 gap-3 mb-6">
+                  {[
+                    { label: "Plan Cost PMPM", value: "$148.32", change: "+5.12%", up: true },
+                    { label: "Adjusted Scripts PMPM", value: "1.25", change: "-0.62%", up: false },
+                  ].map((item, i) => (
+                    <div key={i} className="bg-[#0F264A] border border-white/5 rounded-xl p-4">
+                      <div className="text-xs text-blue-100/50 mb-1">{item.label}</div>
+                      <div className="flex items-end gap-1 mb-2 h-8">
+                        {[40, 55, 45, 65, 50, 70, 60, 80, 75, 90, 85, 100].map((h, idx) => (
+                          <div key={idx} style={{ height: `${h * 0.3}px` }} className="w-1.5 bg-[#4A90E2] rounded-t-sm" />
+                        ))}
                       </div>
-                    ))}
-                  </div>
+                      <div className={`text-sm font-bold ${item.up ? 'text-red-400' : 'text-green-400'}`}>
+                        {item.change}
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              </div>
 
-              <div className="grid grid-cols-2 gap-4 mt-4">
-                {[
-                  { label: "Total Plan Cost", value: "$4,225,186", highlight: false },
-                  { label: "Scripts", value: "24,273", highlight: false },
-                  { label: "Specialty % of Gross Cost", value: "60.22%", highlight: true },
-                  { label: "Generic Dispensing Rate", value: "89.57%", highlight: false },
-                ].map((item, i) => (
-                  <div
-                    key={i}
-                    className={`bg-[#0B1F40] border border-white/10 rounded-xl p-4 transition-all duration-500 ${leftPanel.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
-                    style={{ transitionDelay: leftPanel.isVisible ? `${400 + i * 100}ms` : '0ms' }}
-                  >
-                    <div className="text-xs text-blue-100/50 uppercase tracking-wider mb-2">{item.label}</div>
-                    <div className={`text-xl font-bold ${item.highlight ? 'text-red-400' : 'text-white'}`}>{item.value}</div>
-                  </div>
-                ))}
+                {/* Bottom metrics */}
+                <div className="grid grid-cols-2 gap-3">
+                  {[
+                    { label: "Total Plan Cost", value: "$4,225,185.57" },
+                    { label: "Scripts", value: "24,273" },
+                    { label: "Specialty % of Gross Cost", value: "60.22%", sub: "5.79%", highlight: true },
+                    { label: "Generic Dispensing Rate", value: "89.57%", sub: "0.24%" },
+                  ].map((item, i) => (
+                    <div key={i} className="bg-[#0F264A] border border-white/5 rounded-xl p-4">
+                      <div className="text-xs text-blue-100/50 uppercase tracking-wider mb-1">{item.label}</div>
+                      <div className={`text-xl font-bold ${'highlight' in item && item.highlight ? 'text-red-400' : 'text-white'}`}>{item.value}</div>
+                      {'sub' in item && item.sub && <div className="text-xs text-green-400 mt-1">{item.sub}</div>}
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
 
-            <div
-              ref={rightPanel.ref}
-              className={`transition-all duration-700 delay-200 ${rightPanel.isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-12'}`}
-            >
+            {/* RIGHT: Performance Dashboards */}
+            <div>
               <div className="bg-[#0B1F40] border border-white/10 rounded-2xl p-8 h-full">
-                <div className="flex items-center gap-3 mb-8">
+                <div className="flex items-center gap-3 mb-2">
                   <BarChart3 className="w-6 h-6 text-[#4A90E2]" />
                   <h3 className="text-xl font-bold text-white">Performance Dashboards</h3>
                 </div>
+                <p className="text-sm text-blue-100/50 mb-6">Illustrates Financial and Utilization Trend by comparing prior performance vs. current</p>
 
-                <div className="mb-8">
-                  <div className="text-sm text-blue-100/60 mb-4">Financial and Utilization Trend</div>
-                  <div className="grid grid-cols-2 gap-6">
+                <div className="grid grid-cols-2 gap-4 mb-6">
+                  {/* Financial Trends */}
+                  <div className="bg-[#0F264A] border border-white/5 rounded-xl p-4">
+                    <div className="text-xs text-blue-100/40 font-semibold mb-3">Financial Trends</div>
+                    <div className="space-y-1.5">
+                      {[
+                        { label: "Total Gross Cost", current: "$5,143,536.19", prior: "$4,230,052.13" },
+                        { label: "Gross Cost PMPM", current: "$181.78", prior: "$142.05" },
+                        { label: "Gross Cost per 30 Days Supply", current: "$149.58", prior: "$129.78" },
+                        { label: "Plan Cost", current: "$4,225,185.57", prior: "$3,684,337.64" },
+                        { label: "Plan Cost PMPM", current: "$148.32", prior: "$142.05" },
+                        { label: "Plan Cost per 30 Days Supply", current: "$119.18", prior: "$119.07" },
+                        { label: "Member Cost", current: "$918,020.63", prior: "$545,407.53" },
+                        { label: "Member Cost PMPM", current: "$32.40", prior: "$32.98" },
+                        { label: "Member Cost per 30 Days Supply", current: "$25.04", prior: "$19.31" },
+                        { label: "Member Cost Share", current: "17.85%", prior: "12.91%" },
+                      ].map((row, i) => (
+                        <div key={i} className="flex items-center justify-between text-[10px]">
+                          <span className="text-blue-100/50 truncate mr-1 flex-1">{row.label}</span>
+                          <span className="text-white font-medium w-24 text-right">{row.current}</span>
+                          <span className="text-blue-100/30 w-24 text-right">{row.prior}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Key Performance & Utilization */}
+                  <div className="space-y-4">
                     <div className="bg-[#0F264A] border border-white/5 rounded-xl p-4">
-                      <div className="text-xs text-blue-100/40 mb-3">Key Performance Metrics</div>
-                      <div className="space-y-2">
+                      <div className="text-xs text-blue-100/40 font-semibold mb-3">Key Performance Metrics</div>
+                      <div className="space-y-1.5">
                         {[
-                          { label: "Total Gross Cost", current: "$4.1M", prior: "$4.2M" },
-                          { label: "Gross Cost PMPM", current: "$181.78", prior: "$182.02" },
-                          { label: "Plan Cost", current: "$4.02M", prior: "$3.69M" },
-                          { label: "Plan Cost PMPM", current: "$145.42", prior: "$142.05" },
-                          { label: "Member Cost Share", current: "17.85%", prior: "19.39%" },
+                          { label: "Average Members", current: "2,358", prior: "2,358" },
+                          { label: "Unique Utilizing Members", current: "2,794", prior: "2,887" },
+                          { label: "Scripts", current: "24,273", prior: "24,574" },
+                          { label: "Adjusted Scripts PMPM", current: "1.25", prior: "1.28" },
+                          { label: "Days Supply PMPM", current: "37.48", prior: "31.75" },
+                          { label: "Generic Dispensing Rate", current: "89.57%", prior: "89.33%" },
+                          { label: "Mail Utilization Rate", current: "7.06%", prior: "7.8%" },
+                          { label: "Specialty % of Gross Cost", current: "60.22%", prior: "58.97%" },
+                          { label: "Claimants with Plan Cost > $100,000", current: "5", prior: "5" },
                         ].map((row, i) => (
-                          <div
-                            key={i}
-                            className={`flex items-center justify-between text-xs transition-all duration-400 ${rightPanel.isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-3'}`}
-                            style={{ transitionDelay: rightPanel.isVisible ? `${400 + i * 60}ms` : '0ms' }}
-                          >
-                            <span className="text-blue-100/50 truncate mr-2">{row.label}</span>
-                            <div className="flex gap-3">
-                              <span className="text-white font-medium">{row.current}</span>
-                              <span className="text-blue-100/30">{row.prior}</span>
-                            </div>
+                          <div key={i} className="flex items-center justify-between text-[10px]">
+                            <span className="text-blue-100/50 truncate mr-1 flex-1">{row.label}</span>
+                            <span className="text-white font-medium w-16 text-right">{row.current}</span>
+                            <span className="text-blue-100/30 w-16 text-right">{row.prior}</span>
                           </div>
                         ))}
                       </div>
                     </div>
 
                     <div className="bg-[#0F264A] border border-white/5 rounded-xl p-4">
-                      <div className="text-xs text-blue-100/40 mb-3">Utilization Trends</div>
-                      <div className="space-y-2">
+                      <div className="text-xs text-blue-100/40 font-semibold mb-3">Utilization Trends</div>
+                      <div className="space-y-1.5">
                         {[
                           { label: "Average Members", current: "2,358", trend: "2,358" },
                           { label: "Unique Utilizing", current: "2,794", trend: "2,887" },
@@ -217,16 +190,10 @@ function StewardshipReportSection() {
                           { label: "Days Supply PMPM", current: "21.08", trend: "21.08" },
                           { label: "Mail Utilization Rate", current: "7.06%", trend: "9.17%" },
                         ].map((row, i) => (
-                          <div
-                            key={i}
-                            className={`flex items-center justify-between text-xs transition-all duration-400 ${rightPanel.isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-3'}`}
-                            style={{ transitionDelay: rightPanel.isVisible ? `${500 + i * 60}ms` : '0ms' }}
-                          >
-                            <span className="text-blue-100/50 truncate mr-2">{row.label}</span>
-                            <div className="flex gap-3">
-                              <span className="text-white font-medium">{row.current}</span>
-                              <span className="text-blue-100/30">{row.trend}</span>
-                            </div>
+                          <div key={i} className="flex items-center justify-between text-[10px]">
+                            <span className="text-blue-100/50 truncate mr-1 flex-1">{row.label}</span>
+                            <span className="text-white font-medium w-16 text-right">{row.current}</span>
+                            <span className="text-blue-100/30 w-16 text-right">{row.trend}</span>
                           </div>
                         ))}
                       </div>
@@ -234,80 +201,50 @@ function StewardshipReportSection() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-3 gap-4 mb-6">
+                {/* Cost and Allocations - Charts */}
+                <div className="text-xs text-blue-100/40 font-semibold mb-3">Cost and Allocations</div>
+                <div className="grid grid-cols-3 gap-3 mb-6">
                   {[
-                    { label: "Gross Cost PMPM", bars: [65, 80, 55, 90] },
-                    { label: "Member Cost PMPM", bars: [40, 55, 35, 50] },
-                    { label: "Plan Cost PMPM", bars: [75, 85, 70, 95] },
+                    { label: "Gross Cost PMPM" },
+                    { label: "Member Cost PMPM" },
+                    { label: "Plan Cost PMPM" },
                   ].map((chart, i) => (
-                    <div
-                      key={i}
-                      className={`bg-[#0F264A] border border-white/5 rounded-xl p-4 transition-all duration-500 ${rightPanel.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'}`}
-                      style={{ transitionDelay: rightPanel.isVisible ? `${300 + i * 150}ms` : '0ms' }}
-                    >
-                      <div className="text-xs text-blue-100/40 mb-3">{chart.label}</div>
-                      <div className="flex items-end gap-1 h-16">
-                        {chart.bars.map((h, idx) => (
-                          <div
-                            key={idx}
-                            className={`flex-1 rounded-t-sm transition-transform duration-500 ${idx % 2 === 0 ? 'bg-[#4A90E2]' : 'bg-[#D4AF37]'}`}
-                            style={{
-                              height: `${h * 0.6}px`,
-                              transformOrigin: "bottom",
-                              transform: rightPanel.isVisible ? 'scaleY(1)' : 'scaleY(0)',
-                              transitionDelay: rightPanel.isVisible ? `${500 + idx * 80}ms` : '0ms'
-                            }}
-                          />
-                        ))}
-                      </div>
-                      <div className="flex justify-between mt-2">
-                        <span className="text-[8px] text-blue-100/30">Current</span>
-                        <span className="text-[8px] text-blue-100/30">Prior</span>
+                    <div key={i} className="bg-[#0F264A] border border-white/5 rounded-xl p-3">
+                      <div className="text-[10px] text-blue-100/40 mb-2">{chart.label}</div>
+                      <div className="flex items-end justify-center gap-2 h-14">
+                        <div className="flex flex-col items-center gap-1">
+                          <div className="w-5 bg-[#4A90E2] rounded-t-sm" style={{ height: '32px' }}></div>
+                          <span className="text-[8px] text-blue-100/30">Current</span>
+                        </div>
+                        <div className="flex flex-col items-center gap-1">
+                          <div className="w-5 bg-[#D4AF37] rounded-t-sm" style={{ height: '28px' }}></div>
+                          <span className="text-[8px] text-blue-100/30">Prior</span>
+                        </div>
                       </div>
                     </div>
                   ))}
                 </div>
 
+                {/* Donut Charts */}
                 <div className="grid grid-cols-2 gap-4">
-                  <div
-                    className={`bg-[#0F264A] border border-white/5 rounded-xl p-4 flex flex-col items-center transition-all duration-600 ${rightPanel.isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-90'}`}
-                    style={{ transitionDelay: rightPanel.isVisible ? '600ms' : '0ms' }}
-                  >
+                  <div className="bg-[#0F264A] border border-white/5 rounded-xl p-4 flex flex-col items-center">
                     <div className="text-xs text-blue-100/40 mb-3">Generic Dispensing Rate</div>
                     <div className="relative w-24 h-24">
                       <svg viewBox="0 0 36 36" className="w-24 h-24 transform -rotate-90">
                         <circle cx="18" cy="18" r="14" fill="none" stroke="#1a3b6e" strokeWidth="3" />
-                        <circle
-                          cx="18" cy="18" r="14" fill="none" stroke="#4A90E2" strokeWidth="3"
-                          strokeDasharray="87.96"
-                          strokeDashoffset={rightPanel.isVisible ? 87.96 * (1 - 0.8957) : 87.96}
-                          strokeLinecap="round"
-                          className="transition-all duration-[1.5s] ease-out"
-                          style={{ transitionDelay: rightPanel.isVisible ? '800ms' : '0ms' }}
-                        />
+                        <circle cx="18" cy="18" r="14" fill="none" stroke="#4A90E2" strokeWidth="3" strokeDasharray="87.96" strokeDashoffset={87.96 * (1 - 0.8957)} strokeLinecap="round" />
                       </svg>
                       <div className="absolute inset-0 flex items-center justify-center">
                         <span className="text-lg font-bold text-white">89.6%</span>
                       </div>
                     </div>
                   </div>
-
-                  <div
-                    className={`bg-[#0F264A] border border-white/5 rounded-xl p-4 flex flex-col items-center transition-all duration-600 ${rightPanel.isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-90'}`}
-                    style={{ transitionDelay: rightPanel.isVisible ? '700ms' : '0ms' }}
-                  >
+                  <div className="bg-[#0F264A] border border-white/5 rounded-xl p-4 flex flex-col items-center">
                     <div className="text-xs text-blue-100/40 mb-3">Share of Specialty</div>
                     <div className="relative w-24 h-24">
                       <svg viewBox="0 0 36 36" className="w-24 h-24 transform -rotate-90">
                         <circle cx="18" cy="18" r="14" fill="none" stroke="#1a3b6e" strokeWidth="3" />
-                        <circle
-                          cx="18" cy="18" r="14" fill="none" stroke="#D4AF37" strokeWidth="3"
-                          strokeDasharray="87.96"
-                          strokeDashoffset={rightPanel.isVisible ? 87.96 * (1 - 0.6022) : 87.96}
-                          strokeLinecap="round"
-                          className="transition-all duration-[1.5s] ease-out"
-                          style={{ transitionDelay: rightPanel.isVisible ? '900ms' : '0ms' }}
-                        />
+                        <circle cx="18" cy="18" r="14" fill="none" stroke="#D4AF37" strokeWidth="3" strokeDasharray="87.96" strokeDashoffset={87.96 * (1 - 0.6022)} strokeLinecap="round" />
                       </svg>
                       <div className="absolute inset-0 flex items-center justify-center">
                         <span className="text-lg font-bold text-white">60.2%</span>
@@ -319,28 +256,44 @@ function StewardshipReportSection() {
             </div>
           </div>
 
-          <div ref={bottomCards.ref} className="grid md:grid-cols-4 gap-4">
-            {[
-              { icon: DollarSign, label: "Top Claimant", value: "$94,333.03", sub: "Crysvita", detail: "12.03% of Total Plan Cost", color: "text-red-400" },
-              { icon: FlaskConical, label: "Top Therapeutic Class", value: "Endocrine & Metabolic", sub: "$604,180.46", detail: "14.19% of Total Plan Cost", color: "text-[#4A90E2]" },
-              { icon: Pill, label: "Largest Plan Cost Increase", value: "Mavencled", sub: "$175,119.46", detail: "10 Tablets", color: "text-orange-400" },
-              { icon: TrendingUp, label: "Top Trend Driver", value: "Psychotherapeutic", sub: "$159,633.64", detail: "6.77% Trend Impact", color: "text-[#D4AF37]" },
-            ].map((item, i) => (
-              <div
-                key={i}
-                className={`bg-[#0B1F40] border border-white/10 rounded-xl p-5 group hover:border-[#D4AF37]/30 transition-all duration-500 ${bottomCards.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
-                style={{ transitionDelay: bottomCards.isVisible ? `${i * 120}ms` : '0ms' }}
-                data-testid={`stewardship-highlight-${i}`}
-              >
-                <div className="flex items-center gap-2 mb-3">
-                  <Icon icon={item.icon} className={`w-5 h-5 ${item.color}`} />
-                  <span className="text-xs text-blue-100/50 uppercase tracking-wider">{item.label}</span>
-                </div>
-                <div className={`text-lg font-bold mb-1 ${item.color}`}>{item.value}</div>
-                <div className="text-sm text-white font-medium mb-1">{item.sub}</div>
-                <div className="text-xs text-blue-100/40">{item.detail}</div>
+          {/* Bottom Highlight Cards */}
+          <div className="grid md:grid-cols-4 gap-4">
+            <div className="bg-[#0B1F40] border border-white/10 rounded-xl p-5 hover:border-[#D4AF37]/30 transition-colors" data-testid="stewardship-highlight-0">
+              <div className="flex items-center gap-2 mb-3">
+                <DollarSign className="w-5 h-5 text-red-400" />
+                <span className="text-xs text-blue-100/50 uppercase tracking-wider">Top Claimant</span>
               </div>
-            ))}
+              <div className="text-lg font-bold text-red-400 mb-1">$94,333.03</div>
+              <div className="text-sm text-white font-medium mb-1">Crysvita</div>
+              <div className="text-xs text-blue-100/40">12.69% of Total Plan Cost</div>
+            </div>
+            <div className="bg-[#0B1F40] border border-white/10 rounded-xl p-5 hover:border-[#D4AF37]/30 transition-colors" data-testid="stewardship-highlight-1">
+              <div className="flex items-center gap-2 mb-3">
+                <FlaskConical className="w-5 h-5 text-[#4A90E2]" />
+                <span className="text-xs text-blue-100/50 uppercase tracking-wider">Top Therapeutic Class</span>
+              </div>
+              <div className="text-lg font-bold text-[#4A90E2] mb-1">Endocrine And Metabolic Agents - Misc.</div>
+              <div className="text-sm text-white font-medium mb-1">$604,190.46</div>
+              <div className="text-xs text-blue-100/40">16.19% of Total Plan Cost</div>
+            </div>
+            <div className="bg-[#0B1F40] border border-white/10 rounded-xl p-5 hover:border-[#D4AF37]/30 transition-colors" data-testid="stewardship-highlight-2">
+              <div className="flex items-center gap-2 mb-3">
+                <Pill className="w-5 h-5 text-orange-400" />
+                <span className="text-xs text-blue-100/50 uppercase tracking-wider">Drug with Largest Plan Cost Increase</span>
+              </div>
+              <div className="text-lg font-bold text-orange-400 mb-1">Mavenclad (10 Tabs)</div>
+              <div className="text-sm text-white font-medium mb-1">$175,119.46</div>
+              <div className="text-xs text-blue-100/40">$175,119.46</div>
+            </div>
+            <div className="bg-[#0B1F40] border border-white/10 rounded-xl p-5 hover:border-[#D4AF37]/30 transition-colors" data-testid="stewardship-highlight-3">
+              <div className="flex items-center gap-2 mb-3">
+                <TrendingUp className="w-5 h-5 text-[#D4AF37]" />
+                <span className="text-xs text-blue-100/50 uppercase tracking-wider">Top Trend Driver</span>
+              </div>
+              <div className="text-lg font-bold text-[#D4AF37] mb-1">Psychotherapeutic And Neurological Agents - Misc.</div>
+              <div className="text-sm text-white font-medium mb-1">$159,633.64</div>
+              <div className="text-xs text-blue-100/40">6.77% Trend Impact</div>
+            </div>
           </div>
         </div>
       </div>
