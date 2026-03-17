@@ -432,12 +432,7 @@ export default function Home() {
 
           <div className="max-w-7xl mx-auto">
             <div className="grid lg:grid-cols-2 gap-8 mb-12">
-              <motion.div
-                initial={{ opacity: 0, x: -40 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
-              >
+              <div>
                 <div className="bg-[#0B1F40] border border-white/10 rounded-2xl p-8">
                   <div className="flex items-center gap-3 mb-8">
                     <FileText className="w-6 h-6 text-[#D4AF37]" />
@@ -447,22 +442,15 @@ export default function Home() {
 
                   <div className="grid grid-cols-2 gap-4 mb-6">
                     {[
-                      { label: "Total Gross Cost", value: "$5,143,536", prefix: "$" },
-                      { label: "Average Members", value: "2,358", prefix: "" },
-                      { label: "Plan Cost PMPM", value: "$148.32", prefix: "$" },
-                      { label: "Adjusted Scripts PMPM", value: "1.25", prefix: "" },
+                      { label: "Total Gross Cost", value: "$5,143,536" },
+                      { label: "Average Members", value: "2,358" },
+                      { label: "Plan Cost PMPM", value: "$148.32" },
+                      { label: "Adjusted Scripts PMPM", value: "1.25" },
                     ].map((item, i) => (
-                      <motion.div
-                        key={i}
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.2 + i * 0.1 }}
-                        className="bg-[#0F264A] border border-white/5 rounded-xl p-4"
-                      >
+                      <div key={i} className="bg-[#0F264A] border border-white/5 rounded-xl p-4">
                         <div className="text-xs text-blue-100/50 uppercase tracking-wider mb-2">{item.label}</div>
                         <div className="text-2xl font-bold text-[#D4AF37]">{item.value}</div>
-                      </motion.div>
+                      </div>
                     ))}
                   </div>
 
@@ -470,34 +458,24 @@ export default function Home() {
                     <div className="text-xs text-blue-100/40 uppercase tracking-wider mb-4">Plan Trends</div>
                     <div className="grid grid-cols-2 gap-4">
                       {[
-                        { label: "Plan Cost PMPM", current: 148.32, prior: 142.05, change: 4.4 },
-                        { label: "Adjusted Scripts PMPM", current: 1.25, prior: 1.42, change: -12 },
+                        { label: "Plan Cost PMPM", change: 4.4 },
+                        { label: "Adjusted Scripts PMPM", change: -12 },
                       ].map((trend, i) => (
-                        <motion.div
-                          key={i}
-                          initial={{ opacity: 0 }}
-                          whileInView={{ opacity: 1 }}
-                          viewport={{ once: true }}
-                          transition={{ delay: 0.5 + i * 0.15 }}
-                          className="bg-[#0F264A] border border-white/5 rounded-xl p-4"
-                        >
+                        <div key={i} className="bg-[#0F264A] border border-white/5 rounded-xl p-4">
                           <div className="text-xs text-blue-100/50 mb-2">{trend.label}</div>
                           <div className="flex items-end gap-1 mb-1">
                             {[40, 55, 45, 65, 50, 70, 60, 80, 75, 90, 85, 100].map((h, idx) => (
-                              <motion.div
+                              <div
                                 key={idx}
-                                initial={{ height: 0 }}
-                                whileInView={{ height: `${h * 0.3}px` }}
-                                viewport={{ once: true }}
-                                transition={{ delay: 0.6 + idx * 0.05, duration: 0.4 }}
+                                style={{ height: `${h * 0.3}px` }}
                                 className="w-2 bg-[#4A90E2] rounded-t-sm"
                               />
                             ))}
                           </div>
                           <div className={`text-sm font-bold ${trend.change > 0 ? 'text-red-400' : 'text-green-400'}`}>
-                            {trend.change > 0 ? '↑' : '↓'} {Math.abs(trend.change)}%
+                            {trend.change > 0 ? '\u2191' : '\u2193'} {Math.abs(trend.change)}%
                           </div>
-                        </motion.div>
+                        </div>
                       ))}
                     </div>
                   </div>
@@ -505,32 +483,20 @@ export default function Home() {
 
                 <div className="grid grid-cols-2 gap-4 mt-4">
                   {[
-                    { label: "Total Plan Cost", value: "$4,225,186" },
-                    { label: "Scripts", value: "24,273" },
+                    { label: "Total Plan Cost", value: "$4,225,186", highlight: false },
+                    { label: "Scripts", value: "24,273", highlight: false },
                     { label: "Specialty % of Gross Cost", value: "60.22%", highlight: true },
-                    { label: "Generic Dispensing Rate", value: "89.57%" },
+                    { label: "Generic Dispensing Rate", value: "89.57%", highlight: false },
                   ].map((item, i) => (
-                    <motion.div
-                      key={i}
-                      initial={{ opacity: 0, y: 15 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: 0.3 + i * 0.1 }}
-                      className="bg-[#0B1F40] border border-white/10 rounded-xl p-4"
-                    >
+                    <div key={i} className="bg-[#0B1F40] border border-white/10 rounded-xl p-4">
                       <div className="text-xs text-blue-100/50 uppercase tracking-wider mb-2">{item.label}</div>
                       <div className={`text-xl font-bold ${item.highlight ? 'text-red-400' : 'text-white'}`}>{item.value}</div>
-                    </motion.div>
+                    </div>
                   ))}
                 </div>
-              </motion.div>
+              </div>
 
-              <motion.div
-                initial={{ opacity: 0, x: 40 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-              >
+              <div>
                 <div className="bg-[#0B1F40] border border-white/10 rounded-2xl p-8 h-full">
                   <div className="flex items-center gap-3 mb-8">
                     <BarChart3 className="w-6 h-6 text-[#4A90E2]" />
@@ -550,20 +516,13 @@ export default function Home() {
                             { label: "Plan Cost PMPM", current: "$145.42", prior: "$142.05" },
                             { label: "Member Cost Share", current: "17.85%", prior: "19.39%" },
                           ].map((row, i) => (
-                            <motion.div
-                              key={i}
-                              initial={{ opacity: 0, x: 10 }}
-                              whileInView={{ opacity: 1, x: 0 }}
-                              viewport={{ once: true }}
-                              transition={{ delay: 0.4 + i * 0.08 }}
-                              className="flex items-center justify-between text-xs"
-                            >
+                            <div key={i} className="flex items-center justify-between text-xs">
                               <span className="text-blue-100/50 truncate mr-2">{row.label}</span>
                               <div className="flex gap-3">
                                 <span className="text-white font-medium">{row.current}</span>
                                 <span className="text-blue-100/30">{row.prior}</span>
                               </div>
-                            </motion.div>
+                            </div>
                           ))}
                         </div>
                       </div>
@@ -578,20 +537,13 @@ export default function Home() {
                             { label: "Days Supply PMPM", current: "21.08", trend: "21.08" },
                             { label: "Mail Utilization Rate", current: "7.06%", trend: "9.17%" },
                           ].map((row, i) => (
-                            <motion.div
-                              key={i}
-                              initial={{ opacity: 0, x: 10 }}
-                              whileInView={{ opacity: 1, x: 0 }}
-                              viewport={{ once: true }}
-                              transition={{ delay: 0.5 + i * 0.08 }}
-                              className="flex items-center justify-between text-xs"
-                            >
+                            <div key={i} className="flex items-center justify-between text-xs">
                               <span className="text-blue-100/50 truncate mr-2">{row.label}</span>
                               <div className="flex gap-3">
                                 <span className="text-white font-medium">{row.current}</span>
                                 <span className="text-blue-100/30">{row.trend}</span>
                               </div>
-                            </motion.div>
+                            </div>
                           ))}
                         </div>
                       </div>
@@ -600,27 +552,17 @@ export default function Home() {
 
                   <div className="grid grid-cols-3 gap-4 mb-6">
                     {[
-                      { label: "Gross Cost PMPM", bars: [65, 80, 55, 90], colors: ["#4A90E2", "#D4AF37"] },
-                      { label: "Member Cost PMPM", bars: [40, 55, 35, 50], colors: ["#4A90E2", "#D4AF37"] },
-                      { label: "Plan Cost PMPM", bars: [75, 85, 70, 95], colors: ["#4A90E2", "#D4AF37"] },
+                      { label: "Gross Cost PMPM", bars: [65, 80, 55, 90] },
+                      { label: "Member Cost PMPM", bars: [40, 55, 35, 50] },
+                      { label: "Plan Cost PMPM", bars: [75, 85, 70, 95] },
                     ].map((chart, i) => (
-                      <motion.div
-                        key={i}
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.6 + i * 0.15 }}
-                        className="bg-[#0F264A] border border-white/5 rounded-xl p-4"
-                      >
+                      <div key={i} className="bg-[#0F264A] border border-white/5 rounded-xl p-4">
                         <div className="text-xs text-blue-100/40 mb-3">{chart.label}</div>
                         <div className="flex items-end gap-1 h-16">
                           {chart.bars.map((h, idx) => (
-                            <motion.div
+                            <div
                               key={idx}
-                              initial={{ height: 0 }}
-                              whileInView={{ height: `${h * 0.6}px` }}
-                              viewport={{ once: true }}
-                              transition={{ delay: 0.8 + idx * 0.1, duration: 0.5 }}
+                              style={{ height: `${h * 0.6}px` }}
                               className={`flex-1 rounded-t-sm ${idx % 2 === 0 ? 'bg-[#4A90E2]' : 'bg-[#D4AF37]'}`}
                             />
                           ))}
@@ -629,29 +571,20 @@ export default function Home() {
                           <span className="text-[8px] text-blue-100/30">Current</span>
                           <span className="text-[8px] text-blue-100/30">Prior</span>
                         </div>
-                      </motion.div>
+                      </div>
                     ))}
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
-                    <motion.div
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: 0.8, duration: 0.5 }}
-                      className="bg-[#0F264A] border border-white/5 rounded-xl p-4 flex flex-col items-center"
-                    >
+                    <div className="bg-[#0F264A] border border-white/5 rounded-xl p-4 flex flex-col items-center">
                       <div className="text-xs text-blue-100/40 mb-3">Generic Dispensing Rate</div>
                       <div className="relative w-24 h-24">
                         <svg viewBox="0 0 36 36" className="w-24 h-24 transform -rotate-90">
                           <circle cx="18" cy="18" r="14" fill="none" stroke="#1a3b6e" strokeWidth="3" />
-                          <motion.circle
+                          <circle
                             cx="18" cy="18" r="14" fill="none" stroke="#4A90E2" strokeWidth="3"
                             strokeDasharray="87.96"
-                            initial={{ strokeDashoffset: 87.96 }}
-                            whileInView={{ strokeDashoffset: 87.96 * (1 - 0.8957) }}
-                            viewport={{ once: true }}
-                            transition={{ delay: 1, duration: 1.2, ease: "easeOut" }}
+                            strokeDashoffset={87.96 * (1 - 0.8957)}
                             strokeLinecap="round"
                           />
                         </svg>
@@ -659,26 +592,17 @@ export default function Home() {
                           <span className="text-lg font-bold text-white">89.6%</span>
                         </div>
                       </div>
-                    </motion.div>
+                    </div>
 
-                    <motion.div
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: 0.9, duration: 0.5 }}
-                      className="bg-[#0F264A] border border-white/5 rounded-xl p-4 flex flex-col items-center"
-                    >
+                    <div className="bg-[#0F264A] border border-white/5 rounded-xl p-4 flex flex-col items-center">
                       <div className="text-xs text-blue-100/40 mb-3">Share of Specialty</div>
                       <div className="relative w-24 h-24">
                         <svg viewBox="0 0 36 36" className="w-24 h-24 transform -rotate-90">
                           <circle cx="18" cy="18" r="14" fill="none" stroke="#1a3b6e" strokeWidth="3" />
-                          <motion.circle
+                          <circle
                             cx="18" cy="18" r="14" fill="none" stroke="#D4AF37" strokeWidth="3"
                             strokeDasharray="87.96"
-                            initial={{ strokeDashoffset: 87.96 }}
-                            whileInView={{ strokeDashoffset: 87.96 * (1 - 0.6022) }}
-                            viewport={{ once: true }}
-                            transition={{ delay: 1.1, duration: 1.2, ease: "easeOut" }}
+                            strokeDashoffset={87.96 * (1 - 0.6022)}
                             strokeLinecap="round"
                           />
                         </svg>
@@ -686,10 +610,10 @@ export default function Home() {
                           <span className="text-lg font-bold text-white">60.2%</span>
                         </div>
                       </div>
-                    </motion.div>
+                    </div>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             </div>
 
             <div className="grid md:grid-cols-4 gap-4">
@@ -699,12 +623,8 @@ export default function Home() {
                 { icon: Pill, label: "Largest Plan Cost Increase", value: "Mavencled", sub: "$175,119.46", detail: "10 Tablets", color: "text-orange-400" },
                 { icon: TrendingUp, label: "Top Trend Driver", value: "Psychotherapeutic", sub: "$159,633.64", detail: "6.77% Trend Impact", color: "text-[#D4AF37]" },
               ].map((item, i) => (
-                <motion.div
+                <div
                   key={i}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.3 + i * 0.1 }}
                   className="bg-[#0B1F40] border border-white/10 rounded-xl p-5 group hover:border-[#D4AF37]/30 transition-colors"
                   data-testid={`stewardship-highlight-${i}`}
                 >
@@ -715,7 +635,7 @@ export default function Home() {
                   <div className={`text-lg font-bold mb-1 ${item.color}`}>{item.value}</div>
                   <div className="text-sm text-white font-medium mb-1">{item.sub}</div>
                   <div className="text-xs text-blue-100/40">{item.detail}</div>
-                </motion.div>
+                </div>
               ))}
             </div>
           </div>
