@@ -139,11 +139,7 @@ function StewardshipReportSection() {
         <div className="container mx-auto px-6 flex flex-col h-full py-8">
 
           <div
-            className="text-center mb-6 shrink-0 transition-all duration-700 ease-out"
-            style={{
-              opacity: activeSlide >= 0 ? 1 : 0,
-              transform: activeSlide >= 0 ? 'translateY(0)' : 'translateY(30px)',
-            }}
+            className="text-center mb-6 shrink-0"
           >
             <div className="flex items-center justify-center gap-3 text-[#D4AF37] font-medium text-sm mb-4 tracking-widest uppercase">
               <span className="w-12 h-[1px] bg-[#D4AF37]"></span>
