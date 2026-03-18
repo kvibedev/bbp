@@ -20,7 +20,9 @@ import {
   FileText,
   Pill,
   FlaskConical,
-  PieChart
+  PieChart,
+  Scale,
+  GitCompare
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
@@ -485,8 +487,10 @@ function ReportingAnalyticsSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const slide0Ref = useRef<HTMLDivElement>(null);
   const slide1Ref = useRef<HTMLDivElement>(null);
+  const slide2Ref = useRef<HTMLDivElement>(null);
+  const slide3Ref = useRef<HTMLDivElement>(null);
   const [activeSlide, setActiveSlide] = useState(-1);
-  const TOTAL_SLIDES = 2;
+  const TOTAL_SLIDES = 4;
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -518,7 +522,7 @@ function ReportingAnalyticsSection() {
   }, []);
 
   useEffect(() => {
-    [slide0Ref, slide1Ref].forEach((ref) => {
+    [slide0Ref, slide1Ref, slide2Ref, slide3Ref].forEach((ref) => {
       if (ref.current) ref.current.scrollTop = 0;
     });
   }, [activeSlide]);
@@ -553,7 +557,54 @@ function ReportingAnalyticsSection() {
 
   const maxClaimantCost = Math.max(...claimants.map(c => c.current));
 
-  const slideLabels = ["Top Drugs Report", "Large Claimant Report"];
+  const brandDrugs = [
+    { rank: 1, name: "Vyvanse", cost: 56805, scripts: 161 },
+    { rank: 2, name: "Aubagio", cost: 56083, scripts: 7 },
+    { rank: 3, name: "Symbicort", cost: 21491, scripts: 26 },
+    { rank: 4, name: "Advair Diskus", cost: 17246, scripts: 18 },
+    { rank: 5, name: "Latuda", cost: 12434, scripts: 9 },
+    { rank: 6, name: "Flovent HFA", cost: 7880, scripts: 31 },
+    { rank: 7, name: "Breo Ellipta", cost: 7193, scripts: 9 },
+    { rank: 8, name: "Keppra", cost: 5769, scripts: 5 },
+    { rank: 9, name: "Synthroid", cost: 4907, scripts: 50 },
+    { rank: 10, name: "Advair HFA", cost: 3334, scripts: 5 },
+  ];
+
+  const maxBrandCost = Math.max(...brandDrugs.map(d => d.cost));
+  const totalBrandSpend = brandDrugs.reduce((sum, d) => sum + d.cost, 0);
+
+  const nadacDrugs = [
+    { rank: 1, name: "Rinvoq", scripts: 13, ingredientCost: 73546, nadac: 71602, nadacDiff: 1944, markupPct: 2.7, avgDiff: 150 },
+    { rank: 2, name: "Posaconazole", scripts: 1, ingredientCost: 2174, nadac: 403, nadacDiff: 1770, markupPct: 438.8, avgDiff: 1770 },
+    { rank: 3, name: "Sildenafil Citrate", scripts: 1, ingredientCost: 868, nadac: 6, nadacDiff: 862, markupPct: 14464.1, avgDiff: 862 },
+    { rank: 4, name: "Mycophenolate Mofetil", scripts: 4, ingredientCost: 1039, nadac: 499, nadacDiff: 539, markupPct: 108.0, avgDiff: 135 },
+    { rank: 5, name: "Hydroxychloroquine Sulfate", scripts: 4, ingredientCost: 559, nadac: 117, nadacDiff: 442, markupPct: 377.0, avgDiff: 111 },
+    { rank: 6, name: "Dupixent", scripts: 1, ingredientCost: 6930, nadac: 6549, nadacDiff: 381, markupPct: 5.8, avgDiff: 381 },
+    { rank: 7, name: "Omeprazole", scripts: 5, ingredientCost: 354, nadac: 23, nadacDiff: 331, markupPct: 1422.5, avgDiff: 66 },
+    { rank: 8, name: "Valsartan", scripts: 4, ingredientCost: 418, nadac: 87, nadacDiff: 331, markupPct: 382.1, avgDiff: 83 },
+    { rank: 9, name: "Rosuvastatin Calcium", scripts: 11, ingredientCost: 338, nadac: 62, nadacDiff: 276, markupPct: 446.3, avgDiff: 25 },
+    { rank: 10, name: "Atorvastatin Calcium", scripts: 18, ingredientCost: 321, nadac: 73, nadacDiff: 248, markupPct: 341.8, avgDiff: 14 },
+  ];
+
+  const totalNadacOverpay = nadacDrugs.reduce((sum, d) => sum + d.nadacDiff, 0);
+  const highestMarkup = Math.max(...nadacDrugs.map(d => d.markupPct));
+  const maxNadacDiff = Math.max(...nadacDrugs.map(d => d.nadacDiff));
+
+  const getMarkupColor = (pct: number) => {
+    if (pct >= 1000) return 'text-red-400';
+    if (pct >= 300) return 'text-orange-400';
+    if (pct >= 100) return 'text-yellow-400';
+    return 'text-green-400';
+  };
+
+  const getMarkupBarColor = (pct: number) => {
+    if (pct >= 1000) return '#ef4444';
+    if (pct >= 300) return '#f97316';
+    if (pct >= 100) return '#eab308';
+    return '#22c55e';
+  };
+
+  const slideLabels = ["Top Drugs Report", "Large Claimant Report", "Multi-Source Brand", "NADAC Differential"];
 
   const formatCurrency = (n: number) => `$${n.toLocaleString()}`;
 
@@ -818,6 +869,197 @@ function ReportingAnalyticsSection() {
                         </span>
                       </div>
                       <span className="text-blue-100/50 text-right text-xs">{c.share}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div
+              className="absolute inset-0 transition-all duration-600 ease-out"
+              style={{
+                opacity: activeSlide === 2 ? 1 : 0,
+                transform: activeSlide === 2 ? 'translateY(0) scale(1)' : activeSlide < 2 ? 'translateY(40px) scale(0.96)' : 'translateY(-40px) scale(0.96)',
+                pointerEvents: activeSlide === 2 ? 'auto' : 'none',
+              }}
+            >
+              <div ref={slide2Ref} className="bg-[#0B1F40] border border-white/10 rounded-3xl p-6 md:p-8 h-full overflow-y-auto">
+                <div className="flex items-center justify-between mb-5">
+                  <div className="flex items-center gap-4">
+                    <div className="w-10 h-10 rounded-xl bg-green-500/10 border border-green-500/20 flex items-center justify-center">
+                      <GitCompare className="w-5 h-5 text-green-400" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl md:text-2xl font-bold text-white" data-testid="text-multi-source-brand-title">Multi-Source Brand Report</h3>
+                      <p className="text-blue-100/50 text-xs">Brand drugs with available generic equivalents</p>
+                    </div>
+                  </div>
+                  <div className="hidden md:block bg-[#0F264A] border border-green-500/20 rounded-xl px-4 py-2.5">
+                    <div className="text-[10px] text-green-400 uppercase tracking-wider font-semibold mb-1">Available Formats</div>
+                    <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-[10px] text-blue-100/50">
+                      <span>By Ingredient Cost</span>
+                      <span>By Script Count</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-3 gap-3 mb-5">
+                  {[
+                    { label: "Total Brand Spend", value: formatCurrency(totalBrandSpend), sub: "10 brand drugs identified", color: "text-green-400", tid: "total-brand-spend" },
+                    { label: "Drugs with Generics", value: "10", sub: "All have generic alternatives", color: "text-[#D4AF37]", tid: "drugs-with-generics" },
+                    { label: "Top Brand Cost", value: formatCurrency(brandDrugs[0].cost), sub: `${brandDrugs[0].name} — ${brandDrugs[0].scripts} scripts`, color: "text-[#4A90E2]", tid: "top-brand-cost" },
+                  ].map((card, i) => (
+                    <div
+                      key={i}
+                      className="bg-[#0F264A] border border-white/5 rounded-xl p-3 transition-all duration-500 ease-out"
+                      data-testid={`card-${card.tid}`}
+                      style={{
+                        opacity: activeSlide === 2 ? 1 : 0,
+                        transform: activeSlide === 2 ? 'translateY(0)' : 'translateY(15px)',
+                        transitionDelay: activeSlide === 2 ? `${150 + i * 80}ms` : '0ms',
+                      }}
+                    >
+                      <div className="text-[10px] text-blue-100/50 uppercase tracking-wider font-medium mb-1">{card.label}</div>
+                      <div className={`text-xl font-bold ${card.color}`}>{card.value}</div>
+                      <div className="text-[11px] text-blue-100/40 mt-0.5">{card.sub}</div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="bg-[#0F264A] border border-white/5 rounded-xl overflow-hidden">
+                  <div className="grid grid-cols-[1.5rem_1fr_1fr_4rem] gap-x-2 px-4 py-2 text-[10px] text-blue-100/40 uppercase tracking-wider font-semibold border-b border-white/5">
+                    <span>#</span>
+                    <span>Drug Name</span>
+                    <span>Ingredient Cost</span>
+                    <span className="text-right">Scripts</span>
+                  </div>
+                  {brandDrugs.map((drug, i) => (
+                    <div
+                      key={i}
+                      className="grid grid-cols-[1.5rem_1fr_1fr_4rem] gap-x-2 items-center px-4 py-1.5 text-sm border-b border-white/[0.03] transition-all duration-400 ease-out hover:bg-white/[0.02]"
+                      style={{
+                        opacity: activeSlide === 2 ? 1 : 0,
+                        transform: activeSlide === 2 ? 'translateX(0)' : 'translateX(-20px)',
+                        transitionDelay: activeSlide === 2 ? `${250 + i * 50}ms` : '0ms',
+                      }}
+                      data-testid={`brand-drug-row-${i}`}
+                    >
+                      <span className="text-blue-100/30 font-mono text-xs">{drug.rank}</span>
+                      <span className="text-white font-medium truncate text-[13px]">{drug.name}</span>
+                      <div className="flex items-center gap-2">
+                        <div className="flex-1 h-3.5 bg-[#0B1F40] rounded-full overflow-hidden">
+                          <div
+                            className="h-full rounded-full transition-all duration-700 ease-out"
+                            style={{
+                              width: activeSlide === 2 ? `${(drug.cost / maxBrandCost) * 100}%` : '0%',
+                              backgroundColor: '#22c55e',
+                              transitionDelay: activeSlide === 2 ? `${350 + i * 50}ms` : '0ms',
+                            }}
+                          />
+                        </div>
+                        <span className="text-white font-semibold text-xs w-14 text-right">{formatCurrency(drug.cost)}</span>
+                      </div>
+                      <span className="text-blue-100/50 text-right text-xs font-mono">{drug.scripts}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div
+              className="absolute inset-0 transition-all duration-600 ease-out"
+              style={{
+                opacity: activeSlide === 3 ? 1 : 0,
+                transform: activeSlide === 3 ? 'translateY(0) scale(1)' : activeSlide < 3 ? 'translateY(40px) scale(0.96)' : 'translateY(-40px) scale(0.96)',
+                pointerEvents: activeSlide === 3 ? 'auto' : 'none',
+              }}
+            >
+              <div ref={slide3Ref} className="bg-[#0B1F40] border border-white/10 rounded-3xl p-6 md:p-8 h-full overflow-y-auto">
+                <div className="flex items-center justify-between mb-5">
+                  <div className="flex items-center gap-4">
+                    <div className="w-10 h-10 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center">
+                      <Scale className="w-5 h-5 text-orange-400" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl md:text-2xl font-bold text-white" data-testid="text-nadac-differential-title">NADAC Differential Report</h3>
+                      <p className="text-blue-100/50 text-xs">Drug costs vs. NADAC benchmarks</p>
+                    </div>
+                  </div>
+                  <div className="hidden md:block bg-[#0F264A] border border-orange-500/20 rounded-xl px-4 py-2.5">
+                    <div className="text-[10px] text-orange-400 uppercase tracking-wider font-semibold mb-1">Available Formats</div>
+                    <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-[10px] text-blue-100/50">
+                      <span>By NADAC Differential</span>
+                      <span>By Ingredient Cost Markup</span>
+                      <span>By Average NADAC Differential</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-3 gap-3 mb-5">
+                  {[
+                    { label: "Total NADAC Overpay", value: formatCurrency(totalNadacOverpay), sub: "Above NADAC benchmark", color: "text-orange-400", tid: "total-nadac-overpay" },
+                    { label: "Highest Markup", value: `${highestMarkup.toLocaleString()}%`, sub: "Sildenafil Citrate", color: "text-red-400", tid: "highest-markup" },
+                    { label: "Drugs Flagged", value: "10", sub: "Priced above NADAC", color: "text-[#D4AF37]", tid: "drugs-flagged" },
+                  ].map((card, i) => (
+                    <div
+                      key={i}
+                      className="bg-[#0F264A] border border-white/5 rounded-xl p-3 transition-all duration-500 ease-out"
+                      data-testid={`card-${card.tid}`}
+                      style={{
+                        opacity: activeSlide === 3 ? 1 : 0,
+                        transform: activeSlide === 3 ? 'translateY(0)' : 'translateY(15px)',
+                        transitionDelay: activeSlide === 3 ? `${150 + i * 80}ms` : '0ms',
+                      }}
+                    >
+                      <div className="text-[10px] text-blue-100/50 uppercase tracking-wider font-medium mb-1">{card.label}</div>
+                      <div className={`text-xl font-bold ${card.color}`}>{card.value}</div>
+                      <div className="text-[11px] text-blue-100/40 mt-0.5">{card.sub}</div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="bg-[#0F264A] border border-white/5 rounded-xl overflow-hidden">
+                  <div className="grid grid-cols-[1.5rem_1fr_4rem_5rem_5rem_5rem_5rem] gap-x-1 px-4 py-2 text-[10px] text-blue-100/40 uppercase tracking-wider font-semibold border-b border-white/5">
+                    <span>#</span>
+                    <span>Drug Name</span>
+                    <span className="text-right">Rx</span>
+                    <span className="text-right">Cost</span>
+                    <span className="text-right">NADAC</span>
+                    <span className="text-right">Diff $</span>
+                    <span className="text-right">Markup</span>
+                  </div>
+                  {nadacDrugs.map((drug, i) => (
+                    <div
+                      key={i}
+                      className="grid grid-cols-[1.5rem_1fr_4rem_5rem_5rem_5rem_5rem] gap-x-1 items-center px-4 py-1.5 text-sm border-b border-white/[0.03] transition-all duration-400 ease-out hover:bg-white/[0.02]"
+                      style={{
+                        opacity: activeSlide === 3 ? 1 : 0,
+                        transform: activeSlide === 3 ? 'translateX(0)' : 'translateX(20px)',
+                        transitionDelay: activeSlide === 3 ? `${250 + i * 50}ms` : '0ms',
+                      }}
+                      data-testid={`nadac-drug-row-${i}`}
+                    >
+                      <span className="text-blue-100/30 font-mono text-xs">{drug.rank}</span>
+                      <div>
+                        <span className="text-white font-medium truncate text-[13px] block">{drug.name}</span>
+                        <div className="h-1.5 bg-[#0B1F40] rounded-full overflow-hidden mt-0.5 w-full max-w-[120px]">
+                          <div
+                            className="h-full rounded-full transition-all duration-700 ease-out"
+                            style={{
+                              width: activeSlide === 3 ? `${Math.min((drug.nadacDiff / maxNadacDiff) * 100, 100)}%` : '0%',
+                              backgroundColor: getMarkupBarColor(drug.markupPct),
+                              transitionDelay: activeSlide === 3 ? `${350 + i * 50}ms` : '0ms',
+                            }}
+                          />
+                        </div>
+                      </div>
+                      <span className="text-blue-100/50 text-right text-xs font-mono">{drug.scripts}</span>
+                      <span className="text-white font-semibold text-xs text-right">{formatCurrency(drug.ingredientCost)}</span>
+                      <span className="text-blue-100/30 text-xs text-right">{formatCurrency(drug.nadac)}</span>
+                      <span className="text-orange-400 font-semibold text-xs text-right">{formatCurrency(drug.nadacDiff)}</span>
+                      <span className={`text-right text-xs font-semibold ${getMarkupColor(drug.markupPct)}`}>
+                        {drug.markupPct.toLocaleString()}%
+                      </span>
                     </div>
                   ))}
                 </div>
