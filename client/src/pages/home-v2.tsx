@@ -679,83 +679,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-      {/* Enhanced Reporting - Stewardship Report Section - INLINED */}
-      <section className="py-24 bg-[#071328] border-y border-white/5" data-testid="stewardship-section">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-16">
-            <div className="flex items-center justify-center gap-3 text-[#D4AF37] font-medium text-sm mb-6 tracking-widest uppercase">
-              <span className="w-12 h-[1px] bg-[#D4AF37]"></span>
-              Enhanced Reporting Offerings
-              <span className="w-12 h-[1px] bg-[#D4AF37]"></span>
-            </div>
-            <h2 className="text-4xl md:text-6xl font-serif font-bold mb-6 text-white">
-              Stewardship <span className="text-[#D4AF37]">Report</span>
-            </h2>
-            <p className="text-blue-100/70 text-xl max-w-4xl mx-auto leading-relaxed">
-              Comprehensive year-over-year pharmacy plan performance analysis.
-            </p>
-          </div>
-          <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-8">
-            <div className="bg-[#0B1F40] border border-white/10 rounded-2xl p-8">
-              <div className="flex items-center gap-3 mb-6">
-                <FileText className="w-6 h-6 text-[#D4AF37]" />
-                <h3 className="text-xl font-bold text-white">Executive Summary</h3>
-              </div>
-              <div className="grid grid-cols-2 gap-3">
-                <div className="bg-[#0F264A] border border-white/5 rounded-xl p-4">
-                  <div className="text-xs text-blue-100/50 uppercase tracking-wider mb-1">Total Gross Cost</div>
-                  <div className="text-2xl font-bold text-[#D4AF37]">$5,143,536</div>
-                </div>
-                <div className="bg-[#0F264A] border border-white/5 rounded-xl p-4">
-                  <div className="text-xs text-blue-100/50 uppercase tracking-wider mb-1">Average Members</div>
-                  <div className="text-2xl font-bold text-[#D4AF37]">2,358</div>
-                </div>
-                <div className="bg-[#0F264A] border border-white/5 rounded-xl p-4">
-                  <div className="text-xs text-blue-100/50 uppercase tracking-wider mb-1">Plan Cost PMPM</div>
-                  <div className="text-2xl font-bold text-[#D4AF37]">$148.32</div>
-                </div>
-                <div className="bg-[#0F264A] border border-white/5 rounded-xl p-4">
-                  <div className="text-xs text-blue-100/50 uppercase tracking-wider mb-1">Generic Dispensing Rate</div>
-                  <div className="text-2xl font-bold text-[#D4AF37]">89.6%</div>
-                </div>
-              </div>
-            </div>
-            <div className="bg-[#0B1F40] border border-white/10 rounded-2xl p-8">
-              <div className="flex items-center gap-3 mb-6">
-                <BarChart3 className="w-6 h-6 text-[#4A90E2]" />
-                <h3 className="text-xl font-bold text-white">Performance Dashboards</h3>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="bg-[#0F264A] border border-white/5 rounded-xl p-4 flex flex-col items-center">
-                  <div className="text-xs text-blue-100/40 mb-3">Generic Dispensing Rate</div>
-                  <div className="relative w-24 h-24">
-                    <svg viewBox="0 0 36 36" className="w-24 h-24 transform -rotate-90">
-                      <circle cx="18" cy="18" r="14" fill="none" stroke="#1a3b6e" strokeWidth="3" />
-                      <circle cx="18" cy="18" r="14" fill="none" stroke="#4A90E2" strokeWidth="3" strokeDasharray="87.96" strokeDashoffset="9.18" strokeLinecap="round" />
-                    </svg>
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <span className="text-lg font-bold text-white">89.6%</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="bg-[#0F264A] border border-white/5 rounded-xl p-4 flex flex-col items-center">
-                  <div className="text-xs text-blue-100/40 mb-3">Share of Specialty</div>
-                  <div className="relative w-24 h-24">
-                    <svg viewBox="0 0 36 36" className="w-24 h-24 transform -rotate-90">
-                      <circle cx="18" cy="18" r="14" fill="none" stroke="#1a3b6e" strokeWidth="3" />
-                      <circle cx="18" cy="18" r="14" fill="none" stroke="#D4AF37" strokeWidth="3" strokeDasharray="87.96" strokeDashoffset="34.97" strokeLinecap="round" />
-                    </svg>
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <span className="text-lg font-bold text-white">60.2%</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Who We Help Section - Replacing Marketplace */}
       <section className="py-32 bg-[#050e1f] border-y border-white/5">
         <div className="container mx-auto px-6">
@@ -932,6 +855,82 @@ export default function Home() {
                 View Our Services
               </Link>
             </Button>
+          </div>
+        </div>
+      </section>
+      {/* Enhanced Reporting - Stewardship Report Section */}
+      <section className="py-24 bg-[#071328] border-y border-white/5" data-testid="stewardship-section">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-16">
+            <div className="flex items-center justify-center gap-3 text-[#D4AF37] font-medium text-sm mb-6 tracking-widest uppercase">
+              <span className="w-12 h-[1px] bg-[#D4AF37]"></span>
+              Enhanced Reporting Offerings
+              <span className="w-12 h-[1px] bg-[#D4AF37]"></span>
+            </div>
+            <h2 className="text-4xl md:text-6xl font-serif font-bold mb-6 text-white">
+              Stewardship <span className="text-[#D4AF37]">Report</span>
+            </h2>
+            <p className="text-blue-100/70 text-xl max-w-4xl mx-auto leading-relaxed">
+              Comprehensive year-over-year pharmacy plan performance analysis.
+            </p>
+          </div>
+          <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-8">
+            <div className="bg-[#0B1F40] border border-white/10 rounded-2xl p-8">
+              <div className="flex items-center gap-3 mb-6">
+                <FileText className="w-6 h-6 text-[#D4AF37]" />
+                <h3 className="text-xl font-bold text-white">Executive Summary</h3>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-[#0F264A] border border-white/5 rounded-xl p-4">
+                  <div className="text-xs text-blue-100/50 uppercase tracking-wider mb-1">Total Gross Cost</div>
+                  <div className="text-2xl font-bold text-[#D4AF37]">$5,143,536</div>
+                </div>
+                <div className="bg-[#0F264A] border border-white/5 rounded-xl p-4">
+                  <div className="text-xs text-blue-100/50 uppercase tracking-wider mb-1">Average Members</div>
+                  <div className="text-2xl font-bold text-[#D4AF37]">2,358</div>
+                </div>
+                <div className="bg-[#0F264A] border border-white/5 rounded-xl p-4">
+                  <div className="text-xs text-blue-100/50 uppercase tracking-wider mb-1">Plan Cost PMPM</div>
+                  <div className="text-2xl font-bold text-[#D4AF37]">$148.32</div>
+                </div>
+                <div className="bg-[#0F264A] border border-white/5 rounded-xl p-4">
+                  <div className="text-xs text-blue-100/50 uppercase tracking-wider mb-1">Generic Dispensing Rate</div>
+                  <div className="text-2xl font-bold text-[#D4AF37]">89.6%</div>
+                </div>
+              </div>
+            </div>
+            <div className="bg-[#0B1F40] border border-white/10 rounded-2xl p-8">
+              <div className="flex items-center gap-3 mb-6">
+                <BarChart3 className="w-6 h-6 text-[#4A90E2]" />
+                <h3 className="text-xl font-bold text-white">Performance Dashboards</h3>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-[#0F264A] border border-white/5 rounded-xl p-4 flex flex-col items-center">
+                  <div className="text-xs text-blue-100/40 mb-3">Generic Dispensing Rate</div>
+                  <div className="relative w-24 h-24">
+                    <svg viewBox="0 0 36 36" className="w-24 h-24 transform -rotate-90">
+                      <circle cx="18" cy="18" r="14" fill="none" stroke="#1a3b6e" strokeWidth="3" />
+                      <circle cx="18" cy="18" r="14" fill="none" stroke="#4A90E2" strokeWidth="3" strokeDasharray="87.96" strokeDashoffset="9.18" strokeLinecap="round" />
+                    </svg>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <span className="text-lg font-bold text-white">89.6%</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-[#0F264A] border border-white/5 rounded-xl p-4 flex flex-col items-center">
+                  <div className="text-xs text-blue-100/40 mb-3">Share of Specialty</div>
+                  <div className="relative w-24 h-24">
+                    <svg viewBox="0 0 36 36" className="w-24 h-24 transform -rotate-90">
+                      <circle cx="18" cy="18" r="14" fill="none" stroke="#1a3b6e" strokeWidth="3" />
+                      <circle cx="18" cy="18" r="14" fill="none" stroke="#D4AF37" strokeWidth="3" strokeDasharray="87.96" strokeDashoffset="34.97" strokeLinecap="round" />
+                    </svg>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <span className="text-lg font-bold text-white">60.2%</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
