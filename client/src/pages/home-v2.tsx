@@ -606,9 +606,9 @@ function ReportingAnalyticsSection() {
                     <div className="text-[10px] text-[#D4AF37] uppercase tracking-wider font-semibold mb-1">Available Formats</div>
                     <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-[10px] text-blue-100/50">
                       <span>By Ingredient Cost</span>
-                      <span>By Change in Cost</span>
+                      <span>By Change in Ingredient Cost</span>
                       <span>By Script Count</span>
-                      <span>By Change in Scripts</span>
+                      <span>By Change in Script Count</span>
                     </div>
                   </div>
                 </div>
@@ -682,7 +682,7 @@ function ReportingAnalyticsSection() {
                           )}
                         </span>
                         <span className={`text-[10px] ${drug.change >= 0 ? 'text-red-400/60' : 'text-green-400/60'}`}>
-                          {drug.changePct === "New" ? `+${formatCurrency(drug.change)}` : `${drug.change >= 0 ? '+' : ''}${formatCurrency(Math.abs(drug.change))}`}
+                          {drug.changePct === "New" ? `+${formatCurrency(drug.change)}` : `${drug.change >= 0 ? '+' : '-'}${formatCurrency(Math.abs(drug.change))}`}
                         </span>
                       </div>
                       <span className="text-blue-100/50 text-right text-xs">{drug.share}</span>
@@ -814,7 +814,7 @@ function ReportingAnalyticsSection() {
                           )}
                         </span>
                         <span className={`text-[10px] ${c.change >= 0 ? 'text-red-400/60' : 'text-green-400/60'}`}>
-                          {c.change >= 0 ? '+' : ''}{formatCurrency(Math.abs(c.change))}
+                          {c.change >= 0 ? '+' : '-'}{formatCurrency(Math.abs(c.change))}
                         </span>
                       </div>
                       <span className="text-blue-100/50 text-right text-xs">{c.share}</span>
