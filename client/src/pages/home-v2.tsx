@@ -555,11 +555,7 @@ function ReportingAnalyticsSection() {
 
   const slideLabels = ["Top Drugs Report", "Large Claimant Report"];
 
-  const formatCurrency = (n: number) => {
-    if (n >= 1000000) return `$${(n / 1000000).toFixed(1)}M`;
-    if (n >= 1000) return `$${(n / 1000).toFixed(0)}K`;
-    return `$${n.toLocaleString()}`;
-  };
+  const formatCurrency = (n: number) => `$${n.toLocaleString()}`;
 
   return (
     <section
@@ -745,6 +741,41 @@ function ReportingAnalyticsSection() {
                       <div className="text-[11px] text-blue-100/40 mt-0.5">{card.sub}</div>
                     </div>
                   ))}
+                </div>
+
+                <div className="bg-[#0F264A] border border-white/5 rounded-xl p-4 mb-5">
+                  <div className="text-[10px] text-blue-100/40 uppercase tracking-wider font-semibold mb-3">Cost Concentration — Top 3 Claimants</div>
+                  <div className="flex items-center gap-4">
+                    <div className="w-full h-5 bg-[#0B1F40] rounded-full overflow-hidden flex">
+                      {claimants.slice(0, 3).map((c, i) => {
+                        const totalTop10 = claimants.reduce((sum, cl) => sum + cl.current, 0);
+                        const pct = (c.current / totalTop10) * 100;
+                        const colors = ['#4A90E2', '#D4AF37', '#ef4444'];
+                        return (
+                          <div
+                            key={i}
+                            className="h-full transition-all duration-700 ease-out first:rounded-l-full last:rounded-r-full"
+                            style={{
+                              width: activeSlide === 1 ? `${pct}%` : '0%',
+                              backgroundColor: colors[i],
+                              transitionDelay: activeSlide === 1 ? `${400 + i * 150}ms` : '0ms',
+                            }}
+                          />
+                        );
+                      })}
+                    </div>
+                  </div>
+                  <div className="flex gap-4 mt-2">
+                    {claimants.slice(0, 3).map((c, i) => {
+                      const colors = ['#4A90E2', '#D4AF37', '#ef4444'];
+                      return (
+                        <div key={i} className="flex items-center gap-1.5">
+                          <div className="w-2 h-2 rounded-full" style={{ backgroundColor: colors[i] }} />
+                          <span className="text-[10px] text-blue-100/50">{c.id} · {c.share}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
 
                 <div className="bg-[#0F264A] border border-white/5 rounded-xl overflow-hidden">
