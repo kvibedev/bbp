@@ -891,7 +891,7 @@ function ReportingAnalyticsSection() {
                     </div>
                     <div>
                       <h3 className="text-xl md:text-2xl font-bold text-white" data-testid="text-multi-source-brand-title">Multi-Source Brand Report</h3>
-                      <p className="text-blue-100/50 text-xs">Brand drugs with available generic equivalents</p>
+                      <p className="text-blue-100/50 text-xs">Lists brand drugs with available generic equivalents — identifies cost-saving opportunities by switching to generics</p>
                     </div>
                   </div>
                   <div className="hidden md:block bg-[#0F264A] border border-green-500/20 rounded-xl px-4 py-2.5">
@@ -982,7 +982,7 @@ function ReportingAnalyticsSection() {
                     </div>
                     <div>
                       <h3 className="text-xl md:text-2xl font-bold text-white" data-testid="text-nadac-differential-title">NADAC Differential Report</h3>
-                      <p className="text-blue-100/50 text-xs">Drug costs vs. NADAC benchmarks</p>
+                      <p className="text-blue-100/50 text-xs">Compares actual drug costs to NADAC benchmarks — flags inflated pricing and evaluates PBM contract performance</p>
                     </div>
                   </div>
                   <div className="hidden md:block bg-[#0F264A] border border-orange-500/20 rounded-xl px-4 py-2.5">
@@ -1019,7 +1019,7 @@ function ReportingAnalyticsSection() {
                 </div>
 
                 <div className="bg-[#0F264A] border border-white/5 rounded-xl overflow-hidden">
-                  <div className="grid grid-cols-[1.5rem_1fr_4rem_5rem_5rem_5rem_5rem] gap-x-1 px-4 py-2 text-[10px] text-blue-100/40 uppercase tracking-wider font-semibold border-b border-white/5">
+                  <div className="grid grid-cols-[1.5rem_1fr_2.5rem_4.5rem_4.5rem_4.5rem_4.5rem_4rem] gap-x-1 px-4 py-2 text-[10px] text-blue-100/40 uppercase tracking-wider font-semibold border-b border-white/5">
                     <span>#</span>
                     <span>Drug Name</span>
                     <span className="text-right">Rx</span>
@@ -1027,11 +1027,12 @@ function ReportingAnalyticsSection() {
                     <span className="text-right">NADAC</span>
                     <span className="text-right">Diff $</span>
                     <span className="text-right">Markup</span>
+                    <span className="text-right">Avg Diff</span>
                   </div>
                   {nadacDrugs.map((drug, i) => (
                     <div
                       key={i}
-                      className="grid grid-cols-[1.5rem_1fr_4rem_5rem_5rem_5rem_5rem] gap-x-1 items-center px-4 py-1.5 text-sm border-b border-white/[0.03] transition-all duration-400 ease-out hover:bg-white/[0.02]"
+                      className="grid grid-cols-[1.5rem_1fr_2.5rem_4.5rem_4.5rem_4.5rem_4.5rem_4rem] gap-x-1 items-center px-4 py-1.5 text-sm border-b border-white/[0.03] transition-all duration-400 ease-out hover:bg-white/[0.02]"
                       style={{
                         opacity: activeSlide === 3 ? 1 : 0,
                         transform: activeSlide === 3 ? 'translateX(0)' : 'translateX(20px)',
@@ -1060,6 +1061,7 @@ function ReportingAnalyticsSection() {
                       <span className={`text-right text-xs font-semibold ${getMarkupColor(drug.markupPct)}`}>
                         {drug.markupPct.toLocaleString()}%
                       </span>
+                      <span className="text-blue-100/50 text-right text-xs">{formatCurrency(drug.avgDiff)}</span>
                     </div>
                   ))}
                 </div>
