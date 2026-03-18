@@ -36,21 +36,6 @@ import pharmaTech3 from "@assets/generated_images/pharma_tech_hero_bg_3.png";
 const heroImages = [pharmaTech1, pharmaTech2, pharmaTech3];
 
 
-function useScrollVisibility(threshold = 0.2) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(([entry]) => {
-      setIsVisible(entry.isIntersecting);
-    }, { threshold, rootMargin: '0px 0px -50px 0px' });
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, [threshold]);
-  return { ref, isVisible };
-}
-
 function AnimatedBar({ height, delay, color, isVisible }: { height: number; delay: number; color: string; isVisible: boolean }) {
   return (
     <div
@@ -79,7 +64,7 @@ function AnimatedDonut({ percent, color, label, value, isVisible }: { percent: n
             strokeDasharray={circumference}
             strokeDashoffset={offset}
             strokeLinecap="round"
-            className="transition-all duration-1200 ease-out"
+            className="transition-all duration-1000 ease-out"
             style={{ transitionDelay: isVisible ? '400ms' : '0ms' }}
           />
         </svg>
@@ -92,10 +77,38 @@ function AnimatedDonut({ percent, color, label, value, isVisible }: { percent: n
 }
 
 function StewardshipReportSection() {
-  const header = useScrollVisibility(0.3);
-  const slide1 = useScrollVisibility(0.15);
-  const slide2 = useScrollVisibility(0.15);
-  const slide3 = useScrollVisibility(0.15);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const [activeSlide, setActiveSlide] = useState(-1);
+  const TOTAL_SLIDES = 3;
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const handleScroll = () => {
+      const rect = section.getBoundingClientRect();
+      const sectionTop = -rect.top;
+      const sectionScrollable = section.offsetHeight - window.innerHeight;
+
+      if (rect.bottom < 0 || rect.top > window.innerHeight) {
+        setActiveSlide(-1);
+        return;
+      }
+
+      if (sectionTop < 0) {
+        setActiveSlide(-1);
+        return;
+      }
+
+      const progress = Math.max(0, Math.min(1, sectionTop / sectionScrollable));
+      const slideIndex = Math.min(TOTAL_SLIDES - 1, Math.floor(progress * TOTAL_SLIDES));
+      setActiveSlide(slideIndex);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const costData = [
     { label: "Gross Cost PMPM", current: 181.78, prior: 142.05 },
@@ -104,311 +117,359 @@ function StewardshipReportSection() {
   ];
   const maxCost = Math.max(...costData.flatMap(d => [d.current, d.prior]));
 
+  const slideLabels = ["Executive Summary", "Performance Dashboards", "Key Insights"];
+
   return (
-    <section className="py-20 bg-[#071328] border-y border-white/5" data-testid="stewardship-section">
-      <div className="container mx-auto px-6">
-
-        <div
-          ref={header.ref}
-          className="text-center mb-20 transition-all duration-700 ease-out"
-          style={{
-            opacity: header.isVisible ? 1 : 0,
-            transform: header.isVisible ? 'translateY(0)' : 'translateY(40px)',
-          }}
-        >
-          <div className="flex items-center justify-center gap-3 text-[#D4AF37] font-medium text-sm mb-6 tracking-widest uppercase">
-            <span className="w-12 h-[1px] bg-[#D4AF37]"></span>
-            Enhanced Reporting Offerings
-            <span className="w-12 h-[1px] bg-[#D4AF37]"></span>
-          </div>
-          <h2 className="text-4xl md:text-6xl font-serif font-bold mb-6 text-white">
-            Stewardship <span className="text-[#D4AF37]">Report</span>
-          </h2>
-          <p className="text-blue-100/70 text-lg md:text-xl max-w-4xl mx-auto leading-relaxed">
-            A comprehensive, year-over-year view of pharmacy plan performance, utilization, and cost trends — executive-level insights for strategic planning, budgeting, and vendor review.
-          </p>
-        </div>
-
-        <div className="max-w-6xl mx-auto space-y-20">
+    <section
+      ref={sectionRef}
+      className="relative bg-[#071328] border-y border-white/5"
+      style={{ height: `${TOTAL_SLIDES * 100}vh` }}
+      data-testid="stewardship-section"
+    >
+      <div className="sticky top-0 h-screen flex flex-col">
+        <div className="container mx-auto px-6 flex flex-col h-full py-8">
 
           <div
-            ref={slide1.ref}
-            className="transition-all duration-800 ease-out"
+            className="text-center mb-6 shrink-0 transition-all duration-700 ease-out"
             style={{
-              opacity: slide1.isVisible ? 1 : 0,
-              transform: slide1.isVisible ? 'translateY(0) scale(1)' : 'translateY(60px) scale(0.97)',
+              opacity: activeSlide >= 0 ? 1 : 0,
+              transform: activeSlide >= 0 ? 'translateY(0)' : 'translateY(30px)',
             }}
           >
-            <div className="bg-[#0B1F40] border border-white/10 rounded-3xl p-8 md:p-12">
-              <div className="flex items-center gap-4 mb-8">
-                <div className="w-12 h-12 rounded-2xl bg-[#D4AF37]/10 border border-[#D4AF37]/20 flex items-center justify-center">
-                  <FileText className="w-6 h-6 text-[#D4AF37]" />
+            <div className="flex items-center justify-center gap-3 text-[#D4AF37] font-medium text-sm mb-4 tracking-widest uppercase">
+              <span className="w-12 h-[1px] bg-[#D4AF37]"></span>
+              Enhanced Reporting Offerings
+              <span className="w-12 h-[1px] bg-[#D4AF37]"></span>
+            </div>
+            <h2 className="text-3xl md:text-5xl font-serif font-bold mb-3 text-white">
+              Stewardship <span className="text-[#D4AF37]">Report</span>
+            </h2>
+            <p className="text-blue-100/70 text-base md:text-lg max-w-3xl mx-auto leading-relaxed">
+              Comprehensive year-over-year pharmacy plan performance, utilization, and cost trends.
+            </p>
+          </div>
+
+          <div className="flex-1 relative max-w-6xl mx-auto w-full min-h-0">
+
+            <div
+              className="absolute inset-0 transition-all duration-600 ease-out"
+              style={{
+                opacity: activeSlide === 0 ? 1 : 0,
+                transform: activeSlide === 0 ? 'translateY(0) scale(1)' : activeSlide > 0 ? 'translateY(-40px) scale(0.96)' : 'translateY(40px) scale(0.96)',
+                pointerEvents: activeSlide === 0 ? 'auto' : 'none',
+              }}
+            >
+              <div className="bg-[#0B1F40] border border-white/10 rounded-3xl p-6 md:p-10 h-full overflow-y-auto">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="w-10 h-10 rounded-xl bg-[#D4AF37]/10 border border-[#D4AF37]/20 flex items-center justify-center">
+                    <FileText className="w-5 h-5 text-[#D4AF37]" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl md:text-2xl font-bold text-white">Executive Summary</h3>
+                    <p className="text-blue-100/50 text-xs">Plan performance at a glance</p>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="text-2xl md:text-3xl font-bold text-white">Executive Summary</h3>
-                  <p className="text-blue-100/50 text-sm">Plan performance at a glance</p>
+
+                <div className="text-xs text-blue-100/40 uppercase tracking-wider mb-3 font-medium">Plan Summary</div>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+                  {[
+                    { label: "Total Gross Cost", value: "$5,143,536", icon: DollarSign, color: "text-[#D4AF37]" },
+                    { label: "Average Members", value: "2,358", icon: Users, color: "text-[#4A90E2]" },
+                    { label: "Plan Cost PMPM", value: "$148.32", icon: BarChart3, color: "text-[#D4AF37]" },
+                    { label: "Adjusted Scripts PMPM", value: "1.25", icon: Pill, color: "text-[#4A90E2]" },
+                  ].map((item, i) => (
+                    <div
+                      key={i}
+                      className="bg-[#0F264A] border border-white/5 rounded-xl p-4 transition-all duration-500 ease-out"
+                      style={{
+                        opacity: activeSlide === 0 ? 1 : 0,
+                        transform: activeSlide === 0 ? 'translateY(0)' : 'translateY(15px)',
+                        transitionDelay: activeSlide === 0 ? `${200 + i * 80}ms` : '0ms',
+                      }}
+                    >
+                      <div className="flex items-center gap-2 mb-2">
+                        <item.icon className={`w-4 h-4 ${item.color}`} />
+                        <div className="text-[10px] text-blue-100/50 uppercase tracking-wider font-medium">{item.label}</div>
+                      </div>
+                      <div className={`text-2xl md:text-3xl font-bold ${item.color}`}>{item.value}</div>
+                    </div>
+                  ))}
                 </div>
-              </div>
 
-              <div className="text-sm text-blue-100/40 uppercase tracking-wider mb-4 font-medium">Plan Summary</div>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-                {[
-                  { label: "Total Gross Cost", value: "$5,143,536", icon: DollarSign, color: "text-[#D4AF37]" },
-                  { label: "Average Members", value: "2,358", icon: Users, color: "text-[#4A90E2]" },
-                  { label: "Plan Cost PMPM", value: "$148.32", icon: BarChart3, color: "text-[#D4AF37]" },
-                  { label: "Adjusted Scripts PMPM", value: "1.25", icon: Pill, color: "text-[#4A90E2]" },
-                ].map((item, i) => (
-                  <div
-                    key={i}
-                    className="bg-[#0F264A] border border-white/5 rounded-2xl p-5 transition-all duration-500 ease-out"
-                    style={{
-                      opacity: slide1.isVisible ? 1 : 0,
-                      transform: slide1.isVisible ? 'translateY(0)' : 'translateY(20px)',
-                      transitionDelay: slide1.isVisible ? `${300 + i * 100}ms` : '0ms',
-                    }}
-                  >
-                    <div className="flex items-center gap-2 mb-3">
-                      <item.icon className={`w-5 h-5 ${item.color}`} />
-                      <div className="text-xs text-blue-100/50 uppercase tracking-wider font-medium">{item.label}</div>
+                <div className="text-xs text-blue-100/40 uppercase tracking-wider mb-3 font-medium">Plan Trends</div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6">
+                  {[
+                    { label: "Plan Cost PMPM", value: "$148.32", change: "+5.12%", up: true, bars: [40, 55, 45, 65, 50, 70, 60, 80, 75, 90, 85, 100] },
+                    { label: "Adjusted Scripts PMPM", value: "1.25", change: "-0.62%", up: false, bars: [80, 75, 85, 70, 65, 60, 55, 50, 55, 45, 50, 40] },
+                  ].map((item, i) => (
+                    <div key={i} className="bg-[#0F264A] border border-white/5 rounded-xl p-4">
+                      <div className="text-sm text-blue-100/60 mb-2 font-medium">{item.label}</div>
+                      <div className="flex items-end gap-[3px] mb-2 h-10">
+                        {item.bars.map((h, idx) => (
+                          <AnimatedBar key={idx} height={h * 0.4} delay={400 + idx * 35} color="#4A90E2" isVisible={activeSlide === 0} />
+                        ))}
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-white font-bold text-base">{item.value}</span>
+                        <span className={`text-sm font-bold ${item.up ? 'text-red-400' : 'text-green-400'}`}>
+                          {item.up ? '▲' : '▼'} {item.change}
+                        </span>
+                      </div>
                     </div>
-                    <div className={`text-3xl font-bold ${item.color}`}>{item.value}</div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
 
-              <div className="text-sm text-blue-100/40 uppercase tracking-wider mb-4 font-medium">Plan Trends</div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-                {[
-                  { label: "Plan Cost PMPM", value: "$148.32", change: "+5.12%", up: true, bars: [40, 55, 45, 65, 50, 70, 60, 80, 75, 90, 85, 100] },
-                  { label: "Adjusted Scripts PMPM", value: "1.25", change: "-0.62%", up: false, bars: [80, 75, 85, 70, 65, 60, 55, 50, 55, 45, 50, 40] },
-                ].map((item, i) => (
-                  <div key={i} className="bg-[#0F264A] border border-white/5 rounded-2xl p-5">
-                    <div className="text-sm text-blue-100/60 mb-2 font-medium">{item.label}</div>
-                    <div className="flex items-end gap-1 mb-3 h-12">
-                      {item.bars.map((h, idx) => (
-                        <AnimatedBar key={idx} height={h * 0.45} delay={500 + idx * 40} color="#4A90E2" isVisible={slide1.isVisible} />
-                      ))}
+                <div className="text-xs text-blue-100/40 uppercase tracking-wider mb-3 font-medium">Key Metrics</div>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  {[
+                    { label: "Total Plan Cost", value: "$4,225,186", highlight: false },
+                    { label: "Total Scripts", value: "24,273", highlight: false },
+                    { label: "Specialty % of Gross", value: "60.22%", sub: "▲ 5.79%", highlight: true },
+                    { label: "Generic Dispensing Rate", value: "89.57%", sub: "▲ 0.24%", highlight: false },
+                  ].map((item, i) => (
+                    <div
+                      key={i}
+                      className={`bg-[#0F264A] border rounded-xl p-4 transition-all duration-500 ease-out ${item.highlight ? 'border-red-500/30 bg-red-900/10' : 'border-white/5'}`}
+                      style={{
+                        opacity: activeSlide === 0 ? 1 : 0,
+                        transform: activeSlide === 0 ? 'scale(1)' : 'scale(0.92)',
+                        transitionDelay: activeSlide === 0 ? `${600 + i * 60}ms` : '0ms',
+                      }}
+                    >
+                      <div className="text-[10px] text-blue-100/50 uppercase tracking-wider mb-1 font-medium">{item.label}</div>
+                      <div className={`text-xl font-bold ${item.highlight ? 'text-red-400' : 'text-white'}`}>{item.value}</div>
+                      {'sub' in item && item.sub && (
+                        <div className={`text-xs mt-1 font-semibold ${item.highlight ? 'text-red-400/70' : 'text-green-400'}`}>{item.sub}</div>
+                      )}
                     </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-white font-bold text-lg">{item.value}</span>
-                      <span className={`text-base font-bold ${item.up ? 'text-red-400' : 'text-green-400'}`}>
-                        {item.up ? '▲' : '▼'} {item.change}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="text-sm text-blue-100/40 uppercase tracking-wider mb-4 font-medium">Key Metrics</div>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {[
-                  { label: "Total Plan Cost", value: "$4,225,186", highlight: false },
-                  { label: "Total Scripts", value: "24,273", highlight: false },
-                  { label: "Specialty % of Gross", value: "60.22%", sub: "▲ 5.79%", highlight: true },
-                  { label: "Generic Dispensing Rate", value: "89.57%", sub: "▲ 0.24%", highlight: false },
-                ].map((item, i) => (
-                  <div
-                    key={i}
-                    className={`bg-[#0F264A] border rounded-2xl p-5 transition-all duration-500 ease-out ${item.highlight ? 'border-red-500/30 bg-red-900/10' : 'border-white/5'}`}
-                    style={{
-                      opacity: slide1.isVisible ? 1 : 0,
-                      transform: slide1.isVisible ? 'scale(1)' : 'scale(0.9)',
-                      transitionDelay: slide1.isVisible ? `${700 + i * 80}ms` : '0ms',
-                    }}
-                  >
-                    <div className="text-xs text-blue-100/50 uppercase tracking-wider mb-2 font-medium">{item.label}</div>
-                    <div className={`text-2xl font-bold ${item.highlight ? 'text-red-400' : 'text-white'}`}>{item.value}</div>
-                    {'sub' in item && item.sub && (
-                      <div className={`text-sm mt-1 font-semibold ${item.highlight ? 'text-red-400/70' : 'text-green-400'}`}>{item.sub}</div>
-                    )}
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
 
-          <div
-            ref={slide2.ref}
-            className="transition-all duration-800 ease-out"
-            style={{
-              opacity: slide2.isVisible ? 1 : 0,
-              transform: slide2.isVisible ? 'translateY(0) scale(1)' : 'translateY(60px) scale(0.97)',
-            }}
-          >
-            <div className="bg-[#0B1F40] border border-white/10 rounded-3xl p-8 md:p-12">
-              <div className="flex items-center gap-4 mb-8">
-                <div className="w-12 h-12 rounded-2xl bg-[#4A90E2]/10 border border-[#4A90E2]/20 flex items-center justify-center">
-                  <BarChart3 className="w-6 h-6 text-[#4A90E2]" />
-                </div>
-                <div>
-                  <h3 className="text-2xl md:text-3xl font-bold text-white">Performance Dashboards</h3>
-                  <p className="text-blue-100/50 text-sm">Prior performance vs. current comparison</p>
-                </div>
-              </div>
-
-              <div className="grid md:grid-cols-2 gap-6 mb-8">
-                <div className="bg-[#0F264A] border border-white/5 rounded-2xl p-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="text-sm text-blue-100/50 font-semibold uppercase tracking-wider">Financial Trends</div>
-                    <div className="flex gap-3 text-xs">
-                      <span className="text-[#4A90E2]">● Current</span>
-                      <span className="text-blue-100/30">● Prior</span>
-                    </div>
+            <div
+              className="absolute inset-0 transition-all duration-600 ease-out"
+              style={{
+                opacity: activeSlide === 1 ? 1 : 0,
+                transform: activeSlide === 1 ? 'translateY(0) scale(1)' : activeSlide > 1 ? 'translateY(-40px) scale(0.96)' : 'translateY(40px) scale(0.96)',
+                pointerEvents: activeSlide === 1 ? 'auto' : 'none',
+              }}
+            >
+              <div className="bg-[#0B1F40] border border-white/10 rounded-3xl p-6 md:p-10 h-full overflow-y-auto">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="w-10 h-10 rounded-xl bg-[#4A90E2]/10 border border-[#4A90E2]/20 flex items-center justify-center">
+                    <BarChart3 className="w-5 h-5 text-[#4A90E2]" />
                   </div>
-                  <div className="space-y-2.5">
-                    {[
-                      { label: "Total Gross Cost", current: "$5,143,536", prior: "$4,230,052" },
-                      { label: "Gross Cost PMPM", current: "$181.78", prior: "$142.05" },
-                      { label: "Plan Cost", current: "$4,225,186", prior: "$3,684,338" },
-                      { label: "Plan Cost PMPM", current: "$148.32", prior: "$142.05" },
-                      { label: "Member Cost", current: "$918,021", prior: "$545,408" },
-                      { label: "Member Cost PMPM", current: "$32.40", prior: "$32.98" },
-                      { label: "Member Cost Share", current: "17.85%", prior: "12.91%" },
-                    ].map((row, i) => (
-                      <div
-                        key={i}
-                        className="flex items-center justify-between text-sm transition-all duration-400 ease-out"
-                        style={{
-                          opacity: slide2.isVisible ? 1 : 0,
-                          transform: slide2.isVisible ? 'translateX(0)' : 'translateX(-20px)',
-                          transitionDelay: slide2.isVisible ? `${200 + i * 60}ms` : '0ms',
-                        }}
-                      >
-                        <span className="text-blue-100/60 flex-1">{row.label}</span>
-                        <span className="text-white font-semibold w-24 text-right">{row.current}</span>
-                        <span className="text-blue-100/30 w-24 text-right">{row.prior}</span>
+                  <div>
+                    <h3 className="text-xl md:text-2xl font-bold text-white">Performance Dashboards</h3>
+                    <p className="text-blue-100/50 text-xs">Prior performance vs. current comparison</p>
+                  </div>
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-5 mb-6">
+                  <div className="bg-[#0F264A] border border-white/5 rounded-xl p-5">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="text-xs text-blue-100/50 font-semibold uppercase tracking-wider">Financial Trends</div>
+                      <div className="flex gap-2 text-[10px]">
+                        <span className="text-[#4A90E2]">● Current</span>
+                        <span className="text-blue-100/30">● Prior</span>
                       </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="space-y-6">
-                  <div className="bg-[#0F264A] border border-white/5 rounded-2xl p-6">
-                    <div className="text-sm text-blue-100/50 font-semibold mb-4 uppercase tracking-wider">Key Performance</div>
-                    <div className="space-y-2.5">
+                    </div>
+                    <div className="space-y-2">
                       {[
-                        { label: "Average Members", current: "2,358", prior: "2,358" },
-                        { label: "Unique Utilizing", current: "2,794", prior: "2,887" },
-                        { label: "Scripts", current: "24,273", prior: "24,574" },
-                        { label: "GDR", current: "89.57%", prior: "89.33%" },
-                        { label: "Mail Utilization", current: "7.06%", prior: "7.8%" },
-                        { label: "Specialty %", current: "60.22%", prior: "58.97%" },
+                        { label: "Total Gross Cost", current: "$5,143,536", prior: "$4,230,052" },
+                        { label: "Gross Cost PMPM", current: "$181.78", prior: "$142.05" },
+                        { label: "Plan Cost", current: "$4,225,186", prior: "$3,684,338" },
+                        { label: "Plan Cost PMPM", current: "$148.32", prior: "$142.05" },
+                        { label: "Member Cost", current: "$918,021", prior: "$545,408" },
+                        { label: "Member Cost PMPM", current: "$32.40", prior: "$32.98" },
+                        { label: "Member Cost Share", current: "17.85%", prior: "12.91%" },
                       ].map((row, i) => (
                         <div
                           key={i}
                           className="flex items-center justify-between text-sm transition-all duration-400 ease-out"
                           style={{
-                            opacity: slide2.isVisible ? 1 : 0,
-                            transform: slide2.isVisible ? 'translateX(0)' : 'translateX(20px)',
-                            transitionDelay: slide2.isVisible ? `${300 + i * 60}ms` : '0ms',
+                            opacity: activeSlide === 1 ? 1 : 0,
+                            transform: activeSlide === 1 ? 'translateX(0)' : 'translateX(-15px)',
+                            transitionDelay: activeSlide === 1 ? `${150 + i * 50}ms` : '0ms',
                           }}
                         >
                           <span className="text-blue-100/60 flex-1">{row.label}</span>
-                          <span className="text-white font-semibold w-20 text-right">{row.current}</span>
-                          <span className="text-blue-100/30 w-20 text-right">{row.prior}</span>
+                          <span className="text-white font-semibold w-24 text-right">{row.current}</span>
+                          <span className="text-blue-100/30 w-24 text-right">{row.prior}</span>
                         </div>
                       ))}
                     </div>
                   </div>
 
-                  <div className="bg-[#0F264A] border border-white/5 rounded-2xl p-6">
-                    <div className="text-sm text-blue-100/50 font-semibold mb-4 uppercase tracking-wider">Utilization Trends</div>
-                    <div className="space-y-2.5">
-                      {[
-                        { label: "Scripts PMPM", current: "0.846", prior: "0.846" },
-                        { label: "Days Supply PMPM", current: "21.08", prior: "21.08" },
-                        { label: "Mail Utilization", current: "7.06%", prior: "9.17%" },
-                      ].map((row, i) => (
-                        <div
-                          key={i}
-                          className="flex items-center justify-between text-sm transition-all duration-400 ease-out"
-                          style={{
-                            opacity: slide2.isVisible ? 1 : 0,
-                            transform: slide2.isVisible ? 'translateX(0)' : 'translateX(20px)',
-                            transitionDelay: slide2.isVisible ? `${500 + i * 60}ms` : '0ms',
-                          }}
-                        >
-                          <span className="text-blue-100/60 flex-1">{row.label}</span>
-                          <span className="text-white font-semibold w-20 text-right">{row.current}</span>
-                          <span className="text-blue-100/30 w-20 text-right">{row.prior}</span>
-                        </div>
-                      ))}
+                  <div className="space-y-4">
+                    <div className="bg-[#0F264A] border border-white/5 rounded-xl p-5">
+                      <div className="text-xs text-blue-100/50 font-semibold mb-3 uppercase tracking-wider">Key Performance</div>
+                      <div className="space-y-2">
+                        {[
+                          { label: "Average Members", current: "2,358", prior: "2,358" },
+                          { label: "Unique Utilizing", current: "2,794", prior: "2,887" },
+                          { label: "Scripts", current: "24,273", prior: "24,574" },
+                          { label: "GDR", current: "89.57%", prior: "89.33%" },
+                          { label: "Mail Utilization", current: "7.06%", prior: "7.8%" },
+                          { label: "Specialty %", current: "60.22%", prior: "58.97%" },
+                        ].map((row, i) => (
+                          <div
+                            key={i}
+                            className="flex items-center justify-between text-sm transition-all duration-400 ease-out"
+                            style={{
+                              opacity: activeSlide === 1 ? 1 : 0,
+                              transform: activeSlide === 1 ? 'translateX(0)' : 'translateX(15px)',
+                              transitionDelay: activeSlide === 1 ? `${200 + i * 50}ms` : '0ms',
+                            }}
+                          >
+                            <span className="text-blue-100/60 flex-1">{row.label}</span>
+                            <span className="text-white font-semibold w-20 text-right">{row.current}</span>
+                            <span className="text-blue-100/30 w-20 text-right">{row.prior}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="bg-[#0F264A] border border-white/5 rounded-xl p-5">
+                      <div className="text-xs text-blue-100/50 font-semibold mb-3 uppercase tracking-wider">Utilization Trends</div>
+                      <div className="space-y-2">
+                        {[
+                          { label: "Scripts PMPM", current: "0.846", prior: "0.846" },
+                          { label: "Days Supply PMPM", current: "21.08", prior: "21.08" },
+                          { label: "Mail Utilization", current: "7.06%", prior: "9.17%" },
+                        ].map((row, i) => (
+                          <div
+                            key={i}
+                            className="flex items-center justify-between text-sm transition-all duration-400 ease-out"
+                            style={{
+                              opacity: activeSlide === 1 ? 1 : 0,
+                              transform: activeSlide === 1 ? 'translateX(0)' : 'translateX(15px)',
+                              transitionDelay: activeSlide === 1 ? `${400 + i * 50}ms` : '0ms',
+                            }}
+                          >
+                            <span className="text-blue-100/60 flex-1">{row.label}</span>
+                            <span className="text-white font-semibold w-20 text-right">{row.current}</span>
+                            <span className="text-blue-100/30 w-20 text-right">{row.prior}</span>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="text-sm text-blue-100/40 font-semibold mb-4 uppercase tracking-wider">Cost and Allocations</div>
-              <div className="grid grid-cols-3 gap-4 mb-8">
-                {costData.map((chart, i) => (
-                  <div key={i} className="bg-[#0F264A] border border-white/5 rounded-2xl p-5">
-                    <div className="text-sm text-blue-100/50 mb-3 font-medium">{chart.label}</div>
-                    <div className="flex items-end justify-center gap-4 h-20">
-                      <div className="flex flex-col items-center gap-1 w-8">
-                        <AnimatedBar height={(chart.current / maxCost) * 60} delay={i * 200} color="#4A90E2" isVisible={slide2.isVisible} />
-                        <span className="text-xs text-blue-100/40 font-medium">${chart.current}</span>
-                      </div>
-                      <div className="flex flex-col items-center gap-1 w-8">
-                        <AnimatedBar height={(chart.prior / maxCost) * 60} delay={i * 200 + 100} color="#D4AF37" isVisible={slide2.isVisible} />
-                        <span className="text-xs text-blue-100/40 font-medium">${chart.prior}</span>
+                <div className="text-xs text-blue-100/40 font-semibold mb-3 uppercase tracking-wider">Cost and Allocations</div>
+                <div className="grid grid-cols-3 gap-3 mb-6">
+                  {costData.map((chart, i) => (
+                    <div key={i} className="bg-[#0F264A] border border-white/5 rounded-xl p-4">
+                      <div className="text-xs text-blue-100/50 mb-2 font-medium">{chart.label}</div>
+                      <div className="flex items-end justify-center gap-3 h-16">
+                        <div className="flex flex-col items-center gap-1 w-7">
+                          <AnimatedBar height={(chart.current / maxCost) * 50} delay={i * 150} color="#4A90E2" isVisible={activeSlide === 1} />
+                          <span className="text-[9px] text-blue-100/40 font-medium">${chart.current}</span>
+                        </div>
+                        <div className="flex flex-col items-center gap-1 w-7">
+                          <AnimatedBar height={(chart.prior / maxCost) * 50} delay={i * 150 + 75} color="#D4AF37" isVisible={activeSlide === 1} />
+                          <span className="text-[9px] text-blue-100/40 font-medium">${chart.prior}</span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
 
-              <div className="grid grid-cols-2 gap-8">
-                <AnimatedDonut percent={0.8957} color="#4A90E2" label="Generic Dispensing Rate" value="89.6%" isVisible={slide2.isVisible} />
-                <AnimatedDonut percent={0.6022} color="#D4AF37" label="Share of Specialty" value="60.2%" isVisible={slide2.isVisible} />
+                <div className="grid grid-cols-2 gap-6">
+                  <AnimatedDonut percent={0.8957} color="#4A90E2" label="Generic Dispensing Rate" value="89.6%" isVisible={activeSlide === 1} />
+                  <AnimatedDonut percent={0.6022} color="#D4AF37" label="Share of Specialty" value="60.2%" isVisible={activeSlide === 1} />
+                </div>
+              </div>
+            </div>
+
+            <div
+              className="absolute inset-0 transition-all duration-600 ease-out"
+              style={{
+                opacity: activeSlide === 2 ? 1 : 0,
+                transform: activeSlide === 2 ? 'translateY(0) scale(1)' : activeSlide < 2 ? 'translateY(40px) scale(0.96)' : 'translateY(-40px) scale(0.96)',
+                pointerEvents: activeSlide === 2 ? 'auto' : 'none',
+              }}
+            >
+              <div className="bg-[#0B1F40] border border-white/10 rounded-3xl p-6 md:p-10 h-full overflow-y-auto flex flex-col justify-center">
+                <div className="text-center mb-8">
+                  <h3 className="text-2xl md:text-3xl font-bold text-white">
+                    Key <span className="text-[#D4AF37]">Insights</span>
+                  </h3>
+                  <p className="text-blue-100/50 text-sm mt-2">Highlights from plan analysis</p>
+                </div>
+                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+                  {[
+                    { icon: DollarSign, color: "#ef4444", label: "Top Claimant", value: "$94,333.03", name: "Crysvita", detail: "12.69% of Total Plan Cost" },
+                    { icon: FlaskConical, color: "#4A90E2", label: "Top Therapeutic Class", value: "Endocrine & Metabolic Agents", name: "$604,190.46", detail: "16.19% of Total Plan Cost" },
+                    { icon: Pill, color: "#f97316", label: "Largest Cost Increase", value: "Mavenclad (10 Tabs)", name: "$175,119.46", detail: "New to plan" },
+                    { icon: TrendingUp, color: "#D4AF37", label: "Top Trend Driver", value: "Psychotherapeutic Agents", name: "$159,633.64", detail: "6.77% Trend Impact" },
+                  ].map((card, i) => (
+                    <div
+                      key={i}
+                      className="bg-[#0F264A] border border-white/10 rounded-2xl p-6 transition-all duration-500 ease-out hover:border-white/20 hover:scale-[1.02]"
+                      style={{
+                        opacity: activeSlide === 2 ? 1 : 0,
+                        transform: activeSlide === 2 ? 'translateY(0) scale(1)' : 'translateY(25px) scale(0.95)',
+                        transitionDelay: activeSlide === 2 ? `${i * 120}ms` : '0ms',
+                      }}
+                      data-testid={`stewardship-highlight-${i}`}
+                    >
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ backgroundColor: `${card.color}15`, border: `1px solid ${card.color}30` }}>
+                          <card.icon className="w-5 h-5" style={{ color: card.color }} />
+                        </div>
+                        <span className="text-xs text-blue-100/50 uppercase tracking-wider font-medium">{card.label}</span>
+                      </div>
+                      <div className="text-xl font-bold mb-2 leading-tight" style={{ color: card.color }}>{card.value}</div>
+                      <div className="text-base text-white font-medium mb-1">{card.name}</div>
+                      <div className="text-sm text-blue-100/40">{card.detail}</div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
 
-          <div
-            ref={slide3.ref}
-            className="transition-all duration-800 ease-out"
-            style={{
-              opacity: slide3.isVisible ? 1 : 0,
-              transform: slide3.isVisible ? 'translateY(0)' : 'translateY(50px)',
-            }}
-          >
-            <div className="text-center mb-8">
-              <h3 className="text-2xl md:text-3xl font-bold text-white">
-                Key <span className="text-[#D4AF37]">Insights</span>
-              </h3>
-              <p className="text-blue-100/50 text-sm mt-2">Highlights from plan analysis</p>
-            </div>
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
-              {[
-                { icon: DollarSign, color: "#ef4444", label: "Top Claimant", value: "$94,333.03", name: "Crysvita", detail: "12.69% of Total Plan Cost" },
-                { icon: FlaskConical, color: "#4A90E2", label: "Top Therapeutic Class", value: "Endocrine & Metabolic Agents", name: "$604,190.46", detail: "16.19% of Total Plan Cost" },
-                { icon: Pill, color: "#f97316", label: "Largest Cost Increase", value: "Mavenclad (10 Tabs)", name: "$175,119.46", detail: "New to plan" },
-                { icon: TrendingUp, color: "#D4AF37", label: "Top Trend Driver", value: "Psychotherapeutic Agents", name: "$159,633.64", detail: "6.77% Trend Impact" },
-              ].map((card, i) => (
+          <div className="flex items-center justify-center gap-3 mt-4 shrink-0">
+            {slideLabels.map((label, i) => (
+              <button
+                key={i}
+                className="flex items-center gap-2 transition-all duration-300"
+                style={{ opacity: activeSlide >= 0 ? 1 : 0 }}
+                onClick={() => {
+                  const section = sectionRef.current;
+                  if (!section) return;
+                  const sectionTop = section.offsetTop;
+                  const sectionScrollable = section.offsetHeight - window.innerHeight;
+                  const targetScroll = sectionTop + (i / TOTAL_SLIDES) * sectionScrollable + 10;
+                  window.scrollTo({ top: targetScroll, behavior: 'smooth' });
+                }}
+                data-testid={`stewardship-dot-${i}`}
+              >
                 <div
-                  key={i}
-                  className="bg-[#0B1F40] border border-white/10 rounded-2xl p-6 transition-all duration-600 ease-out hover:border-white/20 hover:scale-[1.02]"
+                  className="rounded-full transition-all duration-300"
                   style={{
-                    opacity: slide3.isVisible ? 1 : 0,
-                    transform: slide3.isVisible ? 'translateY(0) scale(1)' : 'translateY(30px) scale(0.95)',
-                    transitionDelay: slide3.isVisible ? `${i * 150}ms` : '0ms',
+                    width: activeSlide === i ? '24px' : '8px',
+                    height: '8px',
+                    backgroundColor: activeSlide === i ? '#D4AF37' : 'rgba(255,255,255,0.2)',
                   }}
-                  data-testid={`stewardship-highlight-${i}`}
+                />
+                <span
+                  className="text-xs font-medium transition-all duration-300 whitespace-nowrap"
+                  style={{
+                    color: activeSlide === i ? '#D4AF37' : 'rgba(255,255,255,0.3)',
+                    maxWidth: activeSlide === i ? '200px' : '0px',
+                    overflow: 'hidden',
+                    opacity: activeSlide === i ? 1 : 0,
+                  }}
                 >
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ backgroundColor: `${card.color}15`, border: `1px solid ${card.color}30` }}>
-                      <card.icon className="w-5 h-5" style={{ color: card.color }} />
-                    </div>
-                    <span className="text-xs text-blue-100/50 uppercase tracking-wider font-medium">{card.label}</span>
-                  </div>
-                  <div className="text-xl font-bold mb-2 leading-tight" style={{ color: card.color }}>{card.value}</div>
-                  <div className="text-base text-white font-medium mb-1">{card.name}</div>
-                  <div className="text-sm text-blue-100/40">{card.detail}</div>
-                </div>
-              ))}
-            </div>
+                  {label}
+                </span>
+              </button>
+            ))}
           </div>
-
         </div>
       </div>
     </section>
