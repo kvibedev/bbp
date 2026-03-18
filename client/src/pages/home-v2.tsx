@@ -95,7 +95,7 @@ function StewardshipReportSection() {
         return;
       }
 
-      if (sectionTop < 0) {
+      if (sectionTop < -100) {
         setActiveSlide(-1);
         return;
       }
