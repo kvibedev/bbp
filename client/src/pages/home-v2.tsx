@@ -36,11 +36,82 @@ import pharmaTech3 from "@assets/generated_images/pharma_tech_hero_bg_3.png";
 const heroImages = [pharmaTech1, pharmaTech2, pharmaTech3];
 
 
+function useScrollReveal(threshold = 0.15) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) { setIsVisible(true); obs.unobserve(el); }
+    }, { threshold });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [threshold]);
+  return { ref, isVisible };
+}
+
+function AnimatedBar({ height, delay, color, isVisible }: { height: number; delay: number; color: string; isVisible: boolean }) {
+  return (
+    <div
+      className="rounded-t-sm transition-all duration-700 ease-out"
+      style={{
+        width: '100%',
+        height: isVisible ? `${height}px` : '0px',
+        backgroundColor: color,
+        transitionDelay: `${delay}ms`,
+      }}
+    />
+  );
+}
+
+function AnimatedDonut({ percent, color, label, value, isVisible }: { percent: number; color: string; label: string; value: string; isVisible: boolean }) {
+  const circumference = 2 * Math.PI * 14;
+  const offset = isVisible ? circumference * (1 - percent) : circumference;
+  return (
+    <div className="flex flex-col items-center">
+      <div className="text-xs text-blue-100/40 mb-3 uppercase tracking-wider">{label}</div>
+      <div className="relative w-28 h-28">
+        <svg viewBox="0 0 36 36" className="w-28 h-28 transform -rotate-90">
+          <circle cx="18" cy="18" r="14" fill="none" stroke="#1a3b6e" strokeWidth="2.5" />
+          <circle
+            cx="18" cy="18" r="14" fill="none" stroke={color} strokeWidth="2.5"
+            strokeDasharray={circumference}
+            strokeDashoffset={offset}
+            strokeLinecap="round"
+            className="transition-all duration-1000 ease-out"
+            style={{ transitionDelay: '300ms' }}
+          />
+        </svg>
+        <div className="absolute inset-0 flex flex-col items-center justify-center">
+          <span className="text-xl font-bold text-white">{value}</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function StewardshipReportSection() {
+  const header = useScrollReveal(0.1);
+  const summary = useScrollReveal(0.1);
+  const dashboards = useScrollReveal(0.1);
+  const charts = useScrollReveal(0.1);
+  const highlights = useScrollReveal(0.1);
+
+  const costData = [
+    { label: "Gross Cost PMPM", current: 181.78, prior: 142.05 },
+    { label: "Member Cost PMPM", current: 32.40, prior: 32.98 },
+    { label: "Plan Cost PMPM", current: 148.32, prior: 142.05 },
+  ];
+  const maxCost = Math.max(...costData.flatMap(d => [d.current, d.prior]));
+
   return (
     <section className="py-24 bg-[#071328] border-y border-white/5" data-testid="stewardship-section">
       <div className="container mx-auto px-6">
-        <div className="text-center mb-16">
+        <div
+          ref={header.ref}
+          className={`text-center mb-16 transition-all duration-700 ${header.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+        >
           <div className="flex items-center justify-center gap-3 text-[#D4AF37] font-medium text-sm mb-6 tracking-widest uppercase">
             <span className="w-12 h-[1px] bg-[#D4AF37]"></span>
             Enhanced Reporting Offerings
@@ -50,131 +121,148 @@ function StewardshipReportSection() {
             Stewardship <span className="text-[#D4AF37]">Report</span>
           </h2>
           <p className="text-blue-100/70 text-xl max-w-4xl mx-auto leading-relaxed">
-            Provides a comprehensive, year-over-year view of pharmacy plan performance, utilization, and cost trends. This offers executive-level insights to support strategic planning, budgeting, and vendor performance review.
+            Provides a comprehensive, year-over-year view of pharmacy plan performance, utilization, and cost trends — executive-level insights to support strategic planning, budgeting, and vendor performance review.
           </p>
         </div>
 
         <div className="max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-8 mb-10">
 
-            {/* LEFT: Executive Summary */}
-            <div>
+            <div
+              ref={summary.ref}
+              className={`transition-all duration-700 ${summary.isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-12'}`}
+            >
               <div className="bg-[#0B1F40] border border-white/10 rounded-2xl p-8">
                 <div className="flex items-center gap-3 mb-6">
                   <FileText className="w-6 h-6 text-[#D4AF37]" />
                   <h3 className="text-xl font-bold text-white">Executive Summary</h3>
                 </div>
 
-                {/* Plan Summary */}
                 <div className="text-xs text-blue-100/40 uppercase tracking-wider mb-3">Plan Summary</div>
                 <div className="grid grid-cols-2 gap-3 mb-6">
                   {[
-                    { label: "Total Gross Cost", value: "$5,143,536.19" },
-                    { label: "Average Members", value: "2,358" },
-                    { label: "Plan Cost PMPM", value: "$148.32" },
-                    { label: "Adjusted Scripts PMPM", value: "1.25" },
+                    { label: "Total Gross Cost", value: "$5,143,536", icon: DollarSign },
+                    { label: "Average Members", value: "2,358", icon: Users },
+                    { label: "Plan Cost PMPM", value: "$148.32", icon: BarChart3 },
+                    { label: "Adjusted Scripts PMPM", value: "1.25", icon: Pill },
                   ].map((item, i) => (
-                    <div key={i} className="bg-[#0F264A] border border-white/5 rounded-xl p-4">
-                      <div className="text-xs text-blue-100/50 uppercase tracking-wider mb-1">{item.label}</div>
+                    <div
+                      key={i}
+                      className={`bg-[#0F264A] border border-white/5 rounded-xl p-4 transition-all duration-500 ${summary.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+                      style={{ transitionDelay: `${200 + i * 100}ms` }}
+                    >
+                      <div className="flex items-center gap-2 mb-2">
+                        <item.icon className="w-4 h-4 text-[#4A90E2]" />
+                        <div className="text-xs text-blue-100/50 uppercase tracking-wider">{item.label}</div>
+                      </div>
                       <div className="text-2xl font-bold text-[#D4AF37]">{item.value}</div>
                     </div>
                   ))}
                 </div>
 
-                {/* Plan Trends */}
                 <div className="text-xs text-blue-100/40 uppercase tracking-wider mb-3">Plan Trends</div>
                 <div className="grid grid-cols-2 gap-3 mb-6">
                   {[
-                    { label: "Plan Cost PMPM", value: "$148.32", change: "+5.12%", up: true },
-                    { label: "Adjusted Scripts PMPM", value: "1.25", change: "-0.62%", up: false },
+                    { label: "Plan Cost PMPM", value: "$148.32", change: "+5.12%", up: true, bars: [40, 55, 45, 65, 50, 70, 60, 80, 75, 90, 85, 100] },
+                    { label: "Adj. Scripts PMPM", value: "1.25", change: "-0.62%", up: false, bars: [80, 75, 85, 70, 65, 60, 55, 50, 55, 45, 50, 40] },
                   ].map((item, i) => (
                     <div key={i} className="bg-[#0F264A] border border-white/5 rounded-xl p-4">
                       <div className="text-xs text-blue-100/50 mb-1">{item.label}</div>
-                      <div className="flex items-end gap-1 mb-2 h-8">
-                        {[40, 55, 45, 65, 50, 70, 60, 80, 75, 90, 85, 100].map((h, idx) => (
-                          <div key={idx} style={{ height: `${h * 0.3}px` }} className="w-1.5 bg-[#4A90E2] rounded-t-sm" />
+                      <div className="flex items-end gap-[3px] mb-2 h-10">
+                        {item.bars.map((h, idx) => (
+                          <AnimatedBar key={idx} height={h * 0.35} delay={400 + idx * 50} color="#4A90E2" isVisible={summary.isVisible} />
                         ))}
                       </div>
-                      <div className={`text-sm font-bold ${item.up ? 'text-red-400' : 'text-green-400'}`}>
-                        {item.change}
+                      <div className="flex items-center justify-between">
+                        <span className="text-white font-medium text-sm">{item.value}</span>
+                        <span className={`text-sm font-bold ${item.up ? 'text-red-400' : 'text-green-400'}`}>
+                          {item.up ? '▲' : '▼'} {item.change}
+                        </span>
                       </div>
                     </div>
                   ))}
                 </div>
 
-                {/* Bottom metrics */}
                 <div className="grid grid-cols-2 gap-3">
                   {[
-                    { label: "Total Plan Cost", value: "$4,225,185.57" },
-                    { label: "Scripts", value: "24,273" },
-                    { label: "Specialty % of Gross Cost", value: "60.22%", sub: "5.79%", highlight: true },
-                    { label: "Generic Dispensing Rate", value: "89.57%", sub: "0.24%" },
+                    { label: "Total Plan Cost", value: "$4,225,186", highlight: false },
+                    { label: "Scripts", value: "24,273", highlight: false },
+                    { label: "Specialty % of Gross", value: "60.22%", sub: "▲ 5.79%", highlight: true },
+                    { label: "Generic Dispensing Rate", value: "89.57%", sub: "▲ 0.24%", highlight: false },
                   ].map((item, i) => (
-                    <div key={i} className="bg-[#0F264A] border border-white/5 rounded-xl p-4">
+                    <div
+                      key={i}
+                      className={`bg-[#0F264A] border rounded-xl p-4 transition-all duration-500 ${item.highlight ? 'border-red-500/30' : 'border-white/5'} ${summary.isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}
+                      style={{ transitionDelay: `${600 + i * 100}ms` }}
+                    >
                       <div className="text-xs text-blue-100/50 uppercase tracking-wider mb-1">{item.label}</div>
-                      <div className={`text-xl font-bold ${'highlight' in item && item.highlight ? 'text-red-400' : 'text-white'}`}>{item.value}</div>
-                      {'sub' in item && item.sub && <div className="text-xs text-green-400 mt-1">{item.sub}</div>}
+                      <div className={`text-xl font-bold ${item.highlight ? 'text-red-400' : 'text-white'}`}>{item.value}</div>
+                      {'sub' in item && item.sub && (
+                        <div className={`text-xs mt-1 font-medium ${item.highlight ? 'text-red-400/70' : 'text-green-400'}`}>{item.sub}</div>
+                      )}
                     </div>
                   ))}
                 </div>
               </div>
             </div>
 
-            {/* RIGHT: Performance Dashboards */}
-            <div>
+            <div
+              ref={dashboards.ref}
+              className={`transition-all duration-700 ${dashboards.isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-12'}`}
+              style={{ transitionDelay: '200ms' }}
+            >
               <div className="bg-[#0B1F40] border border-white/10 rounded-2xl p-8 h-full">
                 <div className="flex items-center gap-3 mb-2">
                   <BarChart3 className="w-6 h-6 text-[#4A90E2]" />
                   <h3 className="text-xl font-bold text-white">Performance Dashboards</h3>
                 </div>
-                <p className="text-sm text-blue-100/50 mb-6">Illustrates Financial and Utilization Trend by comparing prior performance vs. current</p>
+                <p className="text-sm text-blue-100/50 mb-6">Prior performance vs. current comparison</p>
 
                 <div className="grid grid-cols-2 gap-4 mb-6">
-                  {/* Financial Trends */}
                   <div className="bg-[#0F264A] border border-white/5 rounded-xl p-4">
-                    <div className="text-xs text-blue-100/40 font-semibold mb-3">Financial Trends</div>
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="text-xs text-blue-100/40 font-semibold">Financial Trends</div>
+                      <div className="flex gap-2 text-[8px]">
+                        <span className="text-[#4A90E2]">● Current</span>
+                        <span className="text-blue-100/30">● Prior</span>
+                      </div>
+                    </div>
                     <div className="space-y-1.5">
                       {[
-                        { label: "Total Gross Cost", current: "$5,143,536.19", prior: "$4,230,052.13" },
+                        { label: "Total Gross Cost", current: "$5,143,536", prior: "$4,230,052" },
                         { label: "Gross Cost PMPM", current: "$181.78", prior: "$142.05" },
-                        { label: "Gross Cost per 30 Days Supply", current: "$149.58", prior: "$129.78" },
-                        { label: "Plan Cost", current: "$4,225,185.57", prior: "$3,684,337.64" },
+                        { label: "Plan Cost", current: "$4,225,186", prior: "$3,684,338" },
                         { label: "Plan Cost PMPM", current: "$148.32", prior: "$142.05" },
-                        { label: "Plan Cost per 30 Days Supply", current: "$119.18", prior: "$119.07" },
-                        { label: "Member Cost", current: "$918,020.63", prior: "$545,407.53" },
+                        { label: "Member Cost", current: "$918,021", prior: "$545,408" },
                         { label: "Member Cost PMPM", current: "$32.40", prior: "$32.98" },
-                        { label: "Member Cost per 30 Days Supply", current: "$25.04", prior: "$19.31" },
                         { label: "Member Cost Share", current: "17.85%", prior: "12.91%" },
                       ].map((row, i) => (
                         <div key={i} className="flex items-center justify-between text-[10px]">
                           <span className="text-blue-100/50 truncate mr-1 flex-1">{row.label}</span>
-                          <span className="text-white font-medium w-24 text-right">{row.current}</span>
-                          <span className="text-blue-100/30 w-24 text-right">{row.prior}</span>
+                          <span className="text-white font-medium w-20 text-right">{row.current}</span>
+                          <span className="text-blue-100/30 w-20 text-right">{row.prior}</span>
                         </div>
                       ))}
                     </div>
                   </div>
 
-                  {/* Key Performance & Utilization */}
                   <div className="space-y-4">
                     <div className="bg-[#0F264A] border border-white/5 rounded-xl p-4">
-                      <div className="text-xs text-blue-100/40 font-semibold mb-3">Key Performance Metrics</div>
+                      <div className="text-xs text-blue-100/40 font-semibold mb-3">Key Performance</div>
                       <div className="space-y-1.5">
                         {[
                           { label: "Average Members", current: "2,358", prior: "2,358" },
-                          { label: "Unique Utilizing Members", current: "2,794", prior: "2,887" },
+                          { label: "Unique Utilizing", current: "2,794", prior: "2,887" },
                           { label: "Scripts", current: "24,273", prior: "24,574" },
-                          { label: "Adjusted Scripts PMPM", current: "1.25", prior: "1.28" },
-                          { label: "Days Supply PMPM", current: "37.48", prior: "31.75" },
-                          { label: "Generic Dispensing Rate", current: "89.57%", prior: "89.33%" },
-                          { label: "Mail Utilization Rate", current: "7.06%", prior: "7.8%" },
-                          { label: "Specialty % of Gross Cost", current: "60.22%", prior: "58.97%" },
-                          { label: "Claimants with Plan Cost > $100,000", current: "5", prior: "5" },
+                          { label: "GDR", current: "89.57%", prior: "89.33%" },
+                          { label: "Mail Utilization", current: "7.06%", prior: "7.8%" },
+                          { label: "Specialty %", current: "60.22%", prior: "58.97%" },
+                          { label: "High Cost Claimants", current: "5", prior: "5" },
                         ].map((row, i) => (
                           <div key={i} className="flex items-center justify-between text-[10px]">
                             <span className="text-blue-100/50 truncate mr-1 flex-1">{row.label}</span>
-                            <span className="text-white font-medium w-16 text-right">{row.current}</span>
-                            <span className="text-blue-100/30 w-16 text-right">{row.prior}</span>
+                            <span className="text-white font-medium w-14 text-right">{row.current}</span>
+                            <span className="text-blue-100/30 w-14 text-right">{row.prior}</span>
                           </div>
                         ))}
                       </div>
@@ -184,16 +272,14 @@ function StewardshipReportSection() {
                       <div className="text-xs text-blue-100/40 font-semibold mb-3">Utilization Trends</div>
                       <div className="space-y-1.5">
                         {[
-                          { label: "Average Members", current: "2,358", trend: "2,358" },
-                          { label: "Unique Utilizing", current: "2,794", trend: "2,887" },
-                          { label: "Scripts PMPM", current: "0.846", trend: "0.846" },
-                          { label: "Days Supply PMPM", current: "21.08", trend: "21.08" },
-                          { label: "Mail Utilization Rate", current: "7.06%", trend: "9.17%" },
+                          { label: "Scripts PMPM", current: "0.846", prior: "0.846" },
+                          { label: "Days Supply PMPM", current: "21.08", prior: "21.08" },
+                          { label: "Mail Utilization", current: "7.06%", prior: "9.17%" },
                         ].map((row, i) => (
                           <div key={i} className="flex items-center justify-between text-[10px]">
                             <span className="text-blue-100/50 truncate mr-1 flex-1">{row.label}</span>
-                            <span className="text-white font-medium w-16 text-right">{row.current}</span>
-                            <span className="text-blue-100/30 w-16 text-right">{row.trend}</span>
+                            <span className="text-white font-medium w-14 text-right">{row.current}</span>
+                            <span className="text-blue-100/30 w-14 text-right">{row.prior}</span>
                           </div>
                         ))}
                       </div>
@@ -201,99 +287,62 @@ function StewardshipReportSection() {
                   </div>
                 </div>
 
-                {/* Cost and Allocations - Charts */}
-                <div className="text-xs text-blue-100/40 font-semibold mb-3">Cost and Allocations</div>
-                <div className="grid grid-cols-3 gap-3 mb-6">
-                  {[
-                    { label: "Gross Cost PMPM" },
-                    { label: "Member Cost PMPM" },
-                    { label: "Plan Cost PMPM" },
-                  ].map((chart, i) => (
-                    <div key={i} className="bg-[#0F264A] border border-white/5 rounded-xl p-3">
-                      <div className="text-[10px] text-blue-100/40 mb-2">{chart.label}</div>
-                      <div className="flex items-end justify-center gap-2 h-14">
-                        <div className="flex flex-col items-center gap-1">
-                          <div className="w-5 bg-[#4A90E2] rounded-t-sm" style={{ height: '32px' }}></div>
-                          <span className="text-[8px] text-blue-100/30">Current</span>
-                        </div>
-                        <div className="flex flex-col items-center gap-1">
-                          <div className="w-5 bg-[#D4AF37] rounded-t-sm" style={{ height: '28px' }}></div>
-                          <span className="text-[8px] text-blue-100/30">Prior</span>
+                <div ref={charts.ref}>
+                  <div className="text-xs text-blue-100/40 font-semibold mb-3 uppercase tracking-wider">Cost and Allocations</div>
+                  <div className="grid grid-cols-3 gap-3 mb-6">
+                    {costData.map((chart, i) => (
+                      <div key={i} className="bg-[#0F264A] border border-white/5 rounded-xl p-3">
+                        <div className="text-[10px] text-blue-100/40 mb-2">{chart.label}</div>
+                        <div className="flex items-end justify-center gap-3 h-16">
+                          <div className="flex flex-col items-center gap-1 w-6">
+                            <AnimatedBar height={(chart.current / maxCost) * 50} delay={i * 150} color="#4A90E2" isVisible={charts.isVisible} />
+                            <span className="text-[7px] text-blue-100/30 whitespace-nowrap">${chart.current}</span>
+                          </div>
+                          <div className="flex flex-col items-center gap-1 w-6">
+                            <AnimatedBar height={(chart.prior / maxCost) * 50} delay={i * 150 + 75} color="#D4AF37" isVisible={charts.isVisible} />
+                            <span className="text-[7px] text-blue-100/30 whitespace-nowrap">${chart.prior}</span>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Donut Charts */}
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-[#0F264A] border border-white/5 rounded-xl p-4 flex flex-col items-center">
-                    <div className="text-xs text-blue-100/40 mb-3">Generic Dispensing Rate</div>
-                    <div className="relative w-24 h-24">
-                      <svg viewBox="0 0 36 36" className="w-24 h-24 transform -rotate-90">
-                        <circle cx="18" cy="18" r="14" fill="none" stroke="#1a3b6e" strokeWidth="3" />
-                        <circle cx="18" cy="18" r="14" fill="none" stroke="#4A90E2" strokeWidth="3" strokeDasharray="87.96" strokeDashoffset={87.96 * (1 - 0.8957)} strokeLinecap="round" />
-                      </svg>
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <span className="text-lg font-bold text-white">89.6%</span>
-                      </div>
-                    </div>
+                    ))}
                   </div>
-                  <div className="bg-[#0F264A] border border-white/5 rounded-xl p-4 flex flex-col items-center">
-                    <div className="text-xs text-blue-100/40 mb-3">Share of Specialty</div>
-                    <div className="relative w-24 h-24">
-                      <svg viewBox="0 0 36 36" className="w-24 h-24 transform -rotate-90">
-                        <circle cx="18" cy="18" r="14" fill="none" stroke="#1a3b6e" strokeWidth="3" />
-                        <circle cx="18" cy="18" r="14" fill="none" stroke="#D4AF37" strokeWidth="3" strokeDasharray="87.96" strokeDashoffset={87.96 * (1 - 0.6022)} strokeLinecap="round" />
-                      </svg>
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <span className="text-lg font-bold text-white">60.2%</span>
-                      </div>
-                    </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <AnimatedDonut percent={0.8957} color="#4A90E2" label="Generic Dispensing Rate" value="89.6%" isVisible={charts.isVisible} />
+                    <AnimatedDonut percent={0.6022} color="#D4AF37" label="Share of Specialty" value="60.2%" isVisible={charts.isVisible} />
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Bottom Highlight Cards */}
-          <div className="grid md:grid-cols-4 gap-4">
-            <div className="bg-[#0B1F40] border border-white/10 rounded-xl p-5 hover:border-[#D4AF37]/30 transition-colors" data-testid="stewardship-highlight-0">
-              <div className="flex items-center gap-2 mb-3">
-                <DollarSign className="w-5 h-5 text-red-400" />
-                <span className="text-xs text-blue-100/50 uppercase tracking-wider">Top Claimant</span>
+          <div
+            ref={highlights.ref}
+            className="grid md:grid-cols-4 gap-4"
+          >
+            {[
+              { icon: DollarSign, color: "text-red-400", borderColor: "hover:border-red-400/30", label: "Top Claimant", value: "$94,333.03", name: "Crysvita", detail: "12.69% of Total Plan Cost" },
+              { icon: FlaskConical, color: "text-[#4A90E2]", borderColor: "hover:border-[#4A90E2]/30", label: "Top Therapeutic Class", value: "Endocrine & Metabolic", name: "$604,190.46", detail: "16.19% of Total Plan Cost" },
+              { icon: Pill, color: "text-orange-400", borderColor: "hover:border-orange-400/30", label: "Largest Cost Increase", value: "Mavenclad (10 Tabs)", name: "$175,119.46", detail: "New to plan" },
+              { icon: TrendingUp, color: "text-[#D4AF37]", borderColor: "hover:border-[#D4AF37]/30", label: "Top Trend Driver", value: "Psychotherapeutic Agents", name: "$159,633.64", detail: "6.77% Trend Impact" },
+            ].map((card, i) => (
+              <div
+                key={i}
+                className={`bg-[#0B1F40] border border-white/10 rounded-xl p-5 transition-all duration-500 ${card.borderColor} ${highlights.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
+                style={{ transitionDelay: `${i * 120}ms` }}
+                data-testid={`stewardship-highlight-${i}`}
+              >
+                <div className="flex items-center gap-2 mb-3">
+                  <div className={`w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center`}>
+                    <card.icon className={`w-4 h-4 ${card.color}`} />
+                  </div>
+                  <span className="text-xs text-blue-100/50 uppercase tracking-wider">{card.label}</span>
+                </div>
+                <div className={`text-lg font-bold ${card.color} mb-1 leading-tight`}>{card.value}</div>
+                <div className="text-sm text-white font-medium mb-1">{card.name}</div>
+                <div className="text-xs text-blue-100/40">{card.detail}</div>
               </div>
-              <div className="text-lg font-bold text-red-400 mb-1">$94,333.03</div>
-              <div className="text-sm text-white font-medium mb-1">Crysvita</div>
-              <div className="text-xs text-blue-100/40">12.69% of Total Plan Cost</div>
-            </div>
-            <div className="bg-[#0B1F40] border border-white/10 rounded-xl p-5 hover:border-[#D4AF37]/30 transition-colors" data-testid="stewardship-highlight-1">
-              <div className="flex items-center gap-2 mb-3">
-                <FlaskConical className="w-5 h-5 text-[#4A90E2]" />
-                <span className="text-xs text-blue-100/50 uppercase tracking-wider">Top Therapeutic Class</span>
-              </div>
-              <div className="text-lg font-bold text-[#4A90E2] mb-1">Endocrine And Metabolic Agents - Misc.</div>
-              <div className="text-sm text-white font-medium mb-1">$604,190.46</div>
-              <div className="text-xs text-blue-100/40">16.19% of Total Plan Cost</div>
-            </div>
-            <div className="bg-[#0B1F40] border border-white/10 rounded-xl p-5 hover:border-[#D4AF37]/30 transition-colors" data-testid="stewardship-highlight-2">
-              <div className="flex items-center gap-2 mb-3">
-                <Pill className="w-5 h-5 text-orange-400" />
-                <span className="text-xs text-blue-100/50 uppercase tracking-wider">Drug with Largest Plan Cost Increase</span>
-              </div>
-              <div className="text-lg font-bold text-orange-400 mb-1">Mavenclad (10 Tabs)</div>
-              <div className="text-sm text-white font-medium mb-1">$175,119.46</div>
-              <div className="text-xs text-blue-100/40">$175,119.46</div>
-            </div>
-            <div className="bg-[#0B1F40] border border-white/10 rounded-xl p-5 hover:border-[#D4AF37]/30 transition-colors" data-testid="stewardship-highlight-3">
-              <div className="flex items-center gap-2 mb-3">
-                <TrendingUp className="w-5 h-5 text-[#D4AF37]" />
-                <span className="text-xs text-blue-100/50 uppercase tracking-wider">Top Trend Driver</span>
-              </div>
-              <div className="text-lg font-bold text-[#D4AF37] mb-1">Psychotherapeutic And Neurological Agents - Misc.</div>
-              <div className="text-sm text-white font-medium mb-1">$159,633.64</div>
-              <div className="text-xs text-blue-100/40">6.77% Trend Impact</div>
-            </div>
+            ))}
           </div>
         </div>
       </div>
@@ -753,81 +802,7 @@ export default function Home() {
         </div>
       </section>
       {/* Enhanced Reporting - Stewardship Report Section */}
-      <section className="py-24 bg-[#071328] border-y border-white/5" data-testid="stewardship-section">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-16">
-            <div className="flex items-center justify-center gap-3 text-[#D4AF37] font-medium text-sm mb-6 tracking-widest uppercase">
-              <span className="w-12 h-[1px] bg-[#D4AF37]"></span>
-              Enhanced Reporting Offerings
-              <span className="w-12 h-[1px] bg-[#D4AF37]"></span>
-            </div>
-            <h2 className="text-4xl md:text-6xl font-serif font-bold mb-6 text-white">
-              Stewardship <span className="text-[#D4AF37]">Report</span>
-            </h2>
-            <p className="text-blue-100/70 text-xl max-w-4xl mx-auto leading-relaxed">
-              Comprehensive year-over-year pharmacy plan performance analysis.
-            </p>
-          </div>
-          <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-8">
-            <div className="bg-[#0B1F40] border border-white/10 rounded-2xl p-8">
-              <div className="flex items-center gap-3 mb-6">
-                <FileText className="w-6 h-6 text-[#D4AF37]" />
-                <h3 className="text-xl font-bold text-white">Executive Summary</h3>
-              </div>
-              <div className="grid grid-cols-2 gap-3">
-                <div className="bg-[#0F264A] border border-white/5 rounded-xl p-4">
-                  <div className="text-xs text-blue-100/50 uppercase tracking-wider mb-1">Total Gross Cost</div>
-                  <div className="text-2xl font-bold text-[#D4AF37]">$5,143,536</div>
-                </div>
-                <div className="bg-[#0F264A] border border-white/5 rounded-xl p-4">
-                  <div className="text-xs text-blue-100/50 uppercase tracking-wider mb-1">Average Members</div>
-                  <div className="text-2xl font-bold text-[#D4AF37]">2,358</div>
-                </div>
-                <div className="bg-[#0F264A] border border-white/5 rounded-xl p-4">
-                  <div className="text-xs text-blue-100/50 uppercase tracking-wider mb-1">Plan Cost PMPM</div>
-                  <div className="text-2xl font-bold text-[#D4AF37]">$148.32</div>
-                </div>
-                <div className="bg-[#0F264A] border border-white/5 rounded-xl p-4">
-                  <div className="text-xs text-blue-100/50 uppercase tracking-wider mb-1">Generic Dispensing Rate</div>
-                  <div className="text-2xl font-bold text-[#D4AF37]">89.6%</div>
-                </div>
-              </div>
-            </div>
-            <div className="bg-[#0B1F40] border border-white/10 rounded-2xl p-8">
-              <div className="flex items-center gap-3 mb-6">
-                <BarChart3 className="w-6 h-6 text-[#4A90E2]" />
-                <h3 className="text-xl font-bold text-white">Performance Dashboards</h3>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="bg-[#0F264A] border border-white/5 rounded-xl p-4 flex flex-col items-center">
-                  <div className="text-xs text-blue-100/40 mb-3">Generic Dispensing Rate</div>
-                  <div className="relative w-24 h-24">
-                    <svg viewBox="0 0 36 36" className="w-24 h-24 transform -rotate-90">
-                      <circle cx="18" cy="18" r="14" fill="none" stroke="#1a3b6e" strokeWidth="3" />
-                      <circle cx="18" cy="18" r="14" fill="none" stroke="#4A90E2" strokeWidth="3" strokeDasharray="87.96" strokeDashoffset="9.18" strokeLinecap="round" />
-                    </svg>
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <span className="text-lg font-bold text-white">89.6%</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="bg-[#0F264A] border border-white/5 rounded-xl p-4 flex flex-col items-center">
-                  <div className="text-xs text-blue-100/40 mb-3">Share of Specialty</div>
-                  <div className="relative w-24 h-24">
-                    <svg viewBox="0 0 36 36" className="w-24 h-24 transform -rotate-90">
-                      <circle cx="18" cy="18" r="14" fill="none" stroke="#1a3b6e" strokeWidth="3" />
-                      <circle cx="18" cy="18" r="14" fill="none" stroke="#D4AF37" strokeWidth="3" strokeDasharray="87.96" strokeDashoffset="34.97" strokeLinecap="round" />
-                    </svg>
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <span className="text-lg font-bold text-white">60.2%</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <StewardshipReportSection />
       {/* How We Differentiate - BBP Focused */}
       <section className="py-32 relative overflow-hidden">
         <div className="container mx-auto px-6">
