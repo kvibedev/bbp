@@ -481,6 +481,367 @@ function StewardshipReportSection() {
   );
 }
 
+function ReportingAnalyticsSection() {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const slide0Ref = useRef<HTMLDivElement>(null);
+  const slide1Ref = useRef<HTMLDivElement>(null);
+  const [activeSlide, setActiveSlide] = useState(-1);
+  const TOTAL_SLIDES = 2;
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const handleScroll = () => {
+      const rect = section.getBoundingClientRect();
+      const sectionTop = -rect.top;
+      const sectionScrollable = section.offsetHeight - window.innerHeight;
+
+      if (rect.bottom < 0 || rect.top > window.innerHeight) {
+        setActiveSlide(-1);
+        return;
+      }
+
+      if (sectionTop < -100) {
+        setActiveSlide(-1);
+        return;
+      }
+
+      const progress = Math.max(0, Math.min(1, sectionTop / sectionScrollable));
+      const slideIndex = Math.min(TOTAL_SLIDES - 1, Math.floor(progress * TOTAL_SLIDES));
+      setActiveSlide(slideIndex);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    [slide0Ref, slide1Ref].forEach((ref) => {
+      if (ref.current) ref.current.scrollTop = 0;
+    });
+  }, [activeSlide]);
+
+  const topDrugs = [
+    { rank: 1, name: "Crysvita", scripts: 24, prevScripts: 26, cost: 613426, prevCost: 658713, change: -45286, changePct: "-6.9%", share: "12.00%", up: false },
+    { rank: 2, name: "Humira (2 Pen)", scripts: 84, prevScripts: 56, cost: 526430, prevCost: 319841, change: 206585, changePct: "+64.6%", share: "10.29%", up: true },
+    { rank: 3, name: "Stelara", scripts: 15, prevScripts: 10, cost: 341463, prevCost: 231564, change: 109898, changePct: "+47.5%", share: "6.68%", up: true },
+    { rank: 4, name: "Mavenclad (10 Tabs)", scripts: 2, prevScripts: 0, cost: 184344, prevCost: 0, change: 184344, changePct: "New", share: "3.60%", up: true },
+    { rank: 5, name: "Ibrance", scripts: 13, prevScripts: 11, cost: 179757, prevCost: 143861, change: 35896, changePct: "+25.0%", share: "3.52%", up: true },
+    { rank: 6, name: "Trulicity", scripts: 76, prevScripts: 70, cost: 149645, prevCost: 139694, change: 9951, changePct: "+7.1%", share: "2.93%", up: true },
+    { rank: 7, name: "Taltz", scripts: 15, prevScripts: 7, cost: 130407, prevCost: 54213, change: 76195, changePct: "+140.5%", share: "2.55%", up: true },
+    { rank: 8, name: "Cosentyx Sensoready (300 MG)", scripts: 20, prevScripts: 13, cost: 125767, prevCost: 94897, change: 30870, changePct: "+32.5%", share: "2.46%", up: true },
+    { rank: 9, name: "Xtandi", scripts: 9, prevScripts: 14, cost: 110999, prevCost: 164496, change: -53498, changePct: "-32.5%", share: "2.17%", up: false },
+    { rank: 10, name: "Jardiance", scripts: 73, prevScripts: 48, cost: 104814, prevCost: 66171, change: 38643, changePct: "+58.4%", share: "2.05%", up: true },
+  ];
+
+  const maxDrugCost = Math.max(...topDrugs.map(d => d.cost));
+
+  const claimants = [
+    { rank: 1, id: "ABCD1234", drug: "Crysvita", current: 546336, previous: 655924, change: -109588, changePct: "-16.7%", share: "12.88%", up: false },
+    { rank: 2, id: "ABCD1235", drug: "Mavenclad (10 Tabs)", current: 182351, previous: 0, change: 182351, changePct: "New", share: "4.30%", up: true },
+    { rank: 3, id: "ABCD1236", drug: "Ibrance", current: 140157, previous: 140843, change: -686, changePct: "-0.5%", share: "3.30%", up: false },
+    { rank: 4, id: "ABCD1237", drug: "Stelara", current: 115150, previous: 38432, change: 76718, changePct: "+199.6%", share: "2.71%", up: true },
+    { rank: 5, id: "ABCD1238", drug: "Xtandi", current: 102145, previous: 149242, change: -47097, changePct: "-31.6%", share: "2.41%", up: false },
+    { rank: 6, id: "ABCD1239", drug: "Stelara", current: 97399, previous: 87288, change: 10111, changePct: "+11.6%", share: "2.30%", up: true },
+    { rank: 7, id: "ABCD1240", drug: "Stelara", current: 96768, previous: 101834, change: -5067, changePct: "-5.0%", share: "2.28%", up: false },
+    { rank: 8, id: "ABCD1241", drug: "Humira (2 Pen)", current: 86701, previous: 15645, change: 71056, changePct: "+454.2%", share: "2.04%", up: true },
+    { rank: 9, id: "ABCD1242", drug: "Crysvita", current: 74915, previous: 22585, change: 52330, changePct: "+231.7%", share: "1.77%", up: true },
+    { rank: 10, id: "ABCD1243", drug: "Ocrevus", current: 72909, previous: 0, change: 72909, changePct: "New", share: "1.72%", up: true },
+  ];
+
+  const maxClaimantCost = Math.max(...claimants.map(c => c.current));
+
+  const slideLabels = ["Top Drugs Report", "Large Claimant Report"];
+
+  const formatCurrency = (n: number) => {
+    if (n >= 1000000) return `$${(n / 1000000).toFixed(1)}M`;
+    if (n >= 1000) return `$${(n / 1000).toFixed(0)}K`;
+    return `$${n.toLocaleString()}`;
+  };
+
+  return (
+    <section
+      ref={sectionRef}
+      className="relative bg-[#071328] border-y border-white/5"
+      style={{ height: `${TOTAL_SLIDES * 100}vh` }}
+      data-testid="reporting-analytics-section"
+    >
+      <div className="sticky top-0 h-screen flex flex-col">
+        <div className="container mx-auto px-6 flex flex-col h-full py-8">
+
+          <div className="text-center mb-6 shrink-0">
+            <div className="flex items-center justify-center gap-3 text-[#D4AF37] font-medium text-sm mb-4 tracking-widest uppercase">
+              <span className="w-12 h-[1px] bg-[#D4AF37]"></span>
+              Enhanced Reporting Offerings
+              <span className="w-12 h-[1px] bg-[#D4AF37]"></span>
+            </div>
+            <h2 className="text-3xl md:text-5xl font-serif font-bold mb-3 text-white">
+              Reporting <span className="text-[#D4AF37]">Analytics</span>
+            </h2>
+            <p className="text-blue-100/70 text-base md:text-lg max-w-3xl mx-auto leading-relaxed">
+              Pinpoint high-cost medications and claimants driving plan spend — actionable intelligence for targeted intervention.
+            </p>
+          </div>
+
+          <div className="flex-1 relative max-w-6xl mx-auto w-full min-h-0">
+
+            <div
+              className="absolute inset-0 transition-all duration-600 ease-out"
+              style={{
+                opacity: activeSlide === 0 ? 1 : 0,
+                transform: activeSlide === 0 ? 'translateY(0) scale(1)' : activeSlide > 0 ? 'translateY(-40px) scale(0.96)' : 'translateY(40px) scale(0.96)',
+                pointerEvents: activeSlide === 0 ? 'auto' : 'none',
+              }}
+            >
+              <div ref={slide0Ref} className="bg-[#0B1F40] border border-white/10 rounded-3xl p-6 md:p-8 h-full overflow-y-auto">
+                <div className="flex items-center justify-between mb-5">
+                  <div className="flex items-center gap-4">
+                    <div className="w-10 h-10 rounded-xl bg-[#D4AF37]/10 border border-[#D4AF37]/20 flex items-center justify-center">
+                      <Pill className="w-5 h-5 text-[#D4AF37]" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl md:text-2xl font-bold text-white" data-testid="text-top-drugs-title">Top Drugs Report</h3>
+                      <p className="text-blue-100/50 text-xs">Top 10 drugs by ingredient cost</p>
+                    </div>
+                  </div>
+                  <div className="hidden md:block bg-[#0F264A] border border-[#D4AF37]/20 rounded-xl px-4 py-2.5">
+                    <div className="text-[10px] text-[#D4AF37] uppercase tracking-wider font-semibold mb-1">Available Formats</div>
+                    <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-[10px] text-blue-100/50">
+                      <span>By Ingredient Cost</span>
+                      <span>By Change in Cost</span>
+                      <span>By Script Count</span>
+                      <span>By Change in Scripts</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-3 gap-3 mb-5">
+                  {[
+                    { label: "Top Drug Cost", value: "$613,426", sub: "Crysvita", color: "text-[#D4AF37]", tid: "top-drug-cost" },
+                    { label: "Total Top 10 Cost", value: "$2.47M", sub: "48.25% of Plan", color: "text-[#4A90E2]", tid: "top-10-cost" },
+                    { label: "Avg Cost Change", value: "+36.0%", sub: "8 of 10 increased", color: "text-red-400", tid: "avg-cost-change" },
+                  ].map((card, i) => (
+                    <div
+                      key={i}
+                      className="bg-[#0F264A] border border-white/5 rounded-xl p-3 transition-all duration-500 ease-out"
+                      data-testid={`card-${card.tid}`}
+                      style={{
+                        opacity: activeSlide === 0 ? 1 : 0,
+                        transform: activeSlide === 0 ? 'translateY(0)' : 'translateY(15px)',
+                        transitionDelay: activeSlide === 0 ? `${150 + i * 80}ms` : '0ms',
+                      }}
+                    >
+                      <div className="text-[10px] text-blue-100/50 uppercase tracking-wider font-medium mb-1">{card.label}</div>
+                      <div className={`text-xl font-bold ${card.color}`}>{card.value}</div>
+                      <div className="text-[11px] text-blue-100/40 mt-0.5">{card.sub}</div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="bg-[#0F264A] border border-white/5 rounded-xl overflow-hidden">
+                  <div className="grid grid-cols-[2rem_1fr_4rem_1fr_5rem_3.5rem] gap-x-2 px-4 py-2 text-[10px] text-blue-100/40 uppercase tracking-wider font-semibold border-b border-white/5">
+                    <span>#</span>
+                    <span>Drug Name</span>
+                    <span className="text-right">Scripts</span>
+                    <span>Ingredient Cost</span>
+                    <span className="text-right">Change</span>
+                    <span className="text-right">Share</span>
+                  </div>
+                  {topDrugs.map((drug, i) => (
+                    <div
+                      key={i}
+                      className="grid grid-cols-[2rem_1fr_4rem_1fr_5rem_3.5rem] gap-x-2 items-center px-4 py-2 text-sm border-b border-white/[0.03] transition-all duration-400 ease-out hover:bg-white/[0.02]"
+                      style={{
+                        opacity: activeSlide === 0 ? 1 : 0,
+                        transform: activeSlide === 0 ? 'translateX(0)' : 'translateX(-20px)',
+                        transitionDelay: activeSlide === 0 ? `${250 + i * 50}ms` : '0ms',
+                      }}
+                      data-testid={`top-drug-row-${i}`}
+                    >
+                      <span className="text-blue-100/30 font-mono text-xs">{drug.rank}</span>
+                      <span className="text-white font-medium truncate text-[13px]">{drug.name}</span>
+                      <span className="text-blue-100/50 text-right text-xs">{drug.scripts}</span>
+                      <div className="flex items-center gap-2">
+                        <div className="flex-1 h-4 bg-[#0B1F40] rounded-full overflow-hidden">
+                          <div
+                            className="h-full rounded-full transition-all duration-700 ease-out"
+                            style={{
+                              width: activeSlide === 0 ? `${(drug.cost / maxDrugCost) * 100}%` : '0%',
+                              backgroundColor: drug.up ? '#4A90E2' : '#D4AF37',
+                              transitionDelay: activeSlide === 0 ? `${350 + i * 50}ms` : '0ms',
+                            }}
+                          />
+                        </div>
+                        <span className="text-white font-semibold text-xs w-14 text-right">{formatCurrency(drug.cost)}</span>
+                      </div>
+                      <span className={`text-right text-xs font-semibold ${drug.up ? 'text-red-400' : 'text-green-400'}`}>
+                        {drug.changePct === "New" ? (
+                          <span className="text-orange-400">New</span>
+                        ) : (
+                          <>{drug.up ? '▲' : '▼'} {drug.changePct}</>
+                        )}
+                      </span>
+                      <span className="text-blue-100/50 text-right text-xs">{drug.share}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div
+              className="absolute inset-0 transition-all duration-600 ease-out"
+              style={{
+                opacity: activeSlide === 1 ? 1 : 0,
+                transform: activeSlide === 1 ? 'translateY(0) scale(1)' : activeSlide < 1 ? 'translateY(40px) scale(0.96)' : 'translateY(-40px) scale(0.96)',
+                pointerEvents: activeSlide === 1 ? 'auto' : 'none',
+              }}
+            >
+              <div ref={slide1Ref} className="bg-[#0B1F40] border border-white/10 rounded-3xl p-6 md:p-8 h-full overflow-y-auto">
+                <div className="flex items-center justify-between mb-5">
+                  <div className="flex items-center gap-4">
+                    <div className="w-10 h-10 rounded-xl bg-[#4A90E2]/10 border border-[#4A90E2]/20 flex items-center justify-center">
+                      <Users className="w-5 h-5 text-[#4A90E2]" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl md:text-2xl font-bold text-white" data-testid="text-large-claimant-title">Large Claimant Report</h3>
+                      <p className="text-blue-100/50 text-xs">Top 10 claimants by plan cost</p>
+                    </div>
+                  </div>
+                  <div className="hidden md:block bg-[#0F264A] border border-[#4A90E2]/20 rounded-xl px-4 py-2.5">
+                    <div className="text-[10px] text-[#4A90E2] uppercase tracking-wider font-semibold mb-1">Available Formats</div>
+                    <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-[10px] text-blue-100/50">
+                      <span>By Plan Cost</span>
+                      <span>By Change in Plan Cost</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-3 gap-3 mb-5">
+                  {[
+                    { label: "Top Claimant Cost", value: "$546,336", sub: "Crysvita — ABCD1234", color: "text-[#4A90E2]", tid: "top-claimant-cost" },
+                    { label: "Total Top 10 Spend", value: "$1.52M", sub: "35.81% of Plan Cost", color: "text-[#D4AF37]", tid: "claimant-total-spend" },
+                    { label: "Risk Concentration", value: "12.88%", sub: "#1 claimant share", color: "text-red-400", tid: "risk-concentration" },
+                  ].map((card, i) => (
+                    <div
+                      key={i}
+                      className="bg-[#0F264A] border border-white/5 rounded-xl p-3 transition-all duration-500 ease-out"
+                      data-testid={`card-${card.tid}`}
+                      style={{
+                        opacity: activeSlide === 1 ? 1 : 0,
+                        transform: activeSlide === 1 ? 'translateY(0)' : 'translateY(15px)',
+                        transitionDelay: activeSlide === 1 ? `${150 + i * 80}ms` : '0ms',
+                      }}
+                    >
+                      <div className="text-[10px] text-blue-100/50 uppercase tracking-wider font-medium mb-1">{card.label}</div>
+                      <div className={`text-xl font-bold ${card.color}`}>{card.value}</div>
+                      <div className="text-[11px] text-blue-100/40 mt-0.5">{card.sub}</div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="bg-[#0F264A] border border-white/5 rounded-xl overflow-hidden">
+                  <div className="grid grid-cols-[2rem_5rem_1fr_1fr_5rem_5rem_3.5rem] gap-x-2 px-4 py-2 text-[10px] text-blue-100/40 uppercase tracking-wider font-semibold border-b border-white/5">
+                    <span>#</span>
+                    <span>Member</span>
+                    <span>Top Drug</span>
+                    <span>Plan Cost</span>
+                    <span className="text-right">Change</span>
+                    <span className="text-right">Change %</span>
+                    <span className="text-right">Share</span>
+                  </div>
+                  {claimants.map((c, i) => (
+                    <div
+                      key={i}
+                      className="grid grid-cols-[2rem_5rem_1fr_1fr_5rem_5rem_3.5rem] gap-x-2 items-center px-4 py-2 text-sm border-b border-white/[0.03] transition-all duration-400 ease-out hover:bg-white/[0.02]"
+                      style={{
+                        opacity: activeSlide === 1 ? 1 : 0,
+                        transform: activeSlide === 1 ? 'translateX(0)' : 'translateX(20px)',
+                        transitionDelay: activeSlide === 1 ? `${250 + i * 50}ms` : '0ms',
+                      }}
+                      data-testid={`claimant-row-${i}`}
+                    >
+                      <span className="text-blue-100/30 font-mono text-xs">{c.rank}</span>
+                      <span className="text-[#4A90E2] font-mono text-xs">{c.id}</span>
+                      <span className="text-white font-medium truncate text-[13px]">{c.drug}</span>
+                      <div className="flex items-center gap-2">
+                        <div className="flex-1 h-4 bg-[#0B1F40] rounded-full overflow-hidden">
+                          <div
+                            className="h-full rounded-full transition-all duration-700 ease-out"
+                            style={{
+                              width: activeSlide === 1 ? `${(c.current / maxClaimantCost) * 100}%` : '0%',
+                              backgroundColor: c.up ? '#ef4444' : '#4A90E2',
+                              transitionDelay: activeSlide === 1 ? `${350 + i * 50}ms` : '0ms',
+                            }}
+                          />
+                        </div>
+                        <span className="text-white font-semibold text-xs w-14 text-right">{formatCurrency(c.current)}</span>
+                      </div>
+                      <span className={`text-right text-xs font-semibold ${c.change >= 0 ? 'text-red-400' : 'text-green-400'}`}>
+                        {c.changePct === "New" ? (
+                          <span className="text-orange-400">New</span>
+                        ) : (
+                          <>{c.change >= 0 ? '+' : ''}{formatCurrency(Math.abs(c.change))}</>
+                        )}
+                      </span>
+                      <span className={`text-right text-xs font-semibold ${c.up ? 'text-red-400' : 'text-green-400'}`}>
+                        {c.changePct === "New" ? "" : (
+                          <>{c.up ? '▲' : '▼'} {c.changePct}</>
+                        )}
+                      </span>
+                      <span className="text-blue-100/50 text-right text-xs">{c.share}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-center gap-3 mt-4 shrink-0">
+            {slideLabels.map((label, i) => (
+              <button
+                key={i}
+                className="flex items-center gap-2 transition-all duration-300"
+                style={{ opacity: activeSlide >= 0 ? 1 : 0 }}
+                onClick={() => {
+                  const section = sectionRef.current;
+                  if (!section) return;
+                  const sectionTop = section.offsetTop;
+                  const sectionScrollable = section.offsetHeight - window.innerHeight;
+                  const targetScroll = sectionTop + (i / TOTAL_SLIDES) * sectionScrollable + 10;
+                  window.scrollTo({ top: targetScroll, behavior: 'smooth' });
+                }}
+                data-testid={`reporting-dot-${i}`}
+              >
+                <div
+                  className="rounded-full transition-all duration-300"
+                  style={{
+                    width: activeSlide === i ? '24px' : '8px',
+                    height: '8px',
+                    backgroundColor: activeSlide === i ? '#D4AF37' : 'rgba(255,255,255,0.2)',
+                  }}
+                />
+                <span
+                  className="text-xs font-medium transition-all duration-300 whitespace-nowrap"
+                  style={{
+                    color: activeSlide === i ? '#D4AF37' : 'rgba(255,255,255,0.3)',
+                    maxWidth: activeSlide === i ? '200px' : '0px',
+                    overflow: 'hidden',
+                    opacity: activeSlide === i ? 1 : 0,
+                  }}
+                >
+                  {label}
+                </span>
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default function Home() {
   const [revealComplete, setRevealComplete] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -934,6 +1295,8 @@ export default function Home() {
       </section>
       {/* Enhanced Reporting - Stewardship Report Section */}
       <StewardshipReportSection />
+      {/* Enhanced Reporting - Analytics Section */}
+      <ReportingAnalyticsSection />
       {/* How We Differentiate - BBP Focused */}
       <section className="py-32 relative overflow-hidden">
         <div className="container mx-auto px-6">
