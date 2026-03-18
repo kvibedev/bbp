@@ -641,10 +641,9 @@ function ReportingAnalyticsSection() {
                 </div>
 
                 <div className="bg-[#0F264A] border border-white/5 rounded-xl overflow-hidden">
-                  <div className="grid grid-cols-[2rem_1fr_4rem_1fr_5rem_3.5rem] gap-x-2 px-4 py-2 text-[10px] text-blue-100/40 uppercase tracking-wider font-semibold border-b border-white/5">
+                  <div className="grid grid-cols-[1.5rem_1fr_1fr_5.5rem_3.5rem] gap-x-2 px-4 py-2 text-[10px] text-blue-100/40 uppercase tracking-wider font-semibold border-b border-white/5">
                     <span>#</span>
                     <span>Drug Name</span>
-                    <span className="text-right">Scripts</span>
                     <span>Ingredient Cost</span>
                     <span className="text-right">Change</span>
                     <span className="text-right">Share</span>
@@ -652,7 +651,7 @@ function ReportingAnalyticsSection() {
                   {topDrugs.map((drug, i) => (
                     <div
                       key={i}
-                      className="grid grid-cols-[2rem_1fr_4rem_1fr_5rem_3.5rem] gap-x-2 items-center px-4 py-2 text-sm border-b border-white/[0.03] transition-all duration-400 ease-out hover:bg-white/[0.02]"
+                      className="grid grid-cols-[1.5rem_1fr_1fr_5.5rem_3.5rem] gap-x-2 items-center px-4 py-1.5 text-sm border-b border-white/[0.03] transition-all duration-400 ease-out hover:bg-white/[0.02]"
                       style={{
                         opacity: activeSlide === 0 ? 1 : 0,
                         transform: activeSlide === 0 ? 'translateX(0)' : 'translateX(-20px)',
@@ -661,10 +660,12 @@ function ReportingAnalyticsSection() {
                       data-testid={`top-drug-row-${i}`}
                     >
                       <span className="text-blue-100/30 font-mono text-xs">{drug.rank}</span>
-                      <span className="text-white font-medium truncate text-[13px]">{drug.name}</span>
-                      <span className="text-blue-100/50 text-right text-xs">{drug.scripts}</span>
+                      <div>
+                        <span className="text-white font-medium truncate text-[13px] block">{drug.name}</span>
+                        <span className="text-blue-100/40 text-[10px]">{drug.scripts} scripts</span>
+                      </div>
                       <div className="flex items-center gap-2">
-                        <div className="flex-1 h-4 bg-[#0B1F40] rounded-full overflow-hidden">
+                        <div className="flex-1 h-3.5 bg-[#0B1F40] rounded-full overflow-hidden">
                           <div
                             className="h-full rounded-full transition-all duration-700 ease-out"
                             style={{
@@ -676,13 +677,18 @@ function ReportingAnalyticsSection() {
                         </div>
                         <span className="text-white font-semibold text-xs w-14 text-right">{formatCurrency(drug.cost)}</span>
                       </div>
-                      <span className={`text-right text-xs font-semibold ${drug.up ? 'text-red-400' : 'text-green-400'}`}>
-                        {drug.changePct === "New" ? (
-                          <span className="text-orange-400">New</span>
-                        ) : (
-                          <>{drug.up ? '▲' : '▼'} {drug.changePct}</>
-                        )}
-                      </span>
+                      <div className="text-right">
+                        <span className={`text-xs font-semibold block ${drug.up ? 'text-red-400' : 'text-green-400'}`}>
+                          {drug.changePct === "New" ? (
+                            <span className="text-orange-400">New</span>
+                          ) : (
+                            <>{drug.up ? '▲' : '▼'} {drug.changePct}</>
+                          )}
+                        </span>
+                        <span className={`text-[10px] ${drug.change >= 0 ? 'text-red-400/60' : 'text-green-400/60'}`}>
+                          {drug.changePct === "New" ? `+${formatCurrency(drug.change)}` : `${drug.change >= 0 ? '+' : ''}${formatCurrency(Math.abs(drug.change))}`}
+                        </span>
+                      </div>
                       <span className="text-blue-100/50 text-right text-xs">{drug.share}</span>
                     </div>
                   ))}
@@ -742,19 +748,18 @@ function ReportingAnalyticsSection() {
                 </div>
 
                 <div className="bg-[#0F264A] border border-white/5 rounded-xl overflow-hidden">
-                  <div className="grid grid-cols-[2rem_5rem_1fr_1fr_5rem_5rem_3.5rem] gap-x-2 px-4 py-2 text-[10px] text-blue-100/40 uppercase tracking-wider font-semibold border-b border-white/5">
+                  <div className="grid grid-cols-[1.5rem_1fr_5rem_5rem_5.5rem_3.5rem] gap-x-2 px-4 py-2 text-[10px] text-blue-100/40 uppercase tracking-wider font-semibold border-b border-white/5">
                     <span>#</span>
-                    <span>Member</span>
-                    <span>Top Drug</span>
-                    <span>Plan Cost</span>
+                    <span>Member / Drug</span>
+                    <span className="text-right">Current</span>
+                    <span className="text-right">Previous</span>
                     <span className="text-right">Change</span>
-                    <span className="text-right">Change %</span>
                     <span className="text-right">Share</span>
                   </div>
                   {claimants.map((c, i) => (
                     <div
                       key={i}
-                      className="grid grid-cols-[2rem_5rem_1fr_1fr_5rem_5rem_3.5rem] gap-x-2 items-center px-4 py-2 text-sm border-b border-white/[0.03] transition-all duration-400 ease-out hover:bg-white/[0.02]"
+                      className="grid grid-cols-[1.5rem_1fr_5rem_5rem_5.5rem_3.5rem] gap-x-2 items-center px-4 py-1.5 text-sm border-b border-white/[0.03] transition-all duration-400 ease-out hover:bg-white/[0.02]"
                       style={{
                         opacity: activeSlide === 1 ? 1 : 0,
                         transform: activeSlide === 1 ? 'translateX(0)' : 'translateX(20px)',
@@ -763,33 +768,24 @@ function ReportingAnalyticsSection() {
                       data-testid={`claimant-row-${i}`}
                     >
                       <span className="text-blue-100/30 font-mono text-xs">{c.rank}</span>
-                      <span className="text-[#4A90E2] font-mono text-xs">{c.id}</span>
-                      <span className="text-white font-medium truncate text-[13px]">{c.drug}</span>
-                      <div className="flex items-center gap-2">
-                        <div className="flex-1 h-4 bg-[#0B1F40] rounded-full overflow-hidden">
-                          <div
-                            className="h-full rounded-full transition-all duration-700 ease-out"
-                            style={{
-                              width: activeSlide === 1 ? `${(c.current / maxClaimantCost) * 100}%` : '0%',
-                              backgroundColor: c.up ? '#ef4444' : '#4A90E2',
-                              transitionDelay: activeSlide === 1 ? `${350 + i * 50}ms` : '0ms',
-                            }}
-                          />
-                        </div>
-                        <span className="text-white font-semibold text-xs w-14 text-right">{formatCurrency(c.current)}</span>
+                      <div>
+                        <span className="text-[#4A90E2] font-mono text-[10px]">{c.id}</span>
+                        <span className="text-white font-medium truncate text-[13px] block">{c.drug}</span>
                       </div>
-                      <span className={`text-right text-xs font-semibold ${c.change >= 0 ? 'text-red-400' : 'text-green-400'}`}>
-                        {c.changePct === "New" ? (
-                          <span className="text-orange-400">New</span>
-                        ) : (
-                          <>{c.change >= 0 ? '+' : ''}{formatCurrency(Math.abs(c.change))}</>
-                        )}
-                      </span>
-                      <span className={`text-right text-xs font-semibold ${c.up ? 'text-red-400' : 'text-green-400'}`}>
-                        {c.changePct === "New" ? "" : (
-                          <>{c.up ? '▲' : '▼'} {c.changePct}</>
-                        )}
-                      </span>
+                      <span className="text-white font-semibold text-xs text-right">{formatCurrency(c.current)}</span>
+                      <span className="text-blue-100/30 text-xs text-right">{c.previous > 0 ? formatCurrency(c.previous) : '—'}</span>
+                      <div className="text-right">
+                        <span className={`text-xs font-semibold block ${c.up ? 'text-red-400' : 'text-green-400'}`}>
+                          {c.changePct === "New" ? (
+                            <span className="text-orange-400">New</span>
+                          ) : (
+                            <>{c.up ? '▲' : '▼'} {c.changePct}</>
+                          )}
+                        </span>
+                        <span className={`text-[10px] ${c.change >= 0 ? 'text-red-400/60' : 'text-green-400/60'}`}>
+                          {c.change >= 0 ? '+' : ''}{formatCurrency(Math.abs(c.change))}
+                        </span>
+                      </div>
                       <span className="text-blue-100/50 text-right text-xs">{c.share}</span>
                     </div>
                   ))}
