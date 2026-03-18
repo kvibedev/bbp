@@ -78,6 +78,9 @@ function AnimatedDonut({ percent, color, label, value, isVisible }: { percent: n
 
 function StewardshipReportSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const slide0Ref = useRef<HTMLDivElement>(null);
+  const slide1Ref = useRef<HTMLDivElement>(null);
+  const slide2Ref = useRef<HTMLDivElement>(null);
   const [activeSlide, setActiveSlide] = useState(-1);
   const TOTAL_SLIDES = 3;
 
@@ -109,6 +112,12 @@ function StewardshipReportSection() {
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  useEffect(() => {
+    [slide0Ref, slide1Ref, slide2Ref].forEach((ref) => {
+      if (ref.current) ref.current.scrollTop = 0;
+    });
+  }, [activeSlide]);
 
   const costData = [
     { label: "Gross Cost PMPM", current: 181.78, prior: 142.05 },
@@ -159,7 +168,7 @@ function StewardshipReportSection() {
                 pointerEvents: activeSlide === 0 ? 'auto' : 'none',
               }}
             >
-              <div className="bg-[#0B1F40] border border-white/10 rounded-3xl p-6 md:p-10 h-full overflow-y-auto">
+              <div ref={slide0Ref} className="bg-[#0B1F40] border border-white/10 rounded-3xl p-6 md:p-10 h-full overflow-y-auto">
                 <div className="flex items-center gap-4 mb-6">
                   <div className="w-10 h-10 rounded-xl bg-[#D4AF37]/10 border border-[#D4AF37]/20 flex items-center justify-center">
                     <FileText className="w-5 h-5 text-[#D4AF37]" />
@@ -255,7 +264,7 @@ function StewardshipReportSection() {
                 pointerEvents: activeSlide === 1 ? 'auto' : 'none',
               }}
             >
-              <div className="bg-[#0B1F40] border border-white/10 rounded-3xl p-6 md:p-10 h-full overflow-y-auto">
+              <div ref={slide1Ref} className="bg-[#0B1F40] border border-white/10 rounded-3xl p-6 md:p-10 h-full overflow-y-auto">
                 <div className="flex items-center gap-4 mb-6">
                   <div className="w-10 h-10 rounded-xl bg-[#4A90E2]/10 border border-[#4A90E2]/20 flex items-center justify-center">
                     <BarChart3 className="w-5 h-5 text-[#4A90E2]" />
@@ -392,7 +401,7 @@ function StewardshipReportSection() {
                 pointerEvents: activeSlide === 2 ? 'auto' : 'none',
               }}
             >
-              <div className="bg-[#0B1F40] border border-white/10 rounded-3xl p-6 md:p-10 h-full overflow-y-auto flex flex-col justify-center">
+              <div ref={slide2Ref} className="bg-[#0B1F40] border border-white/10 rounded-3xl p-6 md:p-10 h-full overflow-y-auto flex flex-col justify-center">
                 <div className="text-center mb-8">
                   <h3 className="text-2xl md:text-3xl font-bold text-white">
                     Key <span className="text-[#D4AF37]">Insights</span>
