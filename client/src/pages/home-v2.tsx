@@ -1193,6 +1193,7 @@ function EnhancedComplianceSection() {
     { category: "Mail Total", awpTotal: 916754, effDiscount: "", ingredientCost: 374300, guarantee: "", variancePct: "", variance: -26823, isTotal: true },
     { category: "Specialty Generic", awpTotal: 113495, effDiscount: "47.84%", ingredientCost: 59194, guarantee: "20.00%", variancePct: "-27.84%", variance: -31602, isTotal: false },
     { category: "Specialty Brand", awpTotal: 1564599, effDiscount: "20.75%", ingredientCost: 1239910, guarantee: "20.00%", variancePct: "-0.75%", variance: -11769, isTotal: false },
+    { category: "LDD Generic", awpTotal: 0, effDiscount: "0.00%", ingredientCost: 0, guarantee: "15.00%", variancePct: "0.00%", variance: 0, isTotal: false },
     { category: "LDD Brand", awpTotal: 2201354, effDiscount: "17.54%", ingredientCost: 1815160, guarantee: "15.00%", variancePct: "-2.54%", variance: -55991, isTotal: false },
     { category: "Specialty Total", awpTotal: 3879448, effDiscount: "", ingredientCost: 3114264, guarantee: "", variancePct: "", variance: -99362, isTotal: true },
   ];
@@ -1473,9 +1474,9 @@ function EnhancedComplianceSection() {
                       <span className="text-[10px] text-blue-100/50 text-right">{row.effDiscount || '—'}</span>
                       <span className="text-[10px] text-white text-right font-mono">{formatCurrency(row.ingredientCost)}</span>
                       <span className="text-[10px] text-blue-100/50 text-right">{row.guarantee || '—'}</span>
-                      <span className={`text-[10px] text-right font-semibold ${row.variancePct ? 'text-green-400' : 'text-blue-100/30'}`}>{row.variancePct || '—'}</span>
-                      <span className={`text-[10px] text-right font-semibold ${row.variance < 0 ? 'text-green-400' : 'text-red-400'}`}>
-                        ({formatCurrency(Math.abs(row.variance))})
+                      <span className={`text-[10px] text-right font-semibold ${!row.variancePct ? 'text-blue-100/30' : row.variancePct.startsWith('-') ? 'text-green-400' : 'text-red-400'}`}>{row.variancePct || '—'}</span>
+                      <span className={`text-[10px] text-right font-semibold ${row.variance === 0 ? 'text-blue-100/30' : row.variance < 0 ? 'text-green-400' : 'text-red-400'}`}>
+                        {row.variance === 0 ? '$0.00' : `(${formatCurrency(Math.abs(row.variance))})`}
                       </span>
                     </div>
                   ))}
