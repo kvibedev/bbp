@@ -1113,6 +1113,447 @@ function ReportingAnalyticsSection() {
   );
 }
 
+function EnhancedComplianceSection() {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const slide0Ref = useRef<HTMLDivElement>(null);
+  const slide1Ref = useRef<HTMLDivElement>(null);
+  const [activeSlide, setActiveSlide] = useState(-1);
+  const TOTAL_SLIDES = 2;
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const handleScroll = () => {
+      const rect = section.getBoundingClientRect();
+      const sectionTop = -rect.top;
+      const sectionScrollable = section.offsetHeight - window.innerHeight;
+
+      if (rect.bottom < 0 || rect.top > window.innerHeight) {
+        setActiveSlide(-1);
+        return;
+      }
+
+      if (sectionTop < -100) {
+        setActiveSlide(-1);
+        return;
+      }
+
+      const progress = Math.max(0, Math.min(1, sectionTop / sectionScrollable));
+      const slideIndex = Math.min(TOTAL_SLIDES - 1, Math.floor(progress * TOTAL_SLIDES));
+      setActiveSlide(slideIndex);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    [slide0Ref, slide1Ref].forEach((ref) => {
+      if (ref.current) ref.current.scrollTop = 0;
+    });
+  }, [activeSlide]);
+
+  const formatCurrency = (n: number) => `$${n.toLocaleString()}`;
+
+  const financialRows = [
+    { label: "Gross Drug Cost", incumbent: 5117483.85, testPBM: 5479630.43, testPBM2: 5345389.10, highlight: false },
+    { label: "Less Member Cost", incumbent: 765000, testPBM: 765000, testPBM2: 765000, highlight: false },
+    { label: "Employer Cost", incumbent: 4352483.85, testPBM: 4714630.43, testPBM2: 4580389.10, highlight: false },
+    { label: "Rebates", incumbent: 1277400, testPBM: 1826300, testPBM2: 1446650, highlight: false },
+    { label: "(-) Pharmacy Mgmt Fund", incumbent: 12750, testPBM: 8500, testPBM2: 12750, highlight: false },
+    { label: "(+) Consulting Fees", incumbent: 24220, testPBM: 24200, testPBM2: 24200, highlight: false },
+    { label: "(+) Technology Fees", incumbent: 14532, testPBM: 14532, testPBM2: 14532, highlight: false },
+  ];
+
+  const contractMeta = [
+    { label: "Contract Type", values: ["Traditional", "Traditional", "Traditional"] },
+    { label: "Formulary Name", values: ["Elite Formulary", "Closed Formulary", "Test"] },
+    { label: "Formulary Type", values: ["Closed", "Closed", "Closed"] },
+    { label: "Network Type", values: ["Broad", "Broad", "Broad"] },
+    { label: "Specialty Network", values: ["Exclusive", "Exclusive", "Exclusive"] },
+    { label: "Maintenance", values: ["Voluntary", "Voluntary", "Voluntary"] },
+  ];
+
+  const scores = [75, 97, 73];
+  const netSpend = [3107086.45, 2918563.03, 3159721.48];
+  const totalSavings = netSpend.map((v, i) => i === 0 ? 0 : netSpend[0] - v);
+  const pctSavings = totalSavings.map((v, i) => i === 0 ? "—" : `${((v / netSpend[0]) * 100).toFixed(2)}%`);
+
+  const discountRows = [
+    { category: "Retail 30 Generic", awpTotal: 1629759, effDiscount: "89.01%", ingredientCost: 179134, guarantee: "82.00%", variancePct: "-7.01%", variance: -114222, isTotal: false },
+    { category: "Retail 30 Brand", awpTotal: 488368, effDiscount: "19.50%", ingredientCost: 393114, guarantee: "18.00%", variancePct: "-1.50%", variance: -7348, isTotal: false },
+    { category: "Retail 30 Total", awpTotal: 2118127, effDiscount: "", ingredientCost: 572249, guarantee: "", variancePct: "", variance: -121570, isTotal: true },
+    { category: "Retail 90 Generic", awpTotal: 1989821, effDiscount: "88.74%", ingredientCost: 224010, guarantee: "84.00%", variancePct: "-4.74%", variance: -94362, isTotal: false },
+    { category: "Retail 90 Brand", awpTotal: 923363, effDiscount: "26.87%", ingredientCost: 675271, guarantee: "20.00%", variancePct: "-6.87%", variance: -63419, isTotal: false },
+    { category: "Retail 90 Total", awpTotal: 2913184, effDiscount: "", ingredientCost: 899281, guarantee: "", variancePct: "", variance: -157781, isTotal: true },
+    { category: "Mail Total", awpTotal: 916754, effDiscount: "", ingredientCost: 374300, guarantee: "", variancePct: "", variance: -26823, isTotal: true },
+    { category: "Specialty Generic", awpTotal: 113495, effDiscount: "47.84%", ingredientCost: 59194, guarantee: "20.00%", variancePct: "-27.84%", variance: -31602, isTotal: false },
+    { category: "Specialty Brand", awpTotal: 1564599, effDiscount: "20.75%", ingredientCost: 1239910, guarantee: "20.00%", variancePct: "-0.75%", variance: -11769, isTotal: false },
+    { category: "LDD Brand", awpTotal: 2201354, effDiscount: "17.54%", ingredientCost: 1815160, guarantee: "15.00%", variancePct: "-2.54%", variance: -55991, isTotal: false },
+    { category: "Specialty Total", awpTotal: 3879448, effDiscount: "", ingredientCost: 3114264, guarantee: "", variancePct: "", variance: -99362, isTotal: true },
+  ];
+
+  const totalDiscountVariance = discountRows.filter(r => r.isTotal).reduce((sum, r) => sum + r.variance, 0);
+  const rebateShortfall = -45730;
+  const totalVariance = totalDiscountVariance + rebateShortfall;
+
+  const slideLabels = ["Repricing Report", "Reconciliation Report"];
+
+  return (
+    <section
+      ref={sectionRef}
+      className="relative bg-[#071328] border-y border-white/5"
+      style={{ height: `${TOTAL_SLIDES * 100}vh` }}
+      data-testid="enhanced-compliance-section"
+    >
+      <div className="sticky top-0 h-screen flex flex-col">
+        <div className="container mx-auto px-6 flex flex-col h-full py-8">
+
+          <div className="text-center mb-6 shrink-0">
+            <div className="flex items-center justify-center gap-3 text-[#D4AF37] font-medium text-sm mb-4 tracking-widest uppercase">
+              <span className="w-12 h-[1px] bg-[#D4AF37]"></span>
+              Enhanced Reporting Offerings
+              <span className="w-12 h-[1px] bg-[#D4AF37]"></span>
+            </div>
+            <h2 className="text-3xl md:text-5xl font-serif font-bold mb-3 text-white">
+              Compliance & <span className="text-[#D4AF37]">Pricing Analysis</span>
+            </h2>
+            <p className="text-blue-100/70 text-base md:text-lg max-w-3xl mx-auto leading-relaxed">
+              Compare PBM vendor pricing and validate contract guarantee compliance — ensuring transparency and optimal value.
+            </p>
+          </div>
+
+          <div className="flex-1 relative max-w-6xl mx-auto w-full min-h-0">
+
+            <div
+              className="absolute inset-0 transition-all duration-600 ease-out"
+              style={{
+                opacity: activeSlide === 0 ? 1 : 0,
+                transform: activeSlide === 0 ? 'translateY(0) scale(1)' : activeSlide > 0 ? 'translateY(-40px) scale(0.96)' : 'translateY(40px) scale(0.96)',
+                pointerEvents: activeSlide === 0 ? 'auto' : 'none',
+              }}
+            >
+              <div ref={slide0Ref} className="bg-[#0B1F40] border border-white/10 rounded-3xl p-6 md:p-8 h-full overflow-y-auto">
+                <div className="flex items-center justify-between mb-5">
+                  <div className="flex items-center gap-4">
+                    <div className="w-10 h-10 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center">
+                      <BarChart3 className="w-5 h-5 text-orange-400" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl md:text-2xl font-bold text-white" data-testid="text-repricing-report-title">Repricing Report</h3>
+                      <p className="text-blue-100/50 text-xs">Models cost across multiple PBM vendors based on historical claims data — supports PBM selection and renewal decisions</p>
+                    </div>
+                  </div>
+                  <div className="hidden md:block bg-[#0F264A] border border-orange-500/20 rounded-xl px-4 py-2.5">
+                    <div className="text-[10px] text-orange-400 uppercase tracking-wider font-semibold mb-1">Available Formats</div>
+                    <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-[10px] text-blue-100/50">
+                      <span>Financial Summary</span>
+                      <span>Contract Comparison</span>
+                      <span>Specialty & LDD List</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-3 gap-3 mb-5">
+                  {[
+                    { label: "Best Net Spend", value: "$2,918,563", sub: "Test PBM", color: "text-green-400", tid: "best-net-spend" },
+                    { label: "Max Savings", value: "$188,523", sub: "6.07% vs Incumbent", color: "text-[#D4AF37]", tid: "max-savings" },
+                    { label: "PBMs Compared", value: "3", sub: "Incumbent + 2 alternatives", color: "text-[#4A90E2]", tid: "pbms-compared" },
+                  ].map((card, i) => (
+                    <div
+                      key={i}
+                      className="bg-[#0F264A] border border-white/5 rounded-xl p-3 transition-all duration-500 ease-out"
+                      data-testid={`card-${card.tid}`}
+                      style={{
+                        opacity: activeSlide === 0 ? 1 : 0,
+                        transform: activeSlide === 0 ? 'translateY(0)' : 'translateY(15px)',
+                        transitionDelay: activeSlide === 0 ? `${150 + i * 80}ms` : '0ms',
+                      }}
+                    >
+                      <div className="text-[10px] text-blue-100/50 uppercase tracking-wider font-medium mb-1">{card.label}</div>
+                      <div className={`text-xl font-bold ${card.color}`}>{card.value}</div>
+                      <div className="text-[11px] text-blue-100/40 mt-0.5">{card.sub}</div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="bg-[#0F264A] border border-white/5 rounded-xl overflow-hidden">
+                  <div className="grid grid-cols-[1fr_5.5rem_5.5rem_5.5rem] gap-x-1 px-4 py-2 text-[10px] text-blue-100/40 uppercase tracking-wider font-semibold border-b border-white/5">
+                    <span></span>
+                    <span className="text-right text-orange-400">Incumbent</span>
+                    <span className="text-right text-green-400">Test PBM</span>
+                    <span className="text-right text-blue-300">Test PBM 2</span>
+                  </div>
+
+                  <div className="grid grid-cols-[1fr_5.5rem_5.5rem_5.5rem] gap-x-1 px-4 py-1.5 border-b border-white/5 items-center transition-all duration-400 ease-out"
+                    style={{
+                      opacity: activeSlide === 0 ? 1 : 0,
+                      transform: activeSlide === 0 ? 'translateX(0)' : 'translateX(-20px)',
+                      transitionDelay: activeSlide === 0 ? '200ms' : '0ms',
+                    }}
+                    data-testid="repricing-score-row"
+                  >
+                    <span className="text-[11px] text-blue-100/60 font-medium">Contract Score</span>
+                    {scores.map((s, i) => (
+                      <div key={i} className="flex items-center justify-end gap-1.5">
+                        <div className="w-12 h-2 bg-[#0B1F40] rounded-full overflow-hidden">
+                          <div
+                            className="h-full rounded-full transition-all duration-700 ease-out"
+                            style={{
+                              width: activeSlide === 0 ? `${s}%` : '0%',
+                              backgroundColor: s >= 90 ? '#22c55e' : s >= 70 ? '#eab308' : '#ef4444',
+                              transitionDelay: activeSlide === 0 ? `${300 + i * 100}ms` : '0ms',
+                            }}
+                          />
+                        </div>
+                        <span className={`text-xs font-bold ${s >= 90 ? 'text-green-400' : s >= 70 ? 'text-yellow-400' : 'text-red-400'}`}>{s}%</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {contractMeta.map((row, i) => (
+                    <div
+                      key={i}
+                      className="grid grid-cols-[1fr_5.5rem_5.5rem_5.5rem] gap-x-1 px-4 py-1 border-b border-white/[0.03] transition-all duration-400 ease-out"
+                      style={{
+                        opacity: activeSlide === 0 ? 1 : 0,
+                        transform: activeSlide === 0 ? 'translateX(0)' : 'translateX(-20px)',
+                        transitionDelay: activeSlide === 0 ? `${250 + i * 30}ms` : '0ms',
+                      }}
+                    >
+                      <span className="text-[10px] text-blue-100/40">{row.label}</span>
+                      {row.values.map((v, j) => (
+                        <span key={j} className="text-[10px] text-blue-100/50 text-right">{v}</span>
+                      ))}
+                    </div>
+                  ))}
+
+                  <div className="border-t border-white/10 mt-1" />
+
+                  {financialRows.map((row, i) => (
+                    <div
+                      key={i}
+                      className="grid grid-cols-[1fr_5.5rem_5.5rem_5.5rem] gap-x-1 px-4 py-1 border-b border-white/[0.03] transition-all duration-400 ease-out hover:bg-white/[0.02]"
+                      style={{
+                        opacity: activeSlide === 0 ? 1 : 0,
+                        transform: activeSlide === 0 ? 'translateX(0)' : 'translateX(-20px)',
+                        transitionDelay: activeSlide === 0 ? `${350 + i * 40}ms` : '0ms',
+                      }}
+                      data-testid={`repricing-row-${i}`}
+                    >
+                      <span className="text-[11px] text-blue-100/60">{row.label}</span>
+                      <span className="text-[11px] text-white text-right font-mono">{formatCurrency(Math.round(row.incumbent))}</span>
+                      <span className="text-[11px] text-white text-right font-mono">{formatCurrency(Math.round(row.testPBM))}</span>
+                      <span className="text-[11px] text-white text-right font-mono">{formatCurrency(Math.round(row.testPBM2))}</span>
+                    </div>
+                  ))}
+
+                  <div className="border-t border-[#D4AF37]/30 mt-1" />
+
+                  <div className="grid grid-cols-[1fr_5.5rem_5.5rem_5.5rem] gap-x-1 px-4 py-1.5 bg-[#0B1F40]/50 transition-all duration-400 ease-out"
+                    style={{
+                      opacity: activeSlide === 0 ? 1 : 0,
+                      transitionDelay: activeSlide === 0 ? '650ms' : '0ms',
+                    }}
+                    data-testid="repricing-net-spend-row"
+                  >
+                    <span className="text-[11px] text-[#D4AF37] font-bold">Total Net Spend</span>
+                    {netSpend.map((v, i) => (
+                      <span key={i} className="text-[11px] text-[#D4AF37] font-bold text-right font-mono">{formatCurrency(Math.round(v))}</span>
+                    ))}
+                  </div>
+                  <div className="grid grid-cols-[1fr_5.5rem_5.5rem_5.5rem] gap-x-1 px-4 py-1.5 transition-all duration-400 ease-out"
+                    style={{
+                      opacity: activeSlide === 0 ? 1 : 0,
+                      transitionDelay: activeSlide === 0 ? '700ms' : '0ms',
+                    }}
+                    data-testid="repricing-savings-row"
+                  >
+                    <span className="text-[11px] text-blue-100/60 font-medium">Total Savings</span>
+                    <span className="text-[11px] text-blue-100/30 text-right">—</span>
+                    <span className="text-[11px] text-green-400 font-bold text-right font-mono">{formatCurrency(Math.round(totalSavings[1]))}</span>
+                    <span className="text-[11px] text-red-400 font-bold text-right font-mono">({formatCurrency(Math.abs(Math.round(totalSavings[2])))})</span>
+                  </div>
+                  <div className="grid grid-cols-[1fr_5.5rem_5.5rem_5.5rem] gap-x-1 px-4 py-1.5 transition-all duration-400 ease-out"
+                    style={{
+                      opacity: activeSlide === 0 ? 1 : 0,
+                      transitionDelay: activeSlide === 0 ? '750ms' : '0ms',
+                    }}
+                    data-testid="repricing-pct-savings-row"
+                  >
+                    <span className="text-[11px] text-blue-100/60 font-medium">% Savings</span>
+                    {pctSavings.map((v, i) => (
+                      <span key={i} className={`text-[11px] text-right font-bold ${i === 1 ? 'text-green-400' : i === 2 ? 'text-red-400' : 'text-blue-100/30'}`}>{v}</span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div
+              className="absolute inset-0 transition-all duration-600 ease-out"
+              style={{
+                opacity: activeSlide === 1 ? 1 : 0,
+                transform: activeSlide === 1 ? 'translateY(0) scale(1)' : activeSlide < 1 ? 'translateY(40px) scale(0.96)' : 'translateY(-40px) scale(0.96)',
+                pointerEvents: activeSlide === 1 ? 'auto' : 'none',
+              }}
+            >
+              <div ref={slide1Ref} className="bg-[#0B1F40] border border-white/10 rounded-3xl p-6 md:p-8 h-full overflow-y-auto">
+                <div className="flex items-center justify-between mb-5">
+                  <div className="flex items-center gap-4">
+                    <div className="w-10 h-10 rounded-xl bg-[#4A90E2]/10 border border-[#4A90E2]/20 flex items-center justify-center">
+                      <Shield className="w-5 h-5 text-[#4A90E2]" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl md:text-2xl font-bold text-white" data-testid="text-reconciliation-report-title">Reconciliation Report</h3>
+                      <p className="text-blue-100/50 text-xs">Compares actual performance against contract guarantees on discounts, dispensing fees, and rebates — validates PBM compliance</p>
+                    </div>
+                  </div>
+                  <div className="hidden md:block bg-[#0F264A] border border-[#4A90E2]/20 rounded-xl px-4 py-2.5">
+                    <div className="text-[10px] text-[#4A90E2] uppercase tracking-wider font-semibold mb-1">Available Formats</div>
+                    <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-[10px] text-blue-100/50">
+                      <span>Performance Summary</span>
+                      <span>Dispensing Fees</span>
+                      <span>Rebates Analysis</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-3 gap-3 mb-5">
+                  {[
+                    { label: "Total Discount Variance", value: `-${formatCurrency(Math.abs(totalDiscountVariance))}`, sub: "Overperformance vs guarantee", color: "text-green-400", tid: "total-discount-variance" },
+                    { label: "Rebate Shortfall", value: `-${formatCurrency(Math.abs(rebateShortfall))}`, sub: "Below guaranteed rebates", color: "text-red-400", tid: "rebate-shortfall" },
+                    { label: "Total Variance", value: `-${formatCurrency(Math.abs(totalVariance))}`, sub: "Net contract impact", color: "text-[#D4AF37]", tid: "total-variance" },
+                  ].map((card, i) => (
+                    <div
+                      key={i}
+                      className="bg-[#0F264A] border border-white/5 rounded-xl p-3 transition-all duration-500 ease-out"
+                      data-testid={`card-${card.tid}`}
+                      style={{
+                        opacity: activeSlide === 1 ? 1 : 0,
+                        transform: activeSlide === 1 ? 'translateY(0)' : 'translateY(15px)',
+                        transitionDelay: activeSlide === 1 ? `${150 + i * 80}ms` : '0ms',
+                      }}
+                    >
+                      <div className="text-[10px] text-blue-100/50 uppercase tracking-wider font-medium mb-1">{card.label}</div>
+                      <div className={`text-xl font-bold ${card.color}`}>{card.value}</div>
+                      <div className="text-[11px] text-blue-100/40 mt-0.5">{card.sub}</div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="text-[10px] text-blue-100/40 uppercase tracking-wider font-semibold mb-2 px-1">Discount Performance</div>
+                <div className="bg-[#0F264A] border border-white/5 rounded-xl overflow-hidden mb-4">
+                  <div className="grid grid-cols-[1fr_5rem_4rem_5rem_4rem_4rem_5rem] gap-x-1 px-3 py-2 text-[9px] text-blue-100/40 uppercase tracking-wider font-semibold border-b border-white/5">
+                    <span>Category</span>
+                    <span className="text-right">AWP Total</span>
+                    <span className="text-right">Eff. Disc.</span>
+                    <span className="text-right">Ingr. Cost</span>
+                    <span className="text-right">Guarantee</span>
+                    <span className="text-right">Var. %</span>
+                    <span className="text-right">Variance $</span>
+                  </div>
+                  {discountRows.map((row, i) => (
+                    <div
+                      key={i}
+                      className={`grid grid-cols-[1fr_5rem_4rem_5rem_4rem_4rem_5rem] gap-x-1 px-3 py-1 border-b border-white/[0.03] transition-all duration-400 ease-out hover:bg-white/[0.02] ${row.isTotal ? 'bg-[#0B1F40]/50' : ''}`}
+                      style={{
+                        opacity: activeSlide === 1 ? 1 : 0,
+                        transform: activeSlide === 1 ? 'translateX(0)' : 'translateX(20px)',
+                        transitionDelay: activeSlide === 1 ? `${250 + i * 40}ms` : '0ms',
+                      }}
+                      data-testid={`discount-row-${i}`}
+                    >
+                      <span className={`text-[10px] ${row.isTotal ? 'text-white font-bold' : 'text-blue-100/60'}`}>{row.category}</span>
+                      <span className="text-[10px] text-white text-right font-mono">{formatCurrency(row.awpTotal)}</span>
+                      <span className="text-[10px] text-blue-100/50 text-right">{row.effDiscount || '—'}</span>
+                      <span className="text-[10px] text-white text-right font-mono">{formatCurrency(row.ingredientCost)}</span>
+                      <span className="text-[10px] text-blue-100/50 text-right">{row.guarantee || '—'}</span>
+                      <span className={`text-[10px] text-right font-semibold ${row.variancePct ? 'text-green-400' : 'text-blue-100/30'}`}>{row.variancePct || '—'}</span>
+                      <span className={`text-[10px] text-right font-semibold ${row.variance < 0 ? 'text-green-400' : 'text-red-400'}`}>
+                        ({formatCurrency(Math.abs(row.variance))})
+                      </span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="text-[10px] text-blue-100/40 uppercase tracking-wider font-semibold mb-2 px-1">Rebate Performance</div>
+                <div className="bg-[#0F264A] border border-white/5 rounded-xl overflow-hidden">
+                  <div className="grid grid-cols-[1fr_5rem_6rem_6rem_5rem_5rem] gap-x-1 px-3 py-2 text-[9px] text-blue-100/40 uppercase tracking-wider font-semibold border-b border-white/5">
+                    <span></span>
+                    <span className="text-right">Claims</span>
+                    <span className="text-right">Guarantee</span>
+                    <span className="text-right">Paid Rebates</span>
+                    <span className="text-right">Var. %</span>
+                    <span className="text-right">Variance $</span>
+                  </div>
+                  <div
+                    className="grid grid-cols-[1fr_5rem_6rem_6rem_5rem_5rem] gap-x-1 px-3 py-1.5 bg-[#0B1F40]/50 transition-all duration-400 ease-out"
+                    style={{
+                      opacity: activeSlide === 1 ? 1 : 0,
+                      transform: activeSlide === 1 ? 'translateX(0)' : 'translateX(20px)',
+                      transitionDelay: activeSlide === 1 ? '700ms' : '0ms',
+                    }}
+                    data-testid="rebate-total-row"
+                  >
+                    <span className="text-[10px] text-white font-bold">Total</span>
+                    <span className="text-[10px] text-white text-right font-mono">23,101</span>
+                    <span className="text-[10px] text-white text-right font-mono">{formatCurrency(1045730)}</span>
+                    <span className="text-[10px] text-white text-right font-mono">{formatCurrency(1000000)}</span>
+                    <span className="text-[10px] text-red-400 text-right font-semibold">-4.37%</span>
+                    <span className="text-[10px] text-red-400 text-right font-semibold">({formatCurrency(Math.abs(rebateShortfall))})</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-center gap-3 mt-4 shrink-0">
+            {slideLabels.map((label, i) => (
+              <button
+                key={i}
+                className="flex items-center gap-2 transition-all duration-300"
+                style={{ opacity: activeSlide >= 0 ? 1 : 0 }}
+                onClick={() => {
+                  const section = sectionRef.current;
+                  if (!section) return;
+                  const sectionTop = section.offsetTop;
+                  const sectionScrollable = section.offsetHeight - window.innerHeight;
+                  const targetScroll = sectionTop + (i / TOTAL_SLIDES) * sectionScrollable + 10;
+                  window.scrollTo({ top: targetScroll, behavior: 'smooth' });
+                }}
+                data-testid={`compliance-dot-${i}`}
+              >
+                <div
+                  className="rounded-full transition-all duration-300"
+                  style={{
+                    width: activeSlide === i ? '24px' : '8px',
+                    height: '8px',
+                    backgroundColor: activeSlide === i ? '#D4AF37' : 'rgba(255,255,255,0.2)',
+                  }}
+                />
+                <span
+                  className="text-xs font-medium transition-all duration-300 whitespace-nowrap"
+                  style={{
+                    color: activeSlide === i ? '#D4AF37' : 'rgba(255,255,255,0.3)',
+                    maxWidth: activeSlide === i ? '200px' : '0px',
+                    overflow: 'hidden',
+                    opacity: activeSlide === i ? 1 : 0,
+                  }}
+                >
+                  {label}
+                </span>
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default function Home() {
   const [revealComplete, setRevealComplete] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -1568,6 +2009,8 @@ export default function Home() {
       <StewardshipReportSection />
       {/* Enhanced Reporting - Analytics Section */}
       <ReportingAnalyticsSection />
+      {/* Enhanced Reporting - Compliance & Pricing Section */}
+      <EnhancedComplianceSection />
       {/* How We Differentiate - BBP Focused */}
       <section className="py-32 relative overflow-hidden">
         <div className="container mx-auto px-6">
