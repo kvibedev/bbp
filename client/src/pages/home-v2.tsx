@@ -1155,7 +1155,8 @@ function EnhancedComplianceSection() {
     });
   }, [activeSlide]);
 
-  const formatCurrency = (n: number) => `$${n.toLocaleString()}`;
+  const formatCurrency = (n: number) => `$${n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  const formatCurrencyWhole = (n: number) => `$${n.toLocaleString()}`;
 
   const financialRows = [
     { label: "Gross Drug Cost", incumbent: 5117483.85, testPBM: 5479630.43, testPBM2: 5345389.10, highlight: false },
@@ -1169,11 +1170,12 @@ function EnhancedComplianceSection() {
 
   const contractMeta = [
     { label: "Contract Type", values: ["Traditional", "Traditional", "Traditional"] },
+    { label: "Contract Length", values: ["1", "1", "1"] },
     { label: "Formulary Name", values: ["Elite Formulary", "Closed Formulary", "Test"] },
     { label: "Formulary Type", values: ["Closed", "Closed", "Closed"] },
     { label: "Network Type", values: ["Broad", "Broad", "Broad"] },
-    { label: "Specialty Network", values: ["Exclusive", "Exclusive", "Exclusive"] },
-    { label: "Maintenance", values: ["Voluntary", "Voluntary", "Voluntary"] },
+    { label: "Specialty Network Type", values: ["Exclusive", "Exclusive", "Exclusive"] },
+    { label: "Maintenance Program", values: ["Voluntary", "Voluntary", "Voluntary"] },
   ];
 
   const scores = [75, 97, 73];
@@ -1243,7 +1245,7 @@ function EnhancedComplianceSection() {
                     </div>
                     <div>
                       <h3 className="text-xl md:text-2xl font-bold text-white" data-testid="text-repricing-report-title">Repricing Report</h3>
-                      <p className="text-blue-100/50 text-xs">Models cost across multiple PBM vendors based on historical claims data — supports PBM selection and renewal decisions</p>
+                      <p className="text-blue-100/50 text-xs">Models cost across multiple PBM vendors based on historical claims data. Supports PBM selection and renewal decisions by quantifying potential savings under alternative pricing arrangements.</p>
                     </div>
                   </div>
                   <div className="hidden md:block bg-[#0F264A] border border-orange-500/20 rounded-xl px-4 py-2.5">
@@ -1251,7 +1253,7 @@ function EnhancedComplianceSection() {
                     <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-[10px] text-blue-100/50">
                       <span>Financial Summary</span>
                       <span>Contract Comparison</span>
-                      <span>Specialty & LDD List</span>
+                      <span>Specialty & LDD List Comparison</span>
                     </div>
                   </div>
                 </div>
@@ -1280,14 +1282,14 @@ function EnhancedComplianceSection() {
                 </div>
 
                 <div className="bg-[#0F264A] border border-white/5 rounded-xl overflow-hidden">
-                  <div className="grid grid-cols-[1fr_5.5rem_5.5rem_5.5rem] gap-x-1 px-4 py-2 text-[10px] text-blue-100/40 uppercase tracking-wider font-semibold border-b border-white/5">
+                  <div className="grid grid-cols-[1fr_7rem_7rem_7rem] gap-x-1 px-4 py-2 text-[10px] text-blue-100/40 uppercase tracking-wider font-semibold border-b border-white/5">
                     <span></span>
                     <span className="text-right text-orange-400">Incumbent</span>
                     <span className="text-right text-green-400">Test PBM</span>
                     <span className="text-right text-blue-300">Test PBM 2</span>
                   </div>
 
-                  <div className="grid grid-cols-[1fr_5.5rem_5.5rem_5.5rem] gap-x-1 px-4 py-1.5 border-b border-white/5 items-center transition-all duration-400 ease-out"
+                  <div className="grid grid-cols-[1fr_7rem_7rem_7rem] gap-x-1 px-4 py-1.5 border-b border-white/5 items-center transition-all duration-400 ease-out"
                     style={{
                       opacity: activeSlide === 0 ? 1 : 0,
                       transform: activeSlide === 0 ? 'translateX(0)' : 'translateX(-20px)',
@@ -1316,7 +1318,7 @@ function EnhancedComplianceSection() {
                   {contractMeta.map((row, i) => (
                     <div
                       key={i}
-                      className="grid grid-cols-[1fr_5.5rem_5.5rem_5.5rem] gap-x-1 px-4 py-1 border-b border-white/[0.03] transition-all duration-400 ease-out"
+                      className="grid grid-cols-[1fr_7rem_7rem_7rem] gap-x-1 px-4 py-1 border-b border-white/[0.03] transition-all duration-400 ease-out"
                       style={{
                         opacity: activeSlide === 0 ? 1 : 0,
                         transform: activeSlide === 0 ? 'translateX(0)' : 'translateX(-20px)',
@@ -1335,7 +1337,7 @@ function EnhancedComplianceSection() {
                   {financialRows.map((row, i) => (
                     <div
                       key={i}
-                      className="grid grid-cols-[1fr_5.5rem_5.5rem_5.5rem] gap-x-1 px-4 py-1 border-b border-white/[0.03] transition-all duration-400 ease-out hover:bg-white/[0.02]"
+                      className="grid grid-cols-[1fr_7rem_7rem_7rem] gap-x-1 px-4 py-1 border-b border-white/[0.03] transition-all duration-400 ease-out hover:bg-white/[0.02]"
                       style={{
                         opacity: activeSlide === 0 ? 1 : 0,
                         transform: activeSlide === 0 ? 'translateX(0)' : 'translateX(-20px)',
@@ -1344,15 +1346,15 @@ function EnhancedComplianceSection() {
                       data-testid={`repricing-row-${i}`}
                     >
                       <span className="text-[11px] text-blue-100/60">{row.label}</span>
-                      <span className="text-[11px] text-white text-right font-mono">{formatCurrency(Math.round(row.incumbent))}</span>
-                      <span className="text-[11px] text-white text-right font-mono">{formatCurrency(Math.round(row.testPBM))}</span>
-                      <span className="text-[11px] text-white text-right font-mono">{formatCurrency(Math.round(row.testPBM2))}</span>
+                      <span className="text-[11px] text-white text-right font-mono">{formatCurrency(row.incumbent)}</span>
+                      <span className="text-[11px] text-white text-right font-mono">{formatCurrency(row.testPBM)}</span>
+                      <span className="text-[11px] text-white text-right font-mono">{formatCurrency(row.testPBM2)}</span>
                     </div>
                   ))}
 
                   <div className="border-t border-[#D4AF37]/30 mt-1" />
 
-                  <div className="grid grid-cols-[1fr_5.5rem_5.5rem_5.5rem] gap-x-1 px-4 py-1.5 bg-[#0B1F40]/50 transition-all duration-400 ease-out"
+                  <div className="grid grid-cols-[1fr_7rem_7rem_7rem] gap-x-1 px-4 py-1.5 bg-[#0B1F40]/50 transition-all duration-400 ease-out"
                     style={{
                       opacity: activeSlide === 0 ? 1 : 0,
                       transitionDelay: activeSlide === 0 ? '650ms' : '0ms',
@@ -1361,10 +1363,10 @@ function EnhancedComplianceSection() {
                   >
                     <span className="text-[11px] text-[#D4AF37] font-bold">Total Net Spend</span>
                     {netSpend.map((v, i) => (
-                      <span key={i} className="text-[11px] text-[#D4AF37] font-bold text-right font-mono">{formatCurrency(Math.round(v))}</span>
+                      <span key={i} className="text-[11px] text-[#D4AF37] font-bold text-right font-mono">{formatCurrency(v)}</span>
                     ))}
                   </div>
-                  <div className="grid grid-cols-[1fr_5.5rem_5.5rem_5.5rem] gap-x-1 px-4 py-1.5 transition-all duration-400 ease-out"
+                  <div className="grid grid-cols-[1fr_7rem_7rem_7rem] gap-x-1 px-4 py-1.5 transition-all duration-400 ease-out"
                     style={{
                       opacity: activeSlide === 0 ? 1 : 0,
                       transitionDelay: activeSlide === 0 ? '700ms' : '0ms',
@@ -1373,10 +1375,10 @@ function EnhancedComplianceSection() {
                   >
                     <span className="text-[11px] text-blue-100/60 font-medium">Total Savings</span>
                     <span className="text-[11px] text-blue-100/30 text-right">—</span>
-                    <span className="text-[11px] text-green-400 font-bold text-right font-mono">{formatCurrency(Math.round(totalSavings[1]))}</span>
-                    <span className="text-[11px] text-red-400 font-bold text-right font-mono">({formatCurrency(Math.abs(Math.round(totalSavings[2])))})</span>
+                    <span className="text-[11px] text-green-400 font-bold text-right font-mono">{formatCurrency(totalSavings[1])}</span>
+                    <span className="text-[11px] text-red-400 font-bold text-right font-mono">({formatCurrency(Math.abs(totalSavings[2]))})</span>
                   </div>
-                  <div className="grid grid-cols-[1fr_5.5rem_5.5rem_5.5rem] gap-x-1 px-4 py-1.5 transition-all duration-400 ease-out"
+                  <div className="grid grid-cols-[1fr_7rem_7rem_7rem] gap-x-1 px-4 py-1.5 transition-all duration-400 ease-out"
                     style={{
                       opacity: activeSlide === 0 ? 1 : 0,
                       transitionDelay: activeSlide === 0 ? '750ms' : '0ms',
@@ -1408,7 +1410,7 @@ function EnhancedComplianceSection() {
                     </div>
                     <div>
                       <h3 className="text-xl md:text-2xl font-bold text-white" data-testid="text-reconciliation-report-title">Reconciliation Report</h3>
-                      <p className="text-blue-100/50 text-xs">Compares actual performance against contract guarantees on discounts, dispensing fees, and rebates — validates PBM compliance</p>
+                      <p className="text-blue-100/50 text-xs">Compares actual performance against contract guarantees on discounts, dispensing fees, and rebates. Identifies contract shortfalls or overperformance and validates PBM compliance.</p>
                     </div>
                   </div>
                   <div className="hidden md:block bg-[#0F264A] border border-[#4A90E2]/20 rounded-xl px-4 py-2.5">
